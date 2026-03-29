@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+hbar_env/
+hbar_env_stable/
+venv/
+.venv/
+
+# Data archives (large files)
+*.zip
+*.tar.gz
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Kaggle payloads (generated artifacts)
+kaggle_payloads/
+hackathon/kaggle_payloads/
+
+# Hackathon data archives
+hackathon/COGS.zip
+hackathon/COGS/
+hackathon/SCAN.zip
+hackathon/SCAN/
+hackathon/am-i-compositional.zip
+hackathon/am-i-compositional/
+
+# Jupyter
+.ipynb_checkpoints/

@@ -19,4 +19,5 @@
 | DG(B) | V3.0 | VA | Difficulty gradient score | A.x | NO |
 | RA(B,f,t) | V3.0+ | VA | Reliability function | A.13 | NO |
 | HB(B) | V3.0+ | Submission protocol | Human baseline specification | A.x | NO |
-| rA(d,t) | V1.0 (gap) | σA, λc | Rehearsal rate — σA coupling UNSPECIFIED in V1.0 | A.12.1 | NO |
+| λc eff = λc·(1−γσ·σA) | V1.0 (resolved Issue #4) | σA, λc, rA | Schema-mediated decay reduction; three-mechanism architecture (engagement/schema/frontier) | 7, 12, A.1 | YES |
+| rA(d,t) | V1.0 | τA (elapsed time) | Engagement decay — purely temporal, no σA dependence | 8 | YES |

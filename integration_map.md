@@ -2,7 +2,8 @@
 
 | Variable | Introduced | Interacts With | Coupling Mechanism | Equation | Consistency Verified |
 |---|---|---|---|---|---|
-| αA(d,t) | V2.0 | σA(d,t) | Gates σA growth via multiplicative term in ODE | A.3 (updated) | NO |
+| αA(d,t) | V2.0 | σA(d,t), R_A^{surface}(d,t) | Gates σA growth via multiplicative term in ODE 28; eroded by surface-reward pressure via ODE 29 | 28, 29, A.4 | NO |
+| R_A^{surface}(d,t) | V2.0 | αA(d,t) | Surface-reward pressure — erodes attentional fidelity via $ζ_α · R_A^{surface} · α_A$ term in ODE 29. Formal definition: $1 - H(Y\|S)/H(Y)$ (Eq. 29a). Proxy: $1 - \hat{α}_A = 1 - \text{Acc}_{OOD\text{-struct}}/\text{Acc}_{ID}$ (Eq. 29b). Calibration procedure in Appendix A.4. | 29, 29a, 29b, A.4 | YES |
 | ΞA^P(t) | V2.0 | flearn(d,t), D*(d,t) | Modulates training effort allocation across phases | A.x | NO |
 | ΞA^I(t) | V2.0 | ΩAI(d,t) | Inhibitory control over AI bypass risk | A.x | NO |
 | ΞA^F(t) | V2.0 | Phase transition detection | Cognitive flexibility for σ-critical crossing | A.x | NO |

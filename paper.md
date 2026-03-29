@@ -335,9 +335,19 @@ $$\dot{\alpha}_A(d,t) = \gamma \cdot C_A(d,t) \cdot (1 - \alpha_A(d,t)) - \zeta_
 | $γ$                  | Attention formation rate constant                                                                      |
 | $C_A(d,t)$           | Contrastive training rate — tasks requiring discrimination between surface and structural regularities |
 | $ζ_α$                | Attention erosion constant                                                                             |
-| $R_A^{surface}(d,t)$ | Surface-reward pressure — training signal rewarding surface accuracy                                   |
+| $R_A^{surface}(d,t)$ | Surface-reward pressure — the information-theoretic advantage of surface features for predicting the target label. Defined as $R_A^{\text{surface}} = 1 - H(Y \mid S)/H(Y)$ where $Y$ is the target label distribution and $S$ is the set of surface features. Measurable via proxy identification $R_A^{\text{surface}} \approx 1 - \hat{\alpha}_A$ (see Appendix A.4). |
 
 **Boundedness:** Same Nagumo argument as $σ_A$. $[0,1]$ is forward-invariant.
+
+**Formal definition of surface-reward pressure:**
+$$R_A^{\text{surface}}(d,t) = 1 - \frac{H(Y \mid S, d, t)}{H(Y \mid d, t)} \tag{29a}$$
+
+where $Y$ is the target label distribution and $S$ is the set of surface features. $R_A^{\text{surface}} = 0$ when surface features carry no predictive information; $R_A^{\text{surface}} = 1$ when surface features perfectly predict labels.
+
+**Proxy identification:**
+$$R_A^{\text{surface}}(d,t) \approx 1 - \hat{\alpha}_A(d,t) = 1 - \frac{\text{Acc}_{OOD\text{-struct}}(d,t)}{\text{Acc}_{ID}(d,t)} \tag{29b}$$
+
+where $\hat{\alpha}_A$ is the attentional fidelity proxy from the H-AFB benchmark. The proxy identification is valid when the H-AFB surface confound strength $s$ is calibrated to match the training distribution's surface-feature/label correlation structure (see Appendix A.4).
 
 #### 4.1.4 $Ω_{AI}$ Joint Suppression
 $$\Omega_{AI}(d,t) \implies \begin{cases} \text{Suppresses } \alpha_A & (\text{via } R_A^{\text{surface}} \text{ pressure}) \\ \text{Suppresses } \sigma_A & (\text{directly via } \epsilon_{\sigma} \text{ term}) \end{cases} \tag {30}$$
@@ -348,7 +358,7 @@ AI bypass risk simultaneously erodes attentional fidelity and schema coherence.
 
 | Benchmark                       | Design                                                                                                                                               | Variable                    | Prediction                                                    |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- | ------------------------------------------------------------- |
-| **Dual-Regularity Competition** | Tasks with superimposed surface regularity (high correlation, zero OOD validity) and compositional regularity (lower correlation, full OOD validity) | $α_A$                       | High-$α_A$: tracks compositional; Low-$α_A$: tracks surface   |
+| **Dual-Regularity Competition** | Tasks with superimposed surface regularity (high correlation, zero OOD validity, controlled by $R_A^{\text{surface}}$ via Eq. 29a) and compositional regularity (lower correlation, full OOD validity) | $α_A$, $R_A^{\text{surface}}$ | High-$α_A$: tracks compositional regularity despite surface pressure; Low-$α_A$: tracks surface regularity when $R_A^{\text{surface}}$ is high |
 | **Sustained Rule Tracking**     | Long-horizon tasks where generative rule is consistent but surface statistics shift mid-sequence                                                     | $α_A$ under sequence length | Low-$α_A$ tracks the surface shift; high-$α_A$ maintains rule |
 | **Attentional Capture Scaling** | Salient but task-irrelevant features alongside structural signal; vary salience differential                                                         | $α_A$ vs. salience          | Capture rate $∝ (1 − α_A)$ · salience                         |
 | **Contrastive Training Effect** | Measure $α_A$ before/after contrastive training pairs (surface-matched/structure-different)                                                          | $C_A(d,t)$ effectiveness    | $α_A$ increases at rate $γ · C_A$                             |
@@ -1094,19 +1104,59 @@ $$R_0 = \frac{f_{\text{learn}} \cdot \eta_{\text{max}} \cdot (1 + T_{\text{max}}
 σcritical = (1/γσ) · (1 - R0,min^{-1})                                  (A.8)
 ```
 
-### A.4 $θ_I$ Derivation
+### A.4 $R_A^{\text{surface}}$ Calibration Procedure
+
+**Goal:** Operationalise Eq. 29a using the proxy identification (Eq. 29b) via the H-AFB three-condition battery.
+
+**Three-condition battery** (per benchmark item $i$ in domain $d$):
+
+| Condition          | Input Structure                                                   | Measures                        |
+| ------------------- | ----------------------------------------------------------------- | ------------------------------- |
+| ID                 | Training-distribution format                                      | $\text{Acc}_{ID}(d,t)$          |
+| OOD-struct         | Novel compositional recombination (same surface features removed) | $\text{Acc}_{OOD\text{-struct}}(d,t)$ |
+| OOD-surf-conflict  | Surface features preserved, compositional structure changed       | Detects surface-tracking        |
+
+**Step 1 — Compute $\hat{\alpha}_A$:**
+$$\hat{\alpha}_A(d,t) = \frac{\text{Acc}_{OOD\text{-struct}}(d,t)}{\text{Acc}_{ID}(d,t)} \in [0, 1]$$
+
+**Step 2 — Estimate $R_A^{\text{surface}}$ via proxy (Eq. 29b):**
+$$\hat{R}_A^{\text{surface}}(d,t) = 1 - \hat{\alpha}_A(d,t)$$
+
+**Step 3 — Verify entropy-based $R_A^{\text{surface}}$ (Eq. 29a):**
+
+Given benchmark item $i$ with target label distribution $Y_i$ and surface features $S_i$:
+$$R_A^{\text{surface}}(i) = 1 - \frac{H(Y_i \mid S_i)}{H(Y_i)}$$
+
+- $R_A^{\text{surface}} = 0$: surface features carry no predictive information
+- $R_A^{\text{surface}} = 1$: surface features perfectly predict labels
+
+**Calibration requirement:** The H-AFB surface confound strength $s$ must be calibrated so that the proxy identification $\hat{R}_A^{\text{surface}} \approx R_A^{\text{surface}}$ holds. This requires matching $s$ to the training distribution's surface-feature/label correlation structure. When $s$ is uncalibrated, the proxy may over- or under-estimate the true surface-reward pressure.
+
+**Computed proxies for H-AFB:**
+
+| Proxy  | Definition                                       | Range    |
+| ------ | ------------------------------------------------ | -------- |
+| $\hat{\alpha}_A$ | Attentional fidelity proxy               | $[0, 1]$ |
+| $\Delta_{\text{surf}}$ | $\text{Acc}_{ID} - \text{Acc}_{OOD\text{-surf-conflict}}$ | $\geq 0$ |
+| SRI    | Surface reliance index: $\Delta_{\text{surf}} / \text{Acc}_{ID}$ | $[0, 1]$ |
+
+**Interpretation:**
+- High $\hat{\alpha}_A$, small $\Delta_{\text{surf}}$, SRI $\approx 0$: agent tracks compositional regularity despite surface pressure
+- Low $\hat{\alpha}_A$, large $\Delta_{\text{surf}}$, SRI $> 0$: agent tracks surface regularity when $R_A^{\text{surface}}$ is high
+
+### A.5 $θ_I$ Derivation
 $$\sigma_{\text{critical}} = \frac{1}{\gamma_{\sigma}} \cdot \left(1 - R_{0,\text{min}}^{-1}\right) \tag{A.15}$$
 
 $θ_I$ scales inversely with $ϕ(d_1,d_2)$: structurally similar domains require less depth for intersection activation; dissimilar domains require more.
 
-### A.5 $Ψ_A$ Transcritical Bifurcation
+### A.6 $Ψ_A$ Transcritical Bifurcation
 
 Near the bifurcation point $δ_A = θ_I$, the normal form:
 $$\dot{\mu} = a \cdot \mu + b \cdot \mu^2 + O(\mu^3) \tag{A.10}$$
 
 Where $\mu = \delta_A - \theta_I, \quad a = \left. \frac{\partial \dot{\delta}_A}{\partial \delta_A} \right|_{\theta_I}$, b captures second-order self-reinforcement. When $a > 0$, the bifurcation is supercritical and discovery is self-sustaining above $θ_I$.
 
-### $A$.6 ϕ Sub-additivity Proposition
+### A.7 ϕ Sub-additivity Proposition
 
 **Claim:** For any partition of domain $d$ into subdomains $d' ∪ d'' = d$:
 $$\phi(d' \cup d'', d) \le \phi(d', d) + \phi(d'', d^*) \tag{A.11}$$
@@ -1120,7 +1170,7 @@ $$\begin{align}
 
 Domain splitting cannot artificially inflate total $Ψ_A$ — granularity robustness is formally guaranteed.
 
-### A.7 Benchmark Reliability Threshold
+### A.8 Benchmark Reliability Threshold
 
 Minimum required $R_A(B,f,t)$ as a function of target effect size d and repetitions $k$:
 $$R_A^{\min(B, f, t)} = 1 - \left( \frac{d}{4} \right)^2 \cdot \frac{k}{k-1} \tag{A.13}$$
@@ -1132,7 +1182,7 @@ $$R_A^{\min(B, f, t)} = 1 - \left( \frac{d}{4} \right)^2 \cdot \frac{k}{k-1} \ta
 | 0.8 (large)     | 5               | 0.44      |
 | 0.5 (medium)    | 10              | 0.75      |
 
-### A.8 $Θ_A$ Boundedness
+### A.9 $Θ_A$ Boundedness
 
 **Claim:** $\Theta_A(d, m_1, m_2, t) = \sigma_A(d, m_1, t) \cdot \omega(m_1, m_2) \in [0, 1]$ is forward-invariant.
 

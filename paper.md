@@ -418,7 +418,17 @@ $$\Xi_A(t) = \{\Xi_A^P(t), \Xi_A^I(t), \Xi_A^F(t)\} \tag {35}$$
 $$\dot{\Xi}_A(t) = \kappa_P \cdot [P^*(t) - \Xi_A^P(t)] + \kappa_I \cdot [I^*(t) - \Xi_A^I(t)] + \kappa_F \cdot [F^*(t) - \Xi_A^F(t)] \tag {36}$$
 
 
-$P^*$, $I^*$, $F^*$ are H-Bar optimal values for each sub-component in the current phase.
+$P^*$, $I^*$, $F^*$ are derived from the phase-index variables with bifurcation-aware step functions:
+
+$$P^*(t) = \begin{cases} 0.9 & \text{if } \delta_A^{\text{relative}}(d^*, t) < 0.65 \\ 0.5 - 0.3 \cdot \frac{\delta_A^{\text{relative}}(d^*, t) - 0.65}{0.35} & \text{if } 0.65 \leq \delta_A^{\text{relative}}(d^*, t) \leq 1.0 \end{cases} \tag{36a}$$
+
+$$I^*(t) = \begin{cases} 0.9 & \text{if } \sigma_A(d^*, t) < \sigma_{\text{critical}} \\ 0.4 & \text{if } \sigma_A(d^*, t) \geq \sigma_{\text{critical}} \end{cases} \tag{36b}$$
+
+$$F^*(t) = \begin{cases} 0.3 & \text{if } |M_A(t)| < 2 \text{ AND } \Psi_A^{\max}(t) = 0 \\ 0.9 & \text{otherwise} \end{cases} \tag{36c}$$
+
+where $d^* = \arg\max_{d} \delta_A(d,t)$.
+
+The step discontinuity in $I^*$ at $\sigma_{\text{critical}}$ mirrors the Phase 2 transition trigger (§7, Eq. 51). The executive control state converges smoothly through the ODE relaxation (rates $\kappa_P$, $\kappa_I$, $\kappa_F$), so the step in forcing terms produces a smooth transition in the state variable.
 
 #### 4.3.3 Benchmark Families
 
@@ -1076,6 +1086,8 @@ $$\dot{\hat{M}}_A = \nu_M \cdot [\sigma_A - \hat{M}_A] - \xi_M \cdot \Omega_{AI}
 
 **Executive control:**
 $$\dot{\Xi}_A = \kappa_P \cdot [P^* - \Xi_A^P] + \kappa_I \cdot [I^* - \Xi_A^I] + \kappa_F \cdot [F^* - \Xi_A^F] \tag{A.6}$$
+
+where $P^*$, $I^*$, $F^*$ are defined by the bifurcation-aware step functions (Eqs. 36a–36c in §4.3.2).
 
 ### A.2 Dimensionless Parameter Groups
 

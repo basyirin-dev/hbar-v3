@@ -625,14 +625,14 @@ This converts task diversity piloting from empirical discovery of gaps to formal
 ### 6.1 Extension 9 — Benchmark Reliability Function $R_A(B,f,t)$
 
 #### 6.1.1 Definition
-$$R_A(B,f,t) = 1 - \frac{\text{Var}_k(\text{score}_A^k(B))}{E[\text{score}_A(B)]^2} \tag {48}$$
+$$R_A(B,f,t) = \begin{cases} \displaystyle\frac{1}{1 + \frac{\text{Var}_k(\text{score}_A^k(B))}{E[\text{score}_A(B)]^2}} & \text{if } E[\text{score}_A(B)] > 0 \\[8pt] 0 & \text{if } E[\text{score}_A(B)] = 0 \end{cases} \tag {48}$$
 
-Coefficient of variation inverted — high $R_A$ means low relative variance across $k$ repetitions. Directly computable: run each benchmark item $k=5$ times ($temperature > 0$) and measure score variance.
+Reliability is the precision-weighted ratio $R_A = 1/(1 + CV^2)$, bounded in $(0, 1]$ for positive-mean scores. When variance is zero (perfectly consistent scores), $R_A = 1$. When variance equals the squared mean ($CV = 1$), $R_A = 0.5$. As variance grows, $R_A \to 0$ asymptotically — high-variance benchmarks are penalised smoothly without crossing into negative values. The edge case $E[\text{score}] = 0$ (benchmark where all scores are zero) is assigned $R_A = 0$, indicating complete unreliability. This form is equivalent to $R_A = \mu^2/(\mu^2 + \sigma^2)$ — the signal-to-noise ratio in the variance decomposition. Directly computable: run each benchmark item $k=5$ times ($temperature > 0$) and measure score variance.
 
 #### 6.1.2 Updated Validity Function (V3.0+ Final)
 $$V_A(B,f,t) = CI(B,f) \cdot FD(B) \cdot DG(B) \cdot R_A(B,f,t) \tag {49}$$
 
-Benchmark validity now formally penalises high-variance benchmarks. Stochastic noise is a pre-design criterion, not a post-submission discovery.
+Benchmark validity now formally penalises high-variance benchmarks. Stochastic noise is a pre-design criterion, not a post-submission discovery. Since $R_A \in [0, 1]$ by construction (Equation 48), and $CI, FD, DG \in [0, 1]$ by their respective definitions, the validity function $V_A \in [0, 1]$. A benchmark with $R_A = 0$ has $V_A = 0$ regardless of other components — reliability is a necessary condition for validity.
 
 #### 6.1.3 Noise Reduction Protocol
 
@@ -650,7 +650,7 @@ Benchmark validity now formally penalises high-variance benchmarks. Stochastic n
 | $CI(B,f)$        | > 0.60     | Target faculty must be dominant predictor |
 | $FD(B)$          | > 0.55     | No single format may dominate             |
 | $DG(B)$          | > 0.40     | Must span multiple difficulty levels      |
-| $R_A(B,f,t)$     | > 0.75     | Reliable across 5 repetitions             |
+| $R_A(B,f,t)$     | > 0.75     | Precision-weighted reliability; corresponds to $CV < 0.577$ |
 | **$V_A(B,f,t)$** | **> 0.20** | **Combined minimum**                      |
 
 ### 6.3 Practical Action 1 — Pre-Audit via Established Bodies

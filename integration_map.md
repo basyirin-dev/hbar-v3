@@ -18,7 +18,7 @@
 | CI(B,f) | V3.0 | VA | Construct isolation score | A.x | NO |
 | FD(B) | V3.0 | VA | Format diversity score | A.x | NO |
 | DG(B) | V3.0 | VA | Difficulty gradient score | A.x | NO |
-| RA(B,f,t) | V3.0+ | VA | Reliability function | A.13 | NO |
+| RA(B,f,t) | V3.0+ | VA | Precision-weighted reliability: $R_A = 1/(1 + CV^2)$, bounded in $[0,1]$ by construction. Edge case: $E[\text{score}]=0 \implies R_A=0$. Validity guarantee: $R_A \in [0,1] \implies V_A \in [0,1]$. $CV$ interpretation: $R_A > 0.75 \iff CV < 0.577$. | 48, 49 | YES |
 | HB(B) | V3.0+ | Submission protocol | Human baseline specification | A.x | NO |
 | λc eff = λc·(1−γσ·σA) | V1.0 (resolved Issue #4) | σA, λc, rA | Schema-mediated decay reduction; three-mechanism architecture (engagement/schema/frontier) | 7, 12, A.1 | YES |
 | rA(d,t) | V1.0 | τA (elapsed time) | Engagement decay — purely temporal, no σA dependence | 8 | YES |

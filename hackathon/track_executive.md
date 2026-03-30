@@ -467,7 +467,7 @@ Report temperature = 0 in all benchmark documentation.
 
 
 
-- **ISSUE #6** [$\Xi$]: Optimal sub-state values $P^*(t)$, $I^*(t)$, $F^*(t)$ in the executive control ODE (Eq. 36) are not formally defined for each of the five training phases. The H-DCB planning task ($\Xi_A^P$) operationalises $P^*(t)$ via Phase 2 prescriptions — this is the first concrete instantiation and must be cited as a partial resolution in the register.
+- **ISSUE #6** [RESOLVED]: Optimal sub-state values $P^*(t)$, $I^*(t)$, $F^*(t)$ are now formally defined via bifurcation-aware step functions (Eqs. 36a–c). $P^*(t)$: 0.9 below δrel 0.65, linear decay to 0.5 above. $I^*(t)$: 0.9 below σcritical, 0.4 above (step at Phase 2 trigger). $F^*(t)$: 0.3 when |M_A|<2 and Ψ=0, 0.9 otherwise. The executive control ODE (Eq. 36) converges smoothly through the κP/κI/κF relaxation rates.
 
 - **ISSUE #14** [$\Delta$]: The mechanism by which an agent redirects effort away from delegatable tasks lacks formalisation within the system ODEs. The BCR metric operationalises this as an observable behavioural proxy — must state the mapping assumption explicitly in the Writeup.
 

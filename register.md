@@ -1,69 +1,434 @@
-## TIER 1A
-- **ISSUE #4 [RESOLVED — Variant E, 2026-03-30]:** The parametric decay term $\lambda_c$ incorrectly references $\sigma_A$ via the rehearsal engagement rate $r_A$, which is defined in Equation 8 using only elapsed time. Resolved by restructuring §3.3 into a three-mechanism decay architecture (engagement decay / schema-mediated decay reduction / frontier obsolescence). Equation 7 revised to include $(1 - \gamma_\sigma \cdot \sigma_A)$ factor matching Appendix A.1. Equation 12 updated for consistency.
-- **ISSUE #5 [RESOLVED — Variant E, 2026-03-30]:** The attentional fidelity ODE relies on surface-reward pressure which currently lacks a formal definition or measurement procedure. Resolved by adding formal definition (Eq. 29a: $R_A^{\text{surface}} = 1 - H(Y|S)/H(Y)$), proxy identification (Eq. 29b: $R_A^{\text{surface}} \approx 1 - \hat{\alpha}_A$), calibration procedure (Appendix A.4 with three-condition battery), updated §4.1.5 benchmark table to reference formal definition, and updated integration_map.md.
-- **ISSUE #6 [RESOLVED — Variant D, 2026-03-30]:** The optimal sub-state values for the executive control ODE are not formally defined for each of the five training phases. Resolved by adding bifurcation-aware step functions (Eqs. 36a–36c): $P^*$ as piecewise linear function of $δ_A^{relative}$, $I^*$ as step function at $σ_{critical}$ (0.9 below, 0.4 above), $F^*$ as threshold function of $|M_A|$ and $Ψ_A^{max}$. Links V1.0 $σ_{critical}$ bifurcation to V2.0 executive control. Updated Appendix A.6 and integration_map.md.
-- **ISSUE #23 [RESOLVED — Variant E, 2026-03-30]:** The metacognitive self-model ODE lacks a formal guarantee that values remain bounded when distorted by the AI bypass term. Resolved by adding Nagumo boundedness proof (§4.4.2), steady-state analysis showing M̂A* = σA/(1 + Ω_AI/Π_7) ≤ σA (Eq. 39a), convergence rate characterisation, calibration error ODE (Eq. 38a), and Appendix A.1 integration. Key result: sustained AI bypass produces underconfidence at equilibrium, not sustained overconfidence.
-- **ISSUE #22 [RESOLVED — Variant D, 2026-03-30]:** The benchmark reliability function can theoretically return negative values when the coefficient of variation exceeds one, violating the requirement for bounded validity. Resolved by replacing $R_A = 1 - CV^2$ with the precision-weighted form $R_A = 1/(1 + CV^2)$ (Eq. 48), bounded in $[0,1]$ by construction. Edge case $E[\text{score}]=0$ assigned $R_A=0$. Validity function (Eq. 49) now has formal guarantee chain: $R_A \in [0,1] \implies V_A \in [0,1]$. §6.2 threshold updated with $CV$ interpretation ($R_A > 0.75 \iff CV < 0.577$).
+## Complete Tag Reference (V3.0+)
 
-## TIER 1B
-- **ISSUE #1 [RESOLVED — Variant E, 2026-03-30]:** The primary definition of schema coherence relies on rhetorical cognitive psychology vocabulary rather than rigorous mathematical grounding. Resolved by adding proxy identification (Eq. 3b: $\hat{\sigma}_A = \text{Acc}_{\text{OOD}}/\text{Acc}_{\text{In}}$), updating prose definition to reference operationalisation via SCAN/COGS/PCFG-SET splits, and integrating the SGG proxy into §3.1.3. Closes definitional gap between primary definition and measurement protocol.
-- **ISSUE #2 [RESOLVED — Variant C, 2026-03-30]:** The paper treats the latent variable $\sigma_A$ as an operative state variable throughout the framework without providing a formalized computational proxy independent of downstream benchmark results. Resolved by adding two-tier proxy architecture: Tier 1 (training-time) = causal intervention probe (Eq. 3c: recombine primitives from generative grammar, measure accuracy ratio) or augmentation consistency (Eq. 3d: CosSim under structure-preserving augmentations); Tier 2 (evaluation-time) = SGG (Eq. 3b, preserved as ground-truth). Operational convention: $\tilde{\sigma}_A$ (Tier 1) used as operative value in ODE system during training; $\hat{\sigma}_A$ (Tier 2) used for validation at checkpoints with recalibration threshold $|\Delta| > 0.15$. §10.1 updated with two-tier description and $\rho \geq 0.7$ correlation target. Adds Eqs. 3c, 3d; modifies §3.1.3 and §10.1.
-- **ISSUE #3 [RESOLVED — Variant E, 2026-03-30]:** The distinctions provided in the Excess column of the $\sigma_A$ mapping table are based on temporal dynamics rather than a categorical difference in representational content. Resolved by introducing the Pointwise Characterisation Axiom (PC1–PC3) with theorem and proof sketch establishing categorical distinction. PC1 (recombination capacity), PC2 (frontier normalisation), PC3 (evaluative function against AI bypass) each proven to fail for all four comparator constructs. Uniqueness table reordered with categorical rows (PC1–PC3) first, temporal-dynamic rows below. Two old rows ("Frontier-relative normalisation," "Evaluative function") subsumed by PC2 and PC3 in categorical formulation.
+| Tag | Meaning |
+|-----|---------|
+| [D] | Definitional weakness — σA or adjacent construct boundary |
+| [O] | ODE / mathematical inconsistency — equations, couplings, closure |
+| [P] | Phase transition — transition conditions not observable without proxy |
+| [N] | Novelty claim — δA-only alternative not excluded |
+| [Ψ] | ΨA multiplicative form — justification or falsifiability gap |
+| [Δ] | Delegation scope — single vs. multi-agent blurring |
+| [B] | Human-cognitive bridge — scope discipline violation |
+| [L] | Limitation — absent or understated |
+| [R] | Missing reference from Phase 1 Falcon sweep |
+| [α] | Attentional fidelity — αA coupling or ODE issues |
+| [Ξ] | Executive control — ΞA formalisation or integration |
+| [M] | Metacognitive self-model — M̂A, ζA dynamics or scope |
+| [S] | Social cognition — μAB, τA, ΣA,B coupling or scope |
+| [Θ] | Cross-modal transfer — ΘA, ω(m1,m2) formalisation |
+| [V] | Benchmark validity — VA, CI, FD, DG, RA issues |
+| [I] | Integration seam — cross-version coherence issues |
+| [T] | Score trajectory table — §1.3 methodology framing |
 
-## TIER 2
-- **ISSUE #9:** The failure to distinguish H-Bar’s structural gap from reported meta-learning and training optimizations allows the reviewer to argue $\sigma$ is merely a proxy for well-optimized $\delta$.
-- **ISSUE #10 [HACKATHON PRIORITY]:** The empirical prediction requires matching agents on $\delta_A$ while varying $\sigma_A$ but does not specify a protocol to independently increase schema coherence without increasing depth.
-- **ISSUE #28:** The gap statement must address how engineered training distributions allow standard seq2seq models to achieve near-perfect one-shot primitive generalization on SCAN as reported by Patel et al. (2022).
-- **ISSUE #29:** The framework must engage with the finding from Lake & Baroni (2023) that meta-learning improves lexical compositionality while structural gaps persist.
-- **ISSUE #30:** The novelty defense must address Han & Pad’o (2024) demonstrating that gains in transformer compositional generalization often stem from training regimes rather than structural solutions.
-- **ISSUE #31:** The paper must differentiate the structural $\sigma_A$ gap from the Mirage model's symbolic System-2 requirement for solving compositionality as noted by Noviello et al. (2025).
-- **ISSUE #32:** The gap statements must incorporate the SLOG benchmark results from Li et al. (2023) which foreground persistent failures on unseen recursion.
-- **ISSUE #33:** The framework must address Bruns (2025) which uses RASP to prove structural representability exists in transformers even when learnability fails.
-- **ISSUE #34:** The paper must acknowledge that mutual exclusivity training pushed COGS lexical scores higher while structural splits remained below 1% in Jiang et al. (2022).
-- **ISSUE #35:** The novelty defense needs to address how dataset cartography curricula yield gains without closing structural compositionality gaps as observed by .Ince et al. (2023).
-- **ISSUE #36:** The gap statement should note that large pretrained models still exhibit lag on deeper recursion and unseen structures according to Zhou et al. (2023).
-- **ISSUE #7:** The Phase 2 transition is triggered by an unobservable latent variable and lacks a formalized differential proxy signal for external verification.
-- **ISSUE #8:** The paper lacks a mathematical criterion such as sensitivity analysis to demonstrate which growth-limiting variable is dominant at any given threshold.
-- **ISSUE #11:** The multiplicative dependence for intersection discovery is asserted without a first-principles derivation showing why a product is necessary over a non-linear sum.
-- **ISSUE #12:** The paper claims empirical motivation from model-merging for its discovery rate mechanism but provides no citations to support the synergistic emergence claim.
-- **ISSUE #37:** Add a citation to Lu et al. (2024) to support the claim that merged models exhibit emergent capabilities that surpass individual parent contributions.
-- **ISSUE #38:** Cite Akiba et al. (2024) regarding evolutionary model merging recipes that yield emergent cross-domain skills.
-- **ISSUE #39:** Provide citation for Yadav et al. (2024) establishing that merging capable experts systematically improves zero-shot generalization.
-- **ISSUE #40:** Cite Sung et al. (2023) as evidence for synergistic multimodal cross-task model merging.
-- **ISSUE #41:** Cite Liu et al. (2025) to document that low-quality source domains can suppress target performance in multi-agent RL.
-- **ISSUE #42:** Cite Guo et al. (2022) to support the existence of interaction-sensitive effects in cross-domain recommendation systems.
-- **ISSUE #43:** Cite Serrano et al. (2024) to acknowledge review evidence that poorly matched sources harm cross-domain learning.
-- **ISSUE #44:** Cite Sui et al. (2024) to support the $\alpha_A$ motivation regarding the separation of causal from shortcut features in attention.
-- **ISSUE #45:** Cite Oren et al. (2020) to ground the claim that attention alignment to token-rule structure improves compositional generalization.
-- **ISSUE #46:** Provide citation for Li et al. (2025) showing that hierarchical attention patterns predict behavior on unseen OOD data.
-- **ISSUE #47:** Cite Liao et al. (2025) as precedent for using attention sharpness to ensure weights favor invariant structural components.
-- **ISSUE #48:** Cite Jones & Fuhg (2025) as a precedent for attention-based gating inside a neural ODE framework.
-- **ISSUE #49:** Cite Robertazzi et al. (2022) as motivation for formal inhibition variables in brain-inspired meta-RL.
-- **ISSUE #50:** Cite Piray & Daw (2021) to ground the formal modeling of planning and cognitive control costs in RL.
-- **ISSUE #51:** Cite Rmus et al. (2020) regarding the role of executive function in defining state and action spaces for reinforcement learning.
-- **ISSUE #52:** Provide citation for Nair et al. (2023) which models response inhibition as a meta-parameter in unified cognitive architectures.
-- **ISSUE #53:** Cite Dunovan et al. (2017) regarding the adjustment of inhibitory boundaries in response to performance feedback.
-- **ISSUE #54:** Cite Wenxuan et al. (2024) to support the $\Theta_A$ motivation concerning the measurement of modality knowledge discrepancy.
-- **ISSUE #55:** Cite the multimodal alignment and fusion survey by Li & Tang (2024) as prior work for cross-modal transfer logic.
-- **ISSUE #56:** Cite Lin et al. (2025) for their work on contrastive modality-disentangled learning and shared stream enforcement.
-- **ISSUE #57:** Cite Lu et al. (2025) regarding the Platonic Representation Hypothesis and the emergent alignment potential across modalities.
-- **ISSUE #58:** Add a citation to Griot et al. (2025) regarding the MetaMedQA benchmark to support the novelty of the H-MCB calibration protocol.
-- **ISSUE #59:** Cite Kim et al. (2025) concerning the ObjexMT benchmark and its treatment of jailbreak scenarios in metacognitive calibration.
-- **ISSUE #60:** Provide a citation for Kaijing et al. (2024) establishing KOR-Bench as a relevant precedent for knowledge-orthogonal reasoning tasks.
-- **ISSUE #61:** Cite Mishra et al. (2022) regarding LILA mathematical reasoning tasks as an existing source for robust out-of-distribution evaluation splits.
-- **ISSUE #62:** Add a citation to the DMC framework by Wang et al. (2025) to ground the formal decoupling of cognitive and metacognitive abilities.
+---
 
-## TIER 3
-- **ISSUE #26:** The hyper-precise hackathon suitability percentages are provided without any disclosed methodology or statistical derivation.
-- **ISSUE #27:** The claim of a 73.41% winning probability is entirely unsupported and lacks academic foundation.
-- **ISSUE #13:** The definition of AI depth is ambiguous as to whether it represents a global state-of-the-art benchmark or a specific system instance available to the agent.
-- **ISSUE #14:** The mechanism by which an agent strategically redirects effort away from delegatable tasks lacks formalization within the system ODEs.
-- **ISSUE #15:** The use of anthropomorphic labels for the executive control sub-components imports psychological baggage that exceeds the formal agent-training state variables.
-- **ISSUE #16:** Concluding prescriptions for curriculum design and human interaction drift into advisory language for practitioners rather than staying within the formal scope.
-- **ISSUE #17:** Multiple rate constants and parameters used in the ODE system are currently neither operationalized nor measurable, rendering the full system non-simulatable.
-- **ISSUE #18:** The substantial financial and resource barrier created by the requirement for 200 Prolific Academic participants is not acknowledged as a limitation for replication.
-- **ISSUE #19:** The lack of a formal computational method for calculating domain structural similarity and modal structural similarity is a major missing limitation.
-- **ISSUE #20:** Explicitly labeling section headers with version layers makes the paper read as a sequential assembly of research phases rather than a unified theory.
-- **ISSUE #21:** The abstract is heavily weighted toward V1.0 mechanisms and fails to proportionately present the framework extensions as a synthesized whole.
-- **ISSUE #24:** Mapping V3.0+ variables directly to the Burnell et al. faculties appears post-hoc and opportunistic given the report's release date.
-- **ISSUE #25:** The framework cites the Burnell report as a foundational taxonomy without acknowledging its status as an unvalidated technical report released in March 2026.
+## TIER 1A — ODE System Closure
+
+All `[O]`-tagged issues + all integration_map.md rows where Consistency Verified = NO. Priority order: (1) rA(d,t) functional form and σA coupling, (2) all V2.0 ODE closures, (3) all V3.0/V3.0+ ODE closures.
+
+## ISSUE #4
+**Tag:** [O]
+**Severity:** HIGH
+**Description:** The parametric decay term λc incorrectly references σA via the rehearsal engagement rate rA, which is defined using only elapsed time without structural coupling.
+**Status:** RESOLVED — Variant E, 2026-03-30
+
+## ISSUE #5
+**Tag:** [α]
+**Severity:** HIGH
+**Description:** The attentional fidelity ODE relies on surface-reward pressure which lacks a formal definition, proxy identification, or calibration procedure.
+**Status:** RESOLVED — Variant E, 2026-03-30
+
+## ISSUE #6
+**Tag:** [Ξ]
+**Severity:** HIGH
+**Description:** The optimal sub-state values for the executive control ODE are not formally defined for each of the five training phases.
+**Status:** RESOLVED — Variant D, 2026-03-30
+
+## ISSUE #22
+**Tag:** [V]
+**Severity:** HIGH
+**Description:** The benchmark reliability function can theoretically return negative values when the coefficient of variation exceeds one, violating the bounded validity requirement.
+**Status:** RESOLVED — Variant D, 2026-03-30
+
+## ISSUE #23
+**Tag:** [M]
+**Severity:** HIGH
+**Description:** The metacognitive self-model ODE lacks a formal guarantee that values remain bounded when distorted by the AI bypass term.
+**Status:** RESOLVED — Variant E, 2026-03-30
+
+---
+
+## TIER 1B — Definitional and Novelty Boundaries
+
+All `[D]`-tagged issues + all `[α]`, `[Ξ]`, `[M]`, `[S]`, `[Θ]`, `[V]` issues involving definitional distinctness.
+
+## ISSUE #1
+**Tag:** [D]
+**Severity:** HIGH
+**Description:** The primary definition of schema coherence relies on rhetorical cognitive psychology vocabulary rather than rigorous mathematical grounding with an operationalisable proxy.
+**Status:** RESOLVED — Variant E, 2026-03-30
+
+## ISSUE #2
+**Tag:** [D]
+**Severity:** HIGH
+**Description:** The latent variable σA is treated as an operative state variable throughout the framework without providing a formalised computational proxy independent of downstream benchmark results.
+**Status:** RESOLVED — Variant C, 2026-03-30
+
+## ISSUE #3
+**Tag:** [D]
+**Severity:** HIGH
+**Description:** The distinctions in the Excess column of the σA mapping table are based on temporal dynamics rather than categorical differences in representational content.
+**Status:** RESOLVED — Variant E, 2026-03-30
+
+---
+
+## TIER 2 — Novelty Defence and Falsifiability
+
+Priority: all `[N]`-tagged issues, then `[P]`, then `[Ψ]`, then `[R]`.
+
+## ISSUE #7
+**Tag:** [P]
+**Severity:** MEDIUM
+**Description:** The Phase 2 transition is triggered by an unobservable latent variable and lacks a formalised differential proxy signal for external verification.
+**Status:** OPEN
+
+## ISSUE #8
+**Tag:** [P]
+**Severity:** MEDIUM
+**Description:** The paper lacks a mathematical criterion such as sensitivity analysis to demonstrate which growth-limiting variable is dominant at any given threshold.
+**Status:** OPEN
+
+## ISSUE #9
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The failure to distinguish H-Bar's structural gap from reported meta-learning and training optimizations allows the reviewer to argue σ is merely a proxy for well-optimised δ.
+**Status:** OPEN
+
+## ISSUE #10
+**Tag:** [P]
+**Severity:** MEDIUM
+**Description:** The empirical prediction requires matching agents on δA while varying σA but does not specify a protocol to independently increase schema coherence without increasing depth.
+**Status:** RESOLVED — Variant C, 2026-03-30
+
+## ISSUE #11
+**Tag:** [Ψ]
+**Severity:** MEDIUM
+**Description:** The multiplicative dependence for intersection discovery is asserted without a first-principles derivation showing why a product is necessary over a non-linear sum.
+**Status:** OPEN
+
+## ISSUE #12
+**Tag:** [R]
+**Severity:** MEDIUM
+**Description:** The paper claims empirical motivation from model-merging for its discovery rate mechanism but provides no citations to support the synergistic emergence claim.
+**Status:** OPEN
+
+## ISSUE #28
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The gap statement must address how engineered training distributions allow standard seq2seq models to achieve near-perfect one-shot primitive generalisation on SCAN as reported by Patel et al. (2022).
+**Status:** OPEN
+
+## ISSUE #29
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The framework must engage with the finding from Lake & Baroni (2023) that meta-learning improves lexical compositionality while structural gaps persist.
+**Status:** OPEN
+
+## ISSUE #30
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The novelty defence must address Han & Pad'o (2024) demonstrating that gains in transformer compositional generalisation often stem from training regimes rather than structural solutions.
+**Status:** OPEN
+
+## ISSUE #31
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The paper must differentiate the structural σA gap from the Mirage model's symbolic System-2 requirement for solving compositionality as noted by Noviello et al. (2025).
+**Status:** OPEN
+
+## ISSUE #32
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The gap statements must incorporate the SLOG benchmark results from Li et al. (2023) which foreground persistent failures on unseen recursion.
+**Status:** OPEN
+
+## ISSUE #33
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The framework must address Bruns (2025) which uses RASP to prove structural representability exists in transformers even when learnability fails.
+**Status:** OPEN
+
+## ISSUE #34
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The paper must acknowledge that mutual exclusivity training pushed COGS lexical scores higher while structural splits remained below 1% in Jiang et al. (2022).
+**Status:** OPEN
+
+## ISSUE #35
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The novelty defence needs to address how dataset cartography curricula yield gains without closing structural compositionality gaps as observed by Ince et al. (2023).
+**Status:** OPEN
+
+## ISSUE #36
+**Tag:** [N]
+**Severity:** MEDIUM
+**Description:** The gap statement should note that large pretrained models still exhibit lag on deeper recursion and unseen structures according to Zhou et al. (2023).
+**Status:** OPEN
+
+## ISSUE #37
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Add a citation to Lu et al. (2024) to support the claim that merged models exhibit emergent capabilities that surpass individual parent contributions.
+**Status:** OPEN
+
+## ISSUE #38
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Akiba et al. (2024) regarding evolutionary model merging recipes that yield emergent cross-domain skills.
+**Status:** OPEN
+
+## ISSUE #39
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Provide citation for Yadav et al. (2024) establishing that merging capable experts systematically improves zero-shot generalisation.
+**Status:** OPEN
+
+## ISSUE #40
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Sung et al. (2023) as evidence for synergistic multimodal cross-task model merging.
+**Status:** OPEN
+
+## ISSUE #41
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Liu et al. (2025) to document that low-quality source domains can suppress target performance in multi-agent RL.
+**Status:** OPEN
+
+## ISSUE #42
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Guo et al. (2022) to support the existence of interaction-sensitive effects in cross-domain recommendation systems.
+**Status:** OPEN
+
+## ISSUE #43
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Serrano et al. (2024) to acknowledge review evidence that poorly matched sources harm cross-domain learning.
+**Status:** OPEN
+
+## ISSUE #44
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Sui et al. (2024) to support the αA motivation regarding the separation of causal from shortcut features in attention.
+**Status:** OPEN
+
+## ISSUE #45
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Oren et al. (2020) to ground the claim that attention alignment to token-rule structure improves compositional generalisation.
+**Status:** OPEN
+
+## ISSUE #46
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Provide citation for Li et al. (2025) showing that hierarchical attention patterns predict behaviour on unseen OOD data.
+**Status:** OPEN
+
+## ISSUE #47
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Liao et al. (2025) as precedent for using attention sharpness to ensure weights favour invariant structural components.
+**Status:** OPEN
+
+## ISSUE #48
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Jones & Fuhg (2025) as a precedent for attention-based gating inside a neural ODE framework.
+**Status:** OPEN
+
+## ISSUE #49
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Robertazzi et al. (2022) as motivation for formal inhibition variables in brain-inspired meta-RL.
+**Status:** OPEN
+
+## ISSUE #50
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Piray & Daw (2021) to ground the formal modelling of planning and cognitive control costs in RL.
+**Status:** OPEN
+
+## ISSUE #51
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Rmus et al. (2020) regarding the role of executive function in defining state and action spaces for reinforcement learning.
+**Status:** OPEN
+
+## ISSUE #52
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Provide citation for Nair et al. (2023) which models response inhibition as a meta-parameter in unified cognitive architectures.
+**Status:** OPEN
+
+## ISSUE #53
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Dunovan et al. (2017) regarding the adjustment of inhibitory boundaries in response to performance feedback.
+**Status:** OPEN
+
+## ISSUE #54
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Wenxuan et al. (2024) to support the ΘA motivation concerning the measurement of modality knowledge discrepancy.
+**Status:** OPEN
+
+## ISSUE #55
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite the multimodal alignment and fusion survey by Li & Tang (2024) as prior work for cross-modal transfer logic.
+**Status:** OPEN
+
+## ISSUE #56
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Lin et al. (2025) for their work on contrastive modality-disentangled learning and shared stream enforcement.
+**Status:** OPEN
+
+## ISSUE #57
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Lu et al. (2025) regarding the Platonic Representation Hypothesis and the emergent alignment potential across modalities.
+**Status:** OPEN
+
+## ISSUE #58
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Add a citation to Griot et al. (2025) regarding the MetaMedQA benchmark to support the novelty of the H-MCB calibration protocol.
+**Status:** OPEN
+
+## ISSUE #59
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Kim et al. (2025) concerning the ObjexMT benchmark and its treatment of jailbreak scenarios in metacognitive calibration.
+**Status:** OPEN
+
+## ISSUE #60
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Provide a citation for Kaijing et al. (2024) establishing KOR-Bench as a relevant precedent for knowledge-orthogonal reasoning tasks.
+**Status:** OPEN
+
+## ISSUE #61
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Cite Mishra et al. (2022) regarding LILA mathematical reasoning tasks as an existing source for robust out-of-distribution evaluation splits.
+**Status:** OPEN
+
+## ISSUE #62
+**Tag:** [R]
+**Severity:** LOW
+**Description:** Add a citation to the DMC framework by Wang et al. (2025) to ground the formal decoupling of cognitive and metacognitive abilities.
+**Status:** OPEN
+
+---
+
+## CHECKPOINT LOG
+
+### Checkpoint A — After 9 Approved Edits (Issues #1–#6, #10, #22, #23)
+**Date:** 2026-03-30
+**Sections reviewed:** §3.1.3, §3.3, §4.1, §4.3, §4.4, §6.1, §10.6, Appendix A.1–A.9
+**Result:** No new issues introduced. All 12 dimensions PASS or PARTIAL PASS. Issue #17 (parameter calibration) validated as persistent concern. A.8 formula/table discrepancy noted (pre-existing, not a regression).
+**Hackathon tracks updated:** track_learning.md (Issue #10), track_attention.md (Issue #5), track_executive.md (Issue #6)
+
+### Checkpoint B — After All Tier 1A Issues Resolved
+**Date:** 2026-03-30
+**Trigger:** All `[O]`-tagged issues resolved (#4); integration map Tier 1A rows confirmed YES
+**Scope:** Complete Mathematical Appendix (§12), Equations A.1–A.13
+**Result:** No new `[O]` issues created. ODE system functionally closed. Threshold conditions consistent. rA-σA coupling formally correct. Constants NOT consolidated in §10 (validates Issue #17). A.8 formula/table inconsistency flagged.
+**Recommendation:** Proceeding to Tier 2 is safe. No blockers from checkpoint reviews.
+
+---
+
+## TIER 3 — Scope, Framing, and Completeness
+
+Priority: all `[Δ]`, `[B]`, `[L]`, `[I]`, `[T]` issues. The `[T]` issue (score trajectory table) is Tier 3 Priority 1.
+
+## ISSUE #13
+**Tag:** [Δ]
+**Severity:** MEDIUM
+**Description:** The definition of AI depth is ambiguous as to whether it represents a global state-of-the-art benchmark or a specific system instance available to the agent.
+**Status:** OPEN
+
+## ISSUE #14
+**Tag:** [Δ]
+**Severity:** MEDIUM
+**Description:** The mechanism by which an agent strategically redirects effort away from delegatable tasks lacks formalisation within the system ODEs.
+**Status:** OPEN
+
+## ISSUE #15
+**Tag:** [B]
+**Severity:** LOW
+**Description:** The use of anthropomorphic labels for the executive control sub-components imports psychological baggage that exceeds the formal agent-training state variables.
+**Status:** OPEN
+
+## ISSUE #16
+**Tag:** [B]
+**Severity:** LOW
+**Description:** Concluding prescriptions for curriculum design and human interaction drift into advisory language for practitioners rather than staying within the formal scope.
+**Status:** OPEN
+
+## ISSUE #17
+**Tag:** [L]
+**Severity:** MEDIUM
+**Description:** Multiple rate constants and parameters used in the ODE system are currently neither operationalised nor measurable, rendering the full system non-simulatable.
+**Status:** OPEN
+
+## ISSUE #18
+**Tag:** [L]
+**Severity:** LOW
+**Description:** The substantial financial and resource barrier created by the requirement for 200 Prolific Academic participants is not acknowledged as a limitation for replication.
+**Status:** OPEN
+
+## ISSUE #19
+**Tag:** [L]
+**Severity:** MEDIUM
+**Description:** The lack of a formal computational method for calculating domain structural similarity and modal structural similarity is a major missing limitation.
+**Status:** OPEN
+
+## ISSUE #20
+**Tag:** [I]
+**Severity:** LOW
+**Description:** Explicitly labelling section headers with version layers makes the paper read as a sequential assembly of research phases rather than a unified theory.
+**Status:** OPEN
+
+## ISSUE #21
+**Tag:** [I]
+**Severity:** MEDIUM
+**Description:** The abstract is heavily weighted toward V1.0 mechanisms and fails to proportionately present the framework extensions as a synthesised whole.
+**Status:** OPEN
+
+## ISSUE #24
+**Tag:** [I]
+**Severity:** MEDIUM
+**Description:** Mapping V3.0+ variables directly to the Burnell et al. faculties appears post-hoc and opportunistic given the report's release date.
+**Status:** OPEN
+
+## ISSUE #25
+**Tag:** [L]
+**Severity:** MEDIUM
+**Description:** The framework cites the Burnell report as a foundational taxonomy without acknowledging its status as an unvalidated technical report released in March 2026.
+**Status:** OPEN
+
+## ISSUE #26
+**Tag:** [L]
+**Severity:** LOW
+**Description:** The hyper-precise hackathon suitability percentages are provided without any disclosed methodology or statistical derivation.
+**Status:** OPEN
+
+## ISSUE #27
+**Tag:** [L]
+**Severity:** LOW
+**Description:** The claim of a 73.41% winning probability is entirely unsupported and lacks academic foundation.
+**Status:** OPEN

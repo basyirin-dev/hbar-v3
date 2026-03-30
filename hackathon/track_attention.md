@@ -474,7 +474,7 @@ Report temperature = 0 in all benchmark documentation.
 
 
 
-- **ISSUE #5** [$\alpha$]: $R_A^{\text{surface}}(d,t)$ — surface-reward pressure — is formally defined via relative entropy: $R_A^{\text{surface}} = 1 - \frac{H(Y|S)}{H(Y)}$, where $S$ is the set of surface features. The surface confound injection in H-AFB operationalises this definition: the procedural generator varies confound strength $s$ to manipulate the entropy ratio, creating "High-Pressure" and "Low-Pressure" benchmark conditions. This formalism must be stated explicitly in the Writeup.
+- **ISSUE #5** [RESOLVED]: $R_A^{\text{surface}}(d,t)$ is now formally defined (Eq. 29a): $R_A^{\text{surface}} = 1 - \frac{H(Y|S)}{H(Y)}$. Proxy identification (Eq. 29b): $R_A^{\text{surface}} \approx 1 - \hat{\alpha}_A = 1 - \frac{\text{Acc}_{OOD\text{-struct}}}{\text{Acc}_{ID}}$. Calibration procedure via three-condition battery (ID, OOD-struct, OOD-surf-conflict) specified in Appendix A.4. H-AFB's surface confound injection directly operationalises this formalism.
 
 - **ISSUE #7** [P]: The $\alpha_A$ proxy $\hat{\alpha}_A$ is a behavioural observable; the assumption linking it to the formal variable $\alpha_A(d,t)$ must be stated: agents with higher attentional fidelity to structural rules are predicted to show higher OOD ratio under the OOD-structural condition, with the assumption that training distribution exposure is held constant.
 

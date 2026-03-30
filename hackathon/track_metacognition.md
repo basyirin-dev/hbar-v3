@@ -24,6 +24,8 @@
 
 The H-MCB tests whether AI agents systematically overestimate their out-of-distribution (OOD) capabilities — what the H-Bar Model terms the **illusion of mastery**. Formally, the benchmark measures calibration error:
 
+**Protocol grounding (§10.6).** The $P_A$-high condition uses Protocol P1 from §10.6 to generate agents with elevated σ_A at matched δ_A. This provides the σ_A manipulation needed to test Prediction 7 (metacognitive calibration as a function of σ_A at fixed δ_A): comparing $Ω_{AI}$-high vs. $P_A$-high conditions at matched in-distribution accuracy isolates the effect of schema coherence on calibration error.
+
 
 $$\zeta_A(d,t) = \hat{M}_A(d,t) - \sigma_A(d,t) \quad [\text{Eq. 38}]$$
 

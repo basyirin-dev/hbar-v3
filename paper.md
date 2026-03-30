@@ -1066,6 +1066,27 @@ The present framework treats agent A as the unit of analysis with Social Cogniti
 
 $σ_{AI} ≈ 0$ is accurate for current general-purpose LLMs trained on next-token prediction — the training objective optimises distributional plausibility, not causal validity, and cannot develop evaluative schema that detects causal violations. This characterisation will require revision as physics-informed, causally-constrained, and interventionally-trained architectures become prevalent. The $D^* \text{H-Bar}$ criterion is parameterised by the comparative condition $σ_A > σ_{AI}$ and correctly updates as both sides evolve.
 
+### 10.6 Training Protocols for Independent Variable Manipulation
+
+The framework's predictions (§9) require experimenters to construct agent populations that vary σ_A(d,t) while holding δ_A(d,t) constant, or vice versa. This section specifies the protocol families that achieve each manipulation.
+
+**Protocol P1: Increasing σ_A at fixed δ_A.**
+To increase schema coherence without increasing parametric depth:
+1. Begin with a trained agent at target in-distribution accuracy Acc_In = τ.
+2. Apply structure-preserving data augmentations that force the agent to exploit compositional regularities. Valid augmentations include: (a) primitive recombination — swap primitives trained in isolation to create unseen compositions; (b) template preservation — vary surface tokens while preserving the syntactic template; (c) distributional shift within structure — move to a new surface distribution that shares the same generative grammar.
+3. Continue training until Acc_In returns to τ. The agent now has higher σ_A (measured via SGG) at matched δ_A (matched because parameter count and total gradient steps are held fixed).
+
+**Protocol P2: Increasing δ_A at fixed σ_A.**
+To increase parametric depth without increasing schema coherence:
+1. Begin with a trained agent at target Acc_In = τ.
+2. Increase model capacity (add parameters) and continue training on the same surface distribution with no structural augmentations.
+3. The agent achieves higher δ_A (measured via parametric complexity) while σ_A remains approximately constant (measured via SGG) because the additional capacity absorbs surface-statistical variation without forcing structural encoding.
+
+**Protocol P3: Joint increase.**
+Standard training on the original distribution increases both δ_A and σ_A simultaneously, as the agent accumulates both parametric capacity and structural encoding. This is the default regime addressed by most existing work.
+
+**Hackathon implementation.** Protocols P1 and P2 are directly implementable for the five hackathon tracks (§Hackathon). For the Learning track (SCAN/COGS benchmarks), P1 is implemented via the augmentation families in Appendix A.4. For the Metacognition track, P1 provides the σ_A manipulation needed to test Prediction 7 (metacognitive calibration as a function of σ_A at fixed δ_A).
+
 ---
 
 ## 11. Conclusion

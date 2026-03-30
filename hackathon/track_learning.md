@@ -24,6 +24,8 @@
 
 The H-PTB tests whether AI learning exhibits structural phase transitions — non-linear jumps in out-of-distribution (OOD) compositional accuracy relative to in-distribution accuracy — that correspond to crossings of the schema coherence threshold $σ_{critical}$. The benchmark operationalises the H-Bar claim that current training pipelines increase $δ_A$ without formally targeting $σ_A$, producing agents that succeed in-distribution while failing on zero-shot recombination tasks.
 
+**Protocol grounding (§10.6).** Conditions C and D implement Protocol P1 from §10.6 (Training Protocols for Independent Variable Manipulation): structure-preserving augmentations that increase σ_A at fixed δ_A by forcing structure-exploiting encoding. Condition A (random ordering) implements Protocol P3. The matched-δ_A constraint (identical parameter counts and total gradient steps across conditions) ensures the σ_A manipulation is independent of depth growth.
+
 **Central H-Bar mechanism tested:** $σ_{critical}$ crossing (§7, Phase 2 trigger). The ODE predicts that $σ̇_A$ accelerates once $α_A(d,t)$ is non-trivial and principled practice rate $P_A(d,t)$ is sustained — producing a non-linear inflection in the OOD ratio that is invisible to in-distribution loss curves alone.
 
 **Distinguisher from $δ$-only account:** A depth-only ($δ_A$-only) account predicts monotonic improvement in OOD accuracy as training progresses, with no structural breakpoint. H-PTB is designed to falsify this prediction by isolating the breakpoint signature that the $δ_A$-only account cannot generate.
@@ -215,7 +217,7 @@ Report temperature = 0 in all benchmark documentation.
 ## 10. OPEN ISSUES (linked to register.md)
 
 - **ISSUE #7** [P]: Phase 2 transition trigger is unobservable; OOD ratio breakpoint is the proposed proxy — must formally state the assumption that links the breakpoint to σcritical crossing.
-- **ISSUE #10** [N]: Experimental design must specify protocol for manipulating σA independently of δA — Conditions C and D are the proposed manipulation; the text above constitutes the Tier 2 fix draft.
+- **ISSUE #10** [RESOLVED]: Experimental design now specifies three-protocol structure (§10.6): P1 (σA↑ at fixed δA via structure-preserving augmentations), P2 (δA↑ at fixed σA via capacity increase), P3 (joint increase). Conditions C and D implement P1. Hackathon implementation links P1/P2 to all five tracks.
 - **ISSUE #28–#36** [N/R]: Post-2022 compositional generalisation results (Patel et al. 2022, Lake & Baroni 2023, etc.) must be acknowledged in Writeup Related Work section.
 
 ---

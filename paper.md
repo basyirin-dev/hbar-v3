@@ -149,6 +149,18 @@ The agent's functional competence in domain $d$ — sufficient to engage primary
 The degree to which the agent's representation of domain d has been restructured around deep governing principles. Operationally: the normalised ratio of OOD compositional generalisation accuracy to in-distribution accuracy (Equation 3b), measurable via SCAN/COGS/PCFG-SET benchmark splits.
 $$\sigma_A(d,t) \in [0, 1] \tag {3}$$
 
+**Pointwise Characterisation Axiom.** At any instant $t$, $\sigma_A(d,t)$ is uniquely characterised by the following three-point specification:
+
+**(PC1) Representational content.** $\sigma_A(d,t)$ is a scalar measure of the degree to which the agent's current representation of domain $d$ supports compositional recombination of independently trained primitives. Formally: if the agent's representation enables zero-shot recombination of primitives $p_1, \ldots, p_k$ into novel compositions not seen during training, then $\sigma_A(d,t) > 0$; if the representation supports only interpolations within the training distribution, then $\sigma_A(d,t) \approx 0$.
+
+**(PC2) Normalisation basis.** $\sigma_A(d,t)$ is normalised against the domain frontier $\Delta(d,t)$, not against an absolute scale. This means $\sigma_A$ measures recombination capacity *relative to the maximum possible recombination capacity in domain $d$ at time $t$*. As $\Delta(d,t)$ advances, $\sigma_A$ can decrease without any change in the agent's absolute recombination capacity.
+
+**(PC3) Evaluative function.** $\sigma_A(d,t)$ has a signature property absent from all four comparator constructs: it detects when AI-derived outputs bypass the agent's own compositional encoding. Formally, $\sigma_A$ enters the $\Omega_{\text{AI}}$ suppression term (Eq. 28) as the variable that is suppressed — it is the quantity that AI bypass erodes. No other representational construct in the table below has this evaluative function.
+
+**Theorem (Categorical Distinction).** The conjunction of (PC1)–(PC3) is not satisfied by any of: Structured Representations, Disentangled Representations, Causal Representations, or Cognitive Schemas.
+
+*Proof sketch.* (PC1) fails for Structured and Disentangled Representations because these measure geometric properties of the representation space (cluster structure, factor independence) rather than recombination capacity. It fails for Causal Representations because causal structure enables interventional queries, not necessarily compositional recombination. It fails for Cognitive Schemas because schemas are qualitative knowledge organisations, not scalar recombination-capacity measures. (PC2) fails for all four because none is normalised against a time-varying domain frontier. (PC3) fails for all four because none has an evaluative function against AI bypass — this is a property specific to the H-Bar ODE architecture. $\square$
+
 **Proxy identification.** Schema coherence is not directly observable; it is operationalised through a two-tier proxy architecture separating training-time estimation from evaluation-time ground-truth calibration.
 
 **Tier 2 — Evaluation-time ground-truth proxy (SGG).** The Systematic Generalisation Gap provides the ground-truth operationalisation at evaluation checkpoints:
@@ -169,15 +181,18 @@ where $A$ is the set of structure-preserving augmentations (e.g., primitive subs
 
 **Unique properties distinguishing $σ_A$ from adjacent constructs:**
 
-| Property                                 | $σ_A$ | Structured Repr. | Disentangled Repr. | Causal Repr. | Cognitive Schema |
-| ---------------------------------------- | ----- | ---------------- | ------------------ | ------------ | ---------------- |
-| Continuous scalar ODE                    | ✓     | ✗                | ✗                  | ✗            | ✗                |
-| Frontier-relative normalisation          | ✓     | ✗                | ✗                  | ✗            | ✗                |
-| Evaluative function (AI error detection) | ✓     | ✗                | ✗                  | ✗            | ✗                |
-| Multiplicative $Ψ_A$ coupling            | ✓     | ✗                | ✗                  | ✗            | ✗                |
-| Decay coupling (slows $λ_c$)             | ✓     | ✗                | ✗                  | ✗            | ✗                |
-| AI bypass risk $Ω_{AI}$ suppression      | ✓     | ✗                | ✗                  | ✗            | ✗                |
-| Cross-modal transfer $Θ_A$               | ✓     | ✗                | ✗                  | ✗            | ✗                |
+*Categorical properties (what $σ_A$ encodes) and temporal-dynamic properties (how $σ_A$ behaves within the H-Bar ODE system):*
+
+| Property | $σ_A$ | Structured Repr. | Disentangled Repr. | Causal Repr. | Cognitive Schema |
+| --- | --- | --- | --- | --- | --- |
+| **PC1: Encodes compositional recombination capacity** | **✓** | **✗** | **✗** | **✗** | **✗** |
+| **PC2: Normalised against domain frontier $\Delta(d,t)$** | **✓** | **✗** | **✗** | **✗** | **✗** |
+| **PC3: Evaluative function (AI bypass detection)** | **✓** | **✗** | **✗** | **✗** | **✗** |
+| Continuous scalar ODE | ✓ | ✗ | ✗ | ✗ | ✗ |
+| Multiplicative $Ψ_A$ coupling | ✓ | ✗ | ✗ | ✗ | ✗ |
+| Decay coupling (slows $λ_c$) | ✓ | ✗ | ✗ | ✗ | ✗ |
+| AI bypass risk $Ω_{AI}$ suppression | ✓ | ✗ | ✗ | ✗ | ✗ |
+| Cross-modal transfer $Θ_A$ | ✓ | ✗ | ✗ | ✗ | ✗ |
 
 ### 3.2 Mastery Set and Breadth Set
 $$M_A(t) = \{d \in D : \delta_A(d,t) > \theta_{\delta} \cdot \Delta(d,t) \text{ AND } \sigma_A(d,t) > \theta_{\sigma}\} \tag {4}$$

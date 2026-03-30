@@ -476,6 +476,7 @@ Report temperature = 0 in all benchmark documentation.
 - **ISSUE #49–#53** [R]: Citations for $\Xi_A$ motivation (Robertazzi et al. 2022, Piray & Daw 2021, Rmus et al. 2020, Nair et al. 2023, Dunovan et al. 2017) must appear in Writeup Related Work section.
 
 - **ISSUE #24** [I]: Burnell et al. (2026) citation framing — the Writeup must present the Executive Functions faculty alignment as a formal correspondence, not a post-hoc mapping.
+- **ISSUE #8** [RESOLVED]: The paper now includes a Jacobian-based dominance criterion (Eqs. A.16–A.17) that identifies which variable is the growth-limiting factor at any training checkpoint. The column norm ‖J_{:,v}‖·(1−v*) formalises the binding constraint. For the H-DCB inhibitory conflict task, this enables testing whether agents correctly identify that α_A is the binding constraint in Phase 1 (when σ_A ≈ 0) — agents with high Ξ_A^I should show lower BCR when the dominance criterion identifies α_A as limiting, because they recognise that surface-based bypass (which erodes α_A) is the binding threat.
 
 
 

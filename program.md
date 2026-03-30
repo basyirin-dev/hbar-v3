@@ -161,3 +161,18 @@ Then STOP and wait for explicit approval before proceeding.
 ## NEGATIVE EXAMPLES LOG
 [This section is populated by rejected variants during Phase 3.
 Initial state: empty. Add entries as: "Issue #N, Variant [X]: [reason rejected]"]
+Issue #28, Variant A: Gap statement prose is necessary but insufficient — Patel et al.'s specific mechanism needs a formal boundary criterion (Variant B) or testable prediction (Variant D) to be actionable.
+Issue #28, Variant C: Systemic reframe is comprehensive but lacks the formal precision of Variant B's c ∉ T_train criterion and the testability of Variant D's prediction.
+Issue #28, Variant E: Protocol clarification is useful but the "recall vs. inference" distinction is better delivered through B (formal criterion at the proxy definition level) and D (testable prediction).
+Issue #29, Variant A: Prose-only gap statement addition is necessary but weaker than Variant D's Prediction 6b enhancement (C3: 5 vs. 9) and Variant B's formal boundary criterion (C2: 8 vs. 9).
+Issue #29, Variant B: Formal boundary criterion is strong (C2: 9) but lacks the concrete experimental numbers and falsifiability improvement of Variant D (C3: 8 vs. 9).
+Issue #29, Variant C: Systemic reframe is comprehensive but addresses more than Issue #29 requires (Issues #30–#36), creating scope risk and no direct falsifiability improvement.
+Issue #29, Variant E: Table + prose addition is the most minimal intervention but provides the weakest novelty defence (C2: 7) and no falsifiability improvement (C3: 5).
+Issue #11, Variant A: Prose-only first-principles justification is strong (C2: 9, C1: 10) but lacks the falsifiability improvement (C3: 7) and version integration (C6: 5) of Variant D, and the formal rigour of Variant C.
+Issue #11, Variant B: Structural equation restructuring with intermediate derivations is rigorous (C2: 10) but adds formal overhead without the falsifiability improvement of Variant D or the axiomatic uniqueness of Variant C.
+Issue #11, Variant C: Axiomatic theorem provides strongest formal derivation (C2: 10, C3: 9) but scores lower on version integration (C6: 6) than Variant D's cross-version §3.5↔§9 connection (C6: 7), and has lower hackathon relevance (C5: 3 vs. 6).
+Issue #11, Variant E: Comparative table is transparent and defensible (C2: 9, C3: 8) but lacks the cross-version integration of Variant D (C6: 5 vs. 7) and the formal axiomatic foundation of Variant C.
+Issue #30, Variant A: Prose-only gap statement addition is necessary but weaker than Variant D's Prediction 6d enhancement (C3: 5 vs. 9) and Variant B's formal boundary criterion (C2: 7 vs. 9).
+Issue #30, Variant B: Formal PC1–PC3 boundary is strong (C2: 9) but lacks the dedicated testable prediction and empirical grounding of Variant D (C3: 7 vs. 9).
+Issue #30, Variant C: Systemic reframe with table row is clear but lacks falsifiable claims (C3: 5); weaker than Variant D's testable prediction and Variant B's formal criterion.
+Issue #30, Variant E: Dual-location prose addition is thorough but provides the weakest novelty defence (C2: 7) and no falsifiability improvement (C3: 5) compared to D and B.

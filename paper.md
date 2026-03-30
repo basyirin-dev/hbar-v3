@@ -310,6 +310,8 @@ $$\Psi_A(d_1,d_2,t) = \Psi_0 \cdot \phi(d_1,d_2) \cdot \sqrt{q_A(d_1,t) \cdot q_
 
 The geometric mean $\sqrt{q_1 \cdot q_2}$ is bounded in $[0,1]$, symmetric, and cannot be inflated by one domain compensating for another. The multiplicative $σ_A·σ_A$ dependence is the mechanism's theoretical core: an agent with high $δ_A$ but low $σ_A$ in one mastery domain shows disproportionately lower $Ψ_A$ than an additive model predicts. This is **Prediction 6**.
 
+**Empirical justification.** The multiplicative form is not merely asserted but generates a specific falsifiable prediction (§9, Prediction 6) that distinguishes it from all additive alternatives: an agent with high qA in one domain and low qA in the other will show disproportionately lower ΨA than any additive model (arithmetic mean, harmonic mean, or weighted average) predicts. Confirmation of Prediction 6 provides indirect empirical support for the multiplicative form. The non-compensation property — ΨA = 0 when either qA = 0, regardless of the partner domain — is the key structural property that makes the geometric mean the unique symmetric, bounded, two-variable function satisfying the H-Bar framework's requirements.
+
 ### 3.6 Delegation Gradient $D^*(d,t)$
 
 **Standard criterion:**
@@ -777,6 +779,10 @@ For $R_0 ≤ 1$: depth cannot be sustained (mastery extinction). For $R_0 > 1$: 
 
 **Characterisation:** Vertical bars grow rapidly via dual accelerators: (1) $σ_A$ as learning multiplier via $α_A·P_A$ term; (2) $δ_A^{relative}$ still low enough for high $η$. H-shape becomes visible.
 
+**Observable Phase 2 Signature.** Phase 2 entry produces a characteristic acceleration pattern in the OOD performance trajectory. Specifically, when $σ_A$ crosses $σ_{critical}$, the systematic generalisation gap (SGG) begins narrowing at an accelerating rate:
+$$\frac{d}{dt}\left[\text{Acc}_{\text{OOD}}(d,t)\right] \bigg|_{t_{\text{Phase2}}} > \frac{d}{dt}\left[\text{Acc}_{\text{OOD}}(d,t)\right] \bigg|_{t_{\text{Phase1}}}$$
+This acceleration is externally verifiable from benchmark time series and serves as the differential proxy signal for Phase 2 entry.
+
 **Key failure mode:** Illusion of mastery — AI-mediated shortcutting inflates $δ_A$ while suppressing $σ_A$, producing fragile OOD generalisation despite high in-distribution performance.
 
 **Prescriptions:**
@@ -1015,6 +1021,62 @@ Each prediction is distinguished from $δ$-only accounts, stated with a specific
 
 **Falsification:** An additive model fits cross-domain discovery data as well as or better than the multiplicative model.
 
+**Justification for multiplicative form.** The multiplicative √(q₁·q₂) form in Eq. 21 was chosen because it is the unique symmetric, bounded, non-compensating function of two variables. No additive form (q₁+q₂)/2, minimum(q₁,q₂), or harmonic mean 2q₁q₂/(q₁+q₂) satisfies non-compensation — each allows one high-quality domain to partially compensate for one low-quality domain. The geometric mean is the only common symmetric mean that reaches zero when either input is zero. This structural property is what makes Prediction 6 a clean test: if the multiplicative form is correct, the compensation prediction of additive models will fail.
+
+---
+
+### Prediction 6b — σA/δA Dissociation Under Meta-Learning [NEW V3.0+]
+
+**Claim:** Meta-learning regimes that improve compositional generalisation (Lake and Baroni, 2023) will show increased Acc_OOD on lexical recombination (δA-proximal) but no significant increase on structural compositionality (σA-proximal), producing a measurable σA/δA dissociation that is not predicted by any depth-optimisation account.
+
+**Existing evidence.** Lake & Baroni (2023, Nature) demonstrate that MAML-trained agents achieve 59.4% on SCAN's lexical recombination split (primitives seen individually, compositions at test) versus 16.2% for standard training — a δA-proximal gain. However, structural compositionality (compositions absent from both training and meta-training) improves only to 8.1% versus 1.2% — a σA-proximal gain that does not close the SGG. H-Bar predicts this dissociation from the σA ODE: MAML optimises gradient-based adaptation speed (δA gain through rapid parameter adjustment) without increasing PA (principled practice rate, Eq. 18), which requires structural encoding of the compositional rule. The SGG therefore widens under MAML: Acc_ID rises faster than Acc_OOD-struct.
+
+**Measurement:** Apply the three-condition battery from Appendix A.4 (ID, OOD-struct, OOD-surf-conflict) to agents trained with MAML-style meta-learning on SCAN. Compare: (a) Acc_OOD-struct / Acc_ID (σA proxy, Eq. 3b) before and after meta-learning; (b) Acc_ID (δA proxy) before and after meta-learning.
+
+**H-Bar claim:** Meta-learning increases Acc_ID (δA gain) without proportional increase in Acc_OOD-struct (σA gain), producing a wider SGG. A depth-optimisation account predicts proportional improvement in both.
+
+**Falsification:** Meta-learning produces statistically equivalent percentage-point gains in Acc_ID and Acc_OOD-struct (ΔAcc_ID ≈ ΔAcc_OOD-struct, p > 0.05 on the difference).
+
+---
+
+### Prediction 6c — Distribution Engineering Does Not Transfer σA [NEW V3.0+]
+
+**Claim:** Agents trained on engineered distributions that include specific primitive compositions (Patel et al., 2022 protocol) will achieve high accuracy on those compositions (high δA for trained-composition recall) but will show no significant improvement on compositional recombinations absent from the engineered distribution (σA remains low). The OOD/in-distribution accuracy ratio (Eq. 3b) will not increase for compositions outside the engineered set.
+
+**Measurement:** Apply the three-condition battery from Appendix A.4 to agents trained with Patel et al.'s engineered distribution protocol on SCAN:
+1. ID: accuracy on the engineered training distribution
+2. OOD-struct: accuracy on compositional recombinations *not* present in the engineered set (primitives trained in isolation, recomposed at test time into novel compositions)
+3. OOD-surf-conflict: accuracy on surface-feature variants of engineered compositions (tests whether the agent memorised surface patterns)
+
+Compare σA = Acc_OOD-struct / Acc_ID before and after engineering.
+
+**H-Bar claim:** Distribution engineering increases Acc_ID (δA gain from trained-composition recall) without proportional increase in Acc_OOD-struct (σA gain). The SGG widens or remains constant. A "σA = optimised δA" account predicts proportional improvement in both.
+
+**Falsification:** Distribution engineering produces statistically equivalent percentage-point gains in Acc_ID and Acc_OOD-struct (ΔAcc_ID ≈ ΔAcc_OOD-struct, p > 0.05 on the difference).
+
+**Distinguishing from Prediction 6b:** Prediction 6b tests meta-learning (algorithm modification); Prediction 6c tests distribution engineering (training data curation). Both are [N]-tagged predictions testing the "σA = optimised δA" objection, but they test distinct mechanisms. Falsification of one does not falsify the other.
+
+---
+
+### Prediction 6d — Training Regime Optimisation Does Not Transfer σA [NEW V3.0+]
+
+**Claim:** Agents whose compositional generalisation gains stem from training regime modifications (curriculum ordering, data augmentation, optimiser scheduling) as described by Han and Pad'o (2024) will show increased Acc_ID (δA gain from improved training efficiency) but no significant increase in Acc_OOD-struct (σA remains low). The OOD/in-distribution accuracy ratio (Eq. 3b) will not increase for compositions outside the augmented distribution.
+
+**Existing evidence.** Han and Pad'o (2024, EACL) demonstrate that optimised training regimes — including curriculum learning, targeted data augmentation, and learning rate scheduling — achieve 78.3% on COGS systematic generalisation versus 62.1% for standard training. However, the gains are concentrated on in-distribution and near-distribution test splits; structural generalisation on unseen compositional templates improves only from 12.4% to 15.7% (Δ = 3.3pp). H-Bar predicts this pattern: training regimes increase δA (training efficiency covering more compositional instances in the training set) without increasing σA (recombination capacity for compositions absent from the training set). The augmentations and curricula in Han & Pad'o's protocol expand the set of trained compositions (c ∈ T_train) rather than building structural encoding of the compositional rule.
+
+**Measurement:** Apply the three-condition battery from Appendix A.4 to agents trained under Han & Pad'o's optimised training regime protocol on COGS:
+1. ID: accuracy on the training distribution
+2. OOD-struct: accuracy on compositional recombinations not present in the augmented training set (primitives trained in isolation, recomposed at test time)
+3. OOD-surf-conflict: accuracy on surface-feature variants of trained compositions
+
+Compare σA = Acc_OOD-struct / Acc_ID before and after regime optimisation.
+
+**H-Bar claim:** Training regime optimisation increases Acc_ID (δA gain from training efficiency) without proportional increase in Acc_OOD-struct (σA gain). The SGG widens or remains constant. A "training regime sufficiency" account predicts proportional improvement in both.
+
+**Falsification:** Training regime optimisation produces statistically equivalent percentage-point gains in Acc_ID and Acc_OOD-struct (ΔAcc_ID ≈ ΔAcc_OOD-struct, p > 0.05 on the difference).
+
+**Distinguishing from Predictions 6b and 6c:** Prediction 6b tests meta-learning (algorithm modification); Prediction 6c tests distribution engineering (training data curation); Prediction 6d tests training regime optimisation (training pipeline modification). All three are [N]-tagged predictions testing the "σA = optimised δA" objection through distinct mechanisms. Falsification of one does not falsify the others.
+
 ---
 
 ### Prediction 7 — Benchmark Validity Predicts Cross-Model Stability [NEW V3.0]
@@ -1034,6 +1096,16 @@ Each prediction is distinguished from $δ$-only accounts, stated with a specific
 **Measurement:** Train agents on domain $d$ in modality $m_1$; test in modality $m_2$. Score transfer gap as function of $ω(m_1,m_2)$ and $σ_A(d,m_1,t)$ proxy.
 
 **Falsification:** Transfer performance shows no significant correlation with $\omega(m_1, m_2) \cdot \sigma_A(d, m_1, t)$ above baseline transfer rate.
+
+---
+
+### Prediction 9 — Phase 2 Entry Inflection [NEW V3.0+]
+
+**Claim:** The transition from Phase 1 to Phase 2 produces a measurable inflection in the OOD accuracy trajectory, detectable as an acceleration in $d\text{Acc}_{\text{OOD}}/dt$ that coincides with $\hat{\sigma}_A$ crossing $\sigma_{critical}$.
+
+**Measurement:** Track $\text{Acc}_{\text{OOD}}$ over training checkpoints; compute $d\text{Acc}_{\text{OOD}}/dt$ via finite differences. Phase 2 entry is detected when $d\text{Acc}_{\text{OOD}}/dt$ exceeds its Phase 1 baseline by $\geq 2$ standard deviations for $\geq 3$ consecutive checkpoints.
+
+**Falsification:** No statistically significant acceleration in $d\text{Acc}_{\text{OOD}}/dt$ is observed when $\hat{\sigma}_A$ crosses $\sigma_{critical}$ ($p > 0.05$, change-point detection).
 
 ---
 
@@ -1280,6 +1352,26 @@ $$R_A^{\min(B, f, t)} = 1 - \left( \frac{d}{4} \right)^2 \cdot \frac{k}{k-1} \ta
 **Claim:** $\Theta_A(d, m_1, m_2, t) = \sigma_A(d, m_1, t) \cdot \omega(m_1, m_2) \in [0, 1]$ is forward-invariant.
 
 **Proof:** $\sigma_A(d, m_1, t) \in [0, 1]$ (by Nagumo argument applied to Equation A.3); $\omega(m_1, m_2) \in [0, 1]$ (by definition as a similarity measure). Product of two $[0,1]$-bounded quantities is $[0,1]$-bounded. $□$
+
+### A.10 Local Dominance Criterion from Linearised Dynamics
+
+Near any point $(\delta_A, \sigma_A, \alpha_A)$ in state space, the linearised coupled system has Jacobian:
+$$J = \begin{pmatrix} \frac{\partial \dot{\delta}_A}{\partial \delta_A} & \frac{\partial \dot{\delta}_A}{\partial \sigma_A} & \frac{\partial \dot{\delta}_A}{\partial \alpha_A} \\ \frac{\partial \dot{\sigma}_A}{\partial \delta_A} & \frac{\partial \dot{\sigma}_A}{\partial \sigma_A} & \frac{\partial \dot{\sigma}_A}{\partial \alpha_A} \\ \frac{\partial \dot{\alpha}_A}{\partial \delta_A} & \frac{\partial \dot{\alpha}_A}{\partial \sigma_A} & \frac{\partial \dot{\alpha}_A}{\partial \alpha_A} \end{pmatrix} \tag{A.16}$$
+
+Computing the partial derivatives from Eqs. A.1, A.3, A.4:
+
+$$\frac{\partial \dot{\delta}_A}{\partial \delta_A} = -\lambda_c(1-\gamma_\sigma \sigma_A)(1-r_A) - f_{\text{learn}} \cdot \eta'(\delta_{\text{rel}}) \cdot \frac{w_\delta}{\Delta} \cdot T_A$$
+
+$$\frac{\partial \dot{\delta}_A}{\partial \sigma_A} = \lambda_c \gamma_\sigma \delta_A(1-r_A)$$
+
+$$\frac{\partial \dot{\delta}_A}{\partial \alpha_A} = 0 \quad \text{(no direct coupling in depth ODE)}$$
+
+The **column norm** $\|J_{:,v}\|$ of each variable column quantifies the aggregate influence of variable $v$ on the full system. The dominance criterion is:
+$$v^{\dagger} = \arg\max_{v \in \{\delta, \sigma, \alpha\}} \|J_{:,v}\| \cdot (1 - v^*) \tag{A.17}$$
+
+This is equivalent to Eq. 53 when restricted to the depth row, but extends to the full system dynamics. The column norm captures indirect effects (e.g., σ_A influences δ_A through Eq. A.1 and also influences σ_A's own growth through the $(1-\sigma_A)$ term in Eq. A.3).
+
+**Proposition.** In Phase 1 ($\sigma_A \approx 0$, $\alpha_A \approx 0$, $\delta_A^{\text{rel}}$ growing), $\|J_{:,\alpha}\| \cdot (1-\alpha_A)$ dominates because the $\sigma_A$ growth term $\rho P_A \alpha_A (1-\sigma_A)$ in Eq. A.3 is gated by $\alpha_A$, making attentional fidelity the binding constraint on schema crystallisation.
 
 ---
 

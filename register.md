@@ -90,19 +90,19 @@ Priority: all `[N]`-tagged issues, then `[P]`, then `[Ψ]`, then `[R]`.
 **Tag:** [P]
 **Severity:** MEDIUM
 **Description:** The Phase 2 transition is triggered by an unobservable latent variable and lacks a formalised differential proxy signal for external verification.
-**Status:** OPEN
+**Status:** RESOLVED — Variant C, 2026-03-30
 
 ## ISSUE #8
 **Tag:** [P]
 **Severity:** MEDIUM
 **Description:** The paper lacks a mathematical criterion such as sensitivity analysis to demonstrate which growth-limiting variable is dominant at any given threshold.
-**Status:** OPEN
+**Status:** RESOLVED — Variant C, 2026-03-30
 
 ## ISSUE #9
 **Tag:** [N]
 **Severity:** MEDIUM
 **Description:** The failure to distinguish H-Bar's structural gap from reported meta-learning and training optimizations allows the reviewer to argue σ is merely a proxy for well-optimised δ.
-**Status:** OPEN
+**Status:** RESOLVED — Variant E, 2026-03-30
 
 ## ISSUE #10
 **Tag:** [P]
@@ -114,7 +114,7 @@ Priority: all `[N]`-tagged issues, then `[P]`, then `[Ψ]`, then `[R]`.
 **Tag:** [Ψ]
 **Severity:** MEDIUM
 **Description:** The multiplicative dependence for intersection discovery is asserted without a first-principles derivation showing why a product is necessary over a non-linear sum.
-**Status:** OPEN
+**Status:** RESOLVED — Variant D, 2026-03-30
 
 ## ISSUE #12
 **Tag:** [R]
@@ -126,19 +126,19 @@ Priority: all `[N]`-tagged issues, then `[P]`, then `[Ψ]`, then `[R]`.
 **Tag:** [N]
 **Severity:** MEDIUM
 **Description:** The gap statement must address how engineered training distributions allow standard seq2seq models to achieve near-perfect one-shot primitive generalisation on SCAN as reported by Patel et al. (2022).
-**Status:** OPEN
+**Status:** RESOLVED — Variant D, 2026-03-30
 
 ## ISSUE #29
 **Tag:** [N]
 **Severity:** MEDIUM
 **Description:** The framework must engage with the finding from Lake & Baroni (2023) that meta-learning improves lexical compositionality while structural gaps persist.
-**Status:** OPEN
+**Status:** RESOLVED — Variant D, 2026-03-30
 
 ## ISSUE #30
 **Tag:** [N]
 **Severity:** MEDIUM
 **Description:** The novelty defence must address Han & Pad'o (2024) demonstrating that gains in transformer compositional generalisation often stem from training regimes rather than structural solutions.
-**Status:** OPEN
+**Status:** RESOLVED — Variant D, 2026-03-30
 
 ## ISSUE #31
 **Tag:** [N]

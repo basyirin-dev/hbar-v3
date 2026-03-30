@@ -96,6 +96,8 @@ The distributed analogue of $\Psi_A$ for cross-agent intersection activation. Ac
 
 **Distinguisher from $\delta_A$-only account:** A depth-only account predicts that communication benefit is proportional to the amount of information transmitted, regardless of type — more training examples (facts) should always be at least as good as fewer structural descriptions (schema). H-STB is designed to falsify this by showing that communication *type* (schema vs. fact), not communication *volume*, determines recipient OOD accuracy.
 
+**Multimodal extension (§5.1).** The social cognition variables extend to the domain × modality product space $D \times M$: $\mu_{AB}(d, m, t)$ measures schema legibility in modality $m$, and the cross-modal transfer function $\Theta_A(d, m_1, m_2, t) = \sigma_A(d, m_1, t) \cdot \omega(m_1, m_2)$ enables automatic generation of multimodal variants (e.g., Any→Any modality communication). Schema coherence is modality-invariant at high $\sigma_A$ (Prediction 8): high-$\sigma_A$ transmitters achieve above-chance cross-modal schema transfer.
+
 
 
 ---

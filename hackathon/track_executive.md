@@ -60,6 +60,10 @@ $$\frac{\partial \text{Acc}_{\text{comp}}}{\partial \rho} > 0 \quad \text{for } 
 
 This prediction is strictly non-monotonic and is not recoverable from any account that treats retrieval augmentation as uniformly beneficial or uniformly harmful. It is the H-Bar claim that no existing RAG, Self-RAG, FLARE, or IKEA architecture models.
 
+**Bifurcation-aware step functions and executive control ODE (§4.3.2).** The executive control state $\Xi_A(t) = \{\Xi_A^P, \Xi_A^I, \Xi_A^F\}$ is governed by the ODE (Eq. 36): $\dot{\Xi}_A = \kappa_P \cdot [P^* - \Xi_A^P] + \kappa_I \cdot [I^* - \Xi_A^I] + \kappa_F \cdot [F^* - \Xi_A^F]$, where the optimal sub-state values $P^*$, $I^*$, $F^*$ are derived from bifurcation-aware step functions (Eqs. 36a–c): $P^* = 0.9$ below $\delta_A^{\text{rel}} 0.65$, decaying linearly to $0.5$ above; $I^* = 0.9$ below $\sigma_{\text{critical}}$, $0.4$ above (step at Phase 2 trigger); $F^* = 0.3$ when $|M_A| < 2$ and $\Psi = 0$, $0.9$ otherwise. The executive control state converges smoothly through the $\kappa$ relaxation rates.
+
+**Jacobian dominance criterion (Eqs. A.16–A.17).** The linearised coupled system's Jacobian column norm $\|J_{:,v}\| \cdot (1 - v^*)$ identifies the growth-limiting variable at any training checkpoint. In Phase 1 ($\sigma_A \approx 0$, $\alpha_A \approx 0$, $\delta_A^{\text{rel}}$ growing), $\alpha_A$ is the binding constraint because the $\sigma_A$ growth term $\rho P_A \alpha_A (1 - \sigma_A)$ in Eq. A.3 is gated by $\alpha_A$.
+
 
 
 **Central H-Bar mechanism tested:** The $\Xi_A^I$ sub-component governs the inhibition of AI bypass — the probability of choosing the structural route over the retrieved output when both are available (Eq. 35–36). For low-$\sigma_A$ agents, retrieved context displaces the principled structural engagement that would drive $\sigma_A$ growth, producing a net negative effect. For high-$\sigma_A$ agents, retrieved context augments already-grounded schema without displacing it, producing a net positive effect.

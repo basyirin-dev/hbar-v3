@@ -56,9 +56,9 @@ $$\dot{\alpha}_A(d,t) = \gamma \cdot C_A(d,t) \cdot (1 - \alpha_A(d,t)) - \zeta_
 
 where $C_A(d,t)$ is the contrastive training rate and $R_A^{\text{surface}}(d,t)$ is surface-reward pressure, formally defined via the relative entropy between the surface-feature distribution and the target label distribution:
 
-$$R_A^{\text{surface}} = 1 - \frac{H(Y|S)}{H(Y)}$$
+$$R_A^{\text{surface}} = 1 - \frac{H(Y|S)}{H(Y)} \quad [\text{Eq. 29a}]$$
 
-where $S$ is the set of surface features. The H-AFB procedural generator manipulates this entropy ratio by varying confound strength $s$ to create "High-Pressure" and "Low-Pressure" benchmark conditions. Low $\alpha_A$ is the formal mechanism by which surface-statistical training suppresses $\sigma_A$ even under high training effort.
+where $S$ is the set of surface features. **Proxy identification and calibration (Appendix A.4).** The surface-reward pressure is operationalised via proxy: $R_A^{\text{surface}} \approx 1 - \hat{\alpha}_A = 1 - \frac{\text{Acc}_{OOD\text{-struct}}}{\text{Acc}_{ID}}$ [Eq. 29b], where $\hat{\alpha}_A$ is the attentional fidelity proxy from the three-condition battery (ID, OOD-struct, OOD-surf-conflict). Calibration requires matching the H-AFB surface confound strength $s$ to the training distribution's surface-feature/label correlation structure. The H-AFB procedural generator manipulates this entropy ratio by varying confound strength $s$ to create "High-Pressure" and "Low-Pressure" benchmark conditions. Low $\alpha_A$ is the formal mechanism by which surface-statistical training suppresses $\sigma_A$ even under high training effort.
 
 
 

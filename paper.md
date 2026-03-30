@@ -447,6 +447,11 @@ $$\hat{M}_A(d,t) \in [0,1] \quad \text{(Agent's Estimate of its own } \sigma_A(d
 
 $$\zeta_A(d,t) = \hat{M}_A(d,t) - \sigma_A(d,t) \quad \text{(Calibration Error)} \tag {38}$$
 
+**Calibration error ODE** (derived by differentiating $\zeta_A = \hat{M}_A - \sigma_A$ and substituting Equations 28 and 39):
+$$\dot{\zeta}_A(d,t) = -\nu_M \zeta_A - \xi_M \Omega_{AI} (\zeta_A + \sigma_A) - \rho P_A \alpha_A (1 - \sigma_A) + \epsilon_\sigma \sigma_A \Omega_{AI} \tag{38a}$$
+
+The first term $(-\nu_M \zeta_A)$ is a restoring force driving calibration error toward zero. The second term $(-\xi_M \Omega_{AI} (\zeta_A + \sigma_A))$ inflates overconfidence under AI bypass. The third and fourth terms couple to the schema coherence ODE (Equation 28).
+
 - $ζ_A > 0$: overconfidence (estimated more capable than actual)
 - $ζ_A ≈ 0$: well-calibrated metacognition
 - $ζ_A < 0$: underconfidence
@@ -462,6 +467,24 @@ $$\dot{\hat{M}}_A(d,t) = \nu_M \cdot [\sigma_A(d,t) - \hat{M}_A(d,t)] - \xi_M \c
 | $ξ_M · Ω_{AI}$ | Metacognitive distortion from AI bypass — inflated performance feedback |
 
 **Key insight:** AI bypass inflates $\hat M_A$ above true $σ_A$. Agents using AI-provided outputs receive systematically inflated performance feedback, producing overconfidence. This is the formal account of "illusion of mastery" at the metacognitive level.
+
+**Boundedness proof (Nagumo's theorem):**
+
+- At $\hat{M}_A = 1$: $\dot{\hat{M}}_A = \nu_M(\sigma_A - 1) - \xi_M \Omega_{AI} \leq 0$ ✓ — the corrective term ($\nu_M(\sigma_A - 1) \leq 0$ since $\sigma_A \leq 1$) and the distortion term ($-\xi_M \Omega_{AI} \leq 0$) are both non-positive, so $\hat{M}_A$ cannot exceed 1.
+- At $\hat{M}_A = 0$: $\dot{\hat{M}}_A = \nu_M \sigma_A \geq 0$ ✓ — the corrective term is non-negative (since $\sigma_A \geq 0$) and the distortion term vanishes, so $\hat{M}_A$ cannot go negative.
+
+$[0,1]$ is forward-invariant given $\nu_M > 0$, $\xi_M > 0$, $\Omega_{AI} \geq 0$, and $\sigma_A \in [0,1]$.
+
+**Steady-state analysis.** Setting $\dot{\hat{M}}_A = 0$:
+$$\hat{M}_A^* = \frac{\nu_M \sigma_A}{\nu_M + \xi_M \Omega_{AI}} = \frac{\sigma_A}{1 + \Omega_{AI}/\Pi_7} \tag{39a}$$
+
+where $\Pi_7 = \nu_M / \xi_M$ (Equation A.13). Properties:
+
+- $\hat{M}_A^* \in [0, \sigma_A]$ — the steady-state self-model never exceeds true schema coherence. Overconfidence ($\hat{M}_A > \sigma_A$) is transient; the corrective term always dominates at steady state. This is **stronger** than $\hat{M}_A^* \leq 1$ — the steady state is bounded by $\sigma_A$, not merely by 1.
+- $\hat{M}_A^* \to \sigma_A$ as $\Omega_{AI} \to 0$ — perfect calibration when no AI bypass is present.
+- $\hat{M}_A^* \to 0$ as $\Omega_{AI} \to \infty$ — extreme AI bypass collapses the self-model to zero (the agent recognises its outputs are entirely AI-derived).
+
+**Convergence rate:** The linearised dynamics around $\hat{M}_A^*$ have eigenvalue $-(\nu_M + \xi_M \Omega_{AI}) < 0$, confirming exponential convergence. The convergence rate increases with $\Omega_{AI}$ — higher AI bypass exposure accelerates metacognitive correction.
 
 #### 4.4.3 Benchmark Families
 
@@ -1083,6 +1106,9 @@ $$\dot{\alpha}_A = \gamma \cdot C_A \cdot (1 - \alpha_A) - \zeta_{\alpha} \cdot 
 
 **Self-model:**
 $$\dot{\hat{M}}_A = \nu_M \cdot [\sigma_A - \hat{M}_A] - \xi_M \cdot \Omega_{AI} \cdot \hat{M}_A \tag{A.5}$$
+
+**Calibration error:**
+$$\dot{\zeta}_A = -\nu_M \zeta_A - \xi_M \Omega_{AI} (\zeta_A + \sigma_A) - \rho P_A \alpha_A (1 - \sigma_A) + \epsilon_\sigma \sigma_A \Omega_{AI} \tag{A.5a}$$
 
 **Executive control:**
 $$\dot{\Xi}_A = \kappa_P \cdot [P^* - \Xi_A^P] + \kappa_I \cdot [I^* - \Xi_A^I] + \kappa_F \cdot [F^* - \Xi_A^F] \tag{A.6}$$

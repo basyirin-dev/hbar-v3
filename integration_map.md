@@ -7,8 +7,8 @@
 | ΞA^P(t) | V2.0 | δ_A^{relative}(d*,t) | Planning relaxes toward (1 − δ_A^{rel}); rigid when depth low, relaxed near frontier. Eq. 36a (bifurcation-aware step). | 36, 36a, A.6 | YES |
 | ΞA^I(t) | V2.0 | σA(d*,t), σ_critical | Inhibition: 0.9 below σ_critical, 0.4 above. Step function at bifurcation connects V1.0 σ_critical to V2.0 executive control. Eq. 36b. | 36, 36b, A.6 | YES |
 | ΞA^F(t) | V2.0 | |M_A(t)|, Ψ_A^{max}(t) | Flexibility: 0.3 when |M_A|<2 and Ψ=0; 0.9 otherwise. Grows with mastery and intersection activity. Eq. 36c. | 36, 36c, A.6 | YES |
-| M̂A(d,t) | V2.0 | σA(d,t) | Self-model of schema coherence; ζA = M̂A - σA | A.x | NO |
-| ζA(d,t) | V2.0 | M̂A, PA(d,t) | Calibration error; distorts principled practice | A.x | NO |
+| M̂A(d,t) | V2.0 | σA(d,t), Ω_AI | Self-model of schema coherence; ζA = M̂A - σA. Nagumo boundedness proven (§4.4.2). Steady-state: M̂A* = σA/(1 + Ω_AI/Π_7) ≤ σA (Eq. 39a). Overconfidence transient; underconfidence at equilibrium under sustained Ω_AI. | 39, 39a, A.5 | YES |
+| ζA(d,t) | V2.0 | M̂A, σA, PA(d,t), αA, Ω_AI | Calibration error; distorts principled practice. Derived ODE (Eq. 38a): restoring force (−ν_M ζ_A) opposes overconfidence; AI bypass terms inflate ζ_A. Bounded in [−1,1] by Nagumo on M̂A. | 38, 38a, A.5a | YES |
 | μAB(d,t) | V2.0 | σA, σB, ϕ | Schema legibility: A's σA readable by B | A.x | NO |
 | τA(B,d,t) | V2.0 | σB(d,t) | A's model of B's schema; ζAB = τA - σB | A.x | NO |
 | ΣA,B(d1,d2,t) | V2.0 | μAB, μBA, ϕ | Collective schema field (cross-agent ΨA) | A.x | NO |

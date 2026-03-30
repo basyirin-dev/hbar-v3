@@ -175,6 +175,7 @@ The following related benchmarks were identified in Falcon Query 11 (gap_conflic
 | **P2** — AI augmentation inflates $$\hat{M}_A$ | $\hat{\zeta}_A$($Ω_{AI}$-high) significantly positive                                | $\hat{\zeta}_A ≤ 0$ for $Ω_{AI}$-high models (p > 0.05, one-tailed) |
 | **P2** — $Ω_{AI}$ drives $ζ_A$ gap             | $\hat{\zeta}_A$($Ω_{AI}$-high) > $\hat{\zeta}_A$($P_A$-high)  at matched ID accuracy | No significant condition difference (p > 0.05, d < 0.3)             |
 | **P1** (secondary)                             | $\hat{\zeta}_A$ correlates negatively with H-PTB OOD ratio                           | Spearman $ρ > −0.3$ (no significant negative correlation)           |
+| **P2-EQ** — Equilibration under sustained Ω_AI | Agents with sustained Ω_AI exposure converge to $\hat{M}_A^* < \sigma_A$ (underconfidence at steady state). Testable via three-stage protocol: Stage 1 → Stage 2 → second Stage 1. H-Bar predicts the second Stage 1 shows $\hat{\zeta}_A < 0$ if Ω_AI was sustained between stages. | Second-stage $\hat{\zeta}_A \geq 0$ (no underconfidence at equilibrium) |
 
 **Primary falsification condition for H-MCB as a whole:**
 > H-MCB is falsified if $\hat{\zeta}_A$ is not significantly positive for $Ω_{AI}$-high frontier models ($p > 0.05$, one-tailed t-test against zero), or if $\hat{\zeta}_A$ does not differ significantly between $Ω_{AI}$-high and $P_A$-high conditions at matched in-distribution accuracy ($p > 0.05, d < 0.3$).
@@ -239,7 +240,7 @@ Report all temperature settings in benchmark documentation.
 
 ## 12. OPEN ISSUES (linked to register.md)
 
-- **ISSUE #23** [M]: Self-model ODE (Eq. 39) boundedness not formally guaranteed when ΩAI is large — the benchmark's calibration error computation assumes $\hat{M}_A \in [0, 1]$ add a clamping note to the Stage 1 scoring procedure.
+- **ISSUE #23** [RESOLVED]: Self-model ODE (Eq. 39) boundedness now formally guaranteed via Nagumo's theorem (§4.4.2 of paper.md). Steady-state analysis shows $\hat{M}_A^* = \sigma_A / (1 + \Omega_{AI}/\Pi_7) \leq \sigma_A$ (Eq. 39a) — sustained AI bypass produces underconfidence at equilibrium, not sustained overconfidence. Calibration error ODE (Eq. 38a) added. Benchmark's $[0,1]$ assumption is now theorem-backed.
 - **ISSUE #2** [D]: σA used as a known quantity via the OOD ratio proxy; the benchmark documentation must explicitly state that σA is latent and the OOD ratio is the observable proxy, not σA directly.
 - **ISSUE #58–#62** [R]: Differentiation from MetaMedQA, ObjexMT, KOR-Bench, LILA, DMC must appear in Writeup Related Work; draft text provided in §6 above.
 - **ISSUE #24** [I]: Burnell et al. (2026) citation framing — the Writeup must present the Metacognition faculty alignment as a formal correspondence (H-Bar variables were developed independently), not as a post-hoc claim.

@@ -146,8 +146,27 @@ The agent's functional competence in domain $d$ — sufficient to engage primary
 
 #### 3.1.3 Schema Coherence $σ_A(d,t)$
 
-The degree to which the agent's representation of domain d has been restructured around deep governing principles.
+The degree to which the agent's representation of domain d has been restructured around deep governing principles. Operationally: the normalised ratio of OOD compositional generalisation accuracy to in-distribution accuracy (Equation 3b), measurable via SCAN/COGS/PCFG-SET benchmark splits.
 $$\sigma_A(d,t) \in [0, 1] \tag {3}$$
+
+**Proxy identification.** Schema coherence is not directly observable; it is operationalised through a two-tier proxy architecture separating training-time estimation from evaluation-time ground-truth calibration.
+
+**Tier 2 — Evaluation-time ground-truth proxy (SGG).** The Systematic Generalisation Gap provides the ground-truth operationalisation at evaluation checkpoints:
+$$\hat{\sigma}_A(d,t) = 1 - \frac{\text{Acc}_{\text{In}}(d,t) - \text{Acc}_{\text{OOD}}(d,t)}{\text{Acc}_{\text{In}}(d,t)} = \frac{\text{Acc}_{\text{OOD}}(d,t)}{\text{Acc}_{\text{In}}(d,t)} \tag{3b}$$
+where Acc_In is in-distribution accuracy and Acc_OOD is accuracy on out-of-distribution recombination instances. This proxy is valid when the OOD split tests compositional recombination of primitives trained in isolation (e.g., SCAN add-primitive split, COGS systematic split, PCFG-SET productivity split). The proxy identification $\hat{\sigma}_A \approx \sigma_A$ holds when the OOD difficulty is calibrated to span the $\sigma_{\text{critical}}$ threshold (see Appendix A.4). However, because Eq. 3b requires post-evaluation benchmark data, it cannot serve as an operative input to the ODE system during training.
+
+**Tier 1 — Training-time operative proxies.** Two complementary training-time proxies provide per-checkpoint σA estimates without requiring external benchmarks.
+
+**(i) Causal intervention probe.** During training, σA is estimated via a lightweight causal intervention probe inserted at a fixed checkpoint interval $\Delta t_{\text{probe}}$. The probe constructs causal interventions on the training distribution's generative process — specifically, it recombines primitives trained in isolation to create novel compositional instances that were not in the training batch:
+$$\tilde{\sigma}_A^{\text{probe}}(d,t) = \frac{1}{K}\sum_{k=1}^{K} \frac{\text{Acc}_{\text{probe}_k}(d,t)}{\text{Acc}_{\text{train}}(d,t)} \in [0,1] \tag{3c}$$
+where $\text{Acc}_{\text{probe}_k}$ is accuracy on the $k$-th probe intervention (recombined primitives) and $\text{Acc}_{\text{train}}$ is accuracy on the current training distribution. The probe instances are generated programmatically from the known generative grammar of the domain (SCAN grammar, COGS semantic frames, PCFG rules) — they are internal to the training pipeline, not external benchmarks. The probe cost is $K \times B$ forward passes per interval (where $B$ is batch size), comparable to a validation step.
+
+**(ii) Augmentation consistency.** When the domain's generative grammar is not fully known, the probe falls back to representational consistency under structure-preserving augmentations:
+$$\tilde{\sigma}_A^{\text{aug}}(d,t) = \frac{1}{|A|}\sum_{a \in A} \text{CosSim}\!\Big(R_{\theta}(x),\;R_{\theta}(a(x))\Big) \in [0,1] \tag{3d}$$
+where $A$ is the set of structure-preserving augmentations (e.g., primitive substitution, argument permutation) and $R_{\theta}(x)$ is the agent's internal representation of input $x$. High consistency indicates schema-coherent encoding: the agent's representations are stable under transformations that preserve the domain's causal structure.
+
+**Operational convention.** Throughout the ODE system (Eqs. 7, 12, 28, and all coupled equations), the operative value of σA during training is $\tilde{\sigma}_A(d,t) = \tilde{\sigma}_A^{\text{probe}}(d,t)$ when the generative grammar is available, or $\tilde{\sigma}_A^{\text{aug}}(d,t)$ otherwise. The benchmark proxy (Eq. 3b) remains the evaluation-time ground-truth used at checkpoints to validate the training-time estimates. When $\tilde{\sigma}_A$ and $\hat{\sigma}_A$ diverge by more than 0.15, a recalibration flag is raised and the Tier 1 proxy parameters are adjusted against the evaluation checkpoint history.
+
 **Unique properties distinguishing $σ_A$ from adjacent constructs:**
 
 | Property                                 | $σ_A$ | Structured Repr. | Disentangled Repr. | Causal Repr. | Cognitive Schema |
@@ -1007,7 +1026,7 @@ Each prediction is distinguished from $δ$-only accounts, stated with a specific
 
 ### 10.1 $σ_A(d,t)$ Direct Measurement
 
-$σ_A(d,t)$ remains a latent variable not directly observable with current evaluation instruments. The framework's empirical programme depends on proxy metrics — the Systematic Generalisation Gap ($SGG = 1 - \frac{\text{Acc}_{In} - \text{Acc}_{OOD}}{\text{Acc}_{In}}$) on SCAN/COGS/PCFG-SET is the most defensible current proxy. Hardware validation of the full dynamical system is pending; this paper constitutes a formal specification and research programme, not empirical validation.
+$σ_A(d,t)$ is a latent variable estimated through a two-tier proxy architecture (§3.1.3). **Tier 1 (training-time):** the causal intervention probe (Eq. 3c) or representational augmentation consistency (Eq. 3d) provides per-checkpoint estimates without requiring external benchmarks. These proxies are computationally cheap (comparable to a validation pass) and available during the training loop, enabling the ODE system to use σA as an operative state variable rather than a post hoc label. **Tier 2 (evaluation-time):** the Systematic Generalisation Gap (Eq. 3b) on SCAN/COGS/PCFG-SET provides the ground-truth operationalisation at evaluation checkpoints. Tier 1 proxies are expected to track Tier 2 values with correlation ρ ≥ 0.7 for well-calibrated domains; empirical validation of this correlation is a prerequisite for using Tier 1 proxies in the ODE system without Tier 2 correction. This paper constitutes a formal specification; the proxy validation programme is specified in Appendix A.4.
 
 ### 10.2 Phase Transition Algorithms
 

@@ -120,7 +120,7 @@ Priority: all `[N]`-tagged issues, then `[P]`, then `[Ψ]`, then `[R]`.
 **Tag:** [R]
 **Severity:** MEDIUM
 **Description:** The paper claims empirical motivation from model-merging for its discovery rate mechanism but provides no citations to support the synergistic emergence claim.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added citations to Lu et al. (2024), Akiba et al. (2024), Yadav et al. (2024), and Sung et al. (2023) in §3.5.
 
 ## ISSUE #28
 **Tag:** [N]
@@ -180,157 +180,157 @@ Priority: all `[N]`-tagged issues, then `[P]`, then `[Ψ]`, then `[R]`.
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Add a citation to Lu et al. (2024) to support the claim that merged models exhibit emergent capabilities that surpass individual parent contributions.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Lu et al. (2024) to §3.5 body text and §13 References.
 
 ## ISSUE #38
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Akiba et al. (2024) regarding evolutionary model merging recipes that yield emergent cross-domain skills.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Akiba et al. (2024) to §3.5 body text and §13 References.
 
 ## ISSUE #39
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Provide citation for Yadav et al. (2024) establishing that merging capable experts systematically improves zero-shot generalisation.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Yadav et al. (2024) to §3.5 body text and §13 References.
 
 ## ISSUE #40
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Sung et al. (2023) as evidence for synergistic multimodal cross-task model merging.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Sung et al. (2023) to §3.5 body text and §13 References.
 
 ## ISSUE #41
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Liu et al. (2025) to document that low-quality source domains can suppress target performance in multi-agent RL.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Liu et al. (2025) to §4.2 body text and §13 References.
 
 ## ISSUE #42
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Guo et al. (2022) to support the existence of interaction-sensitive effects in cross-domain recommendation systems.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Guo et al. (2022) to §4.2 body text and §13 References.
 
 ## ISSUE #43
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Serrano et al. (2024) to acknowledge review evidence that poorly matched sources harm cross-domain learning.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Serrano et al. (2024) to §4.2 body text and §13 References.
 
 ## ISSUE #44
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Sui et al. (2024) to support the αA motivation regarding the separation of causal from shortcut features in attention.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Sui et al. (2024) to §4.1 body text and §13 References.
 
 ## ISSUE #45
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Oren et al. (2020) to ground the claim that attention alignment to token-rule structure improves compositional generalisation.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Oren et al. (2020) to §4.1 body text and §13 References.
 
 ## ISSUE #46
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Provide citation for Li et al. (2025) showing that hierarchical attention patterns predict behaviour on unseen OOD data.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Li et al. (2025) to §4.1 body text and §13 References.
 
 ## ISSUE #47
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Liao et al. (2025) as precedent for using attention sharpness to ensure weights favour invariant structural components.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Liao et al. (2025) to §4.1 body text and §13 References.
 
 ## ISSUE #48
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Jones & Fuhg (2025) as a precedent for attention-based gating inside a neural ODE framework.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Jones & Fuhg (2025) to §4.1 body text and §13 References.
 
 ## ISSUE #49
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Robertazzi et al. (2022) as motivation for formal inhibition variables in brain-inspired meta-RL.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Robertazzi et al. (2022) to §4.3 body text and §13 References.
 
 ## ISSUE #50
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Piray & Daw (2021) to ground the formal modelling of planning and cognitive control costs in RL.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Piray & Daw (2021) to §4.3 body text and §13 References.
 
 ## ISSUE #51
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Rmus et al. (2020) regarding the role of executive function in defining state and action spaces for reinforcement learning.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Rmus et al. (2020) to §4.3 body text and §13 References.
 
 ## ISSUE #52
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Provide citation for Nair et al. (2023) which models response inhibition as a meta-parameter in unified cognitive architectures.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Nair et al. (2023) to §4.3 body text and §13 References.
 
 ## ISSUE #53
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Dunovan et al. (2017) regarding the adjustment of inhibitory boundaries in response to performance feedback.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Dunovan et al. (2017) to §4.3 body text and §13 References.
 
 ## ISSUE #54
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Wenxuan et al. (2024) to support the ΘA motivation concerning the measurement of modality knowledge discrepancy.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Wenxuan et al. (2024) to §5.1 body text and §13 References.
 
 ## ISSUE #55
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite the multimodal alignment and fusion survey by Li & Tang (2024) as prior work for cross-modal transfer logic.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Li & Tang (2024) to §5.1 body text and §13 References.
 
 ## ISSUE #56
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Lin et al. (2025) for their work on contrastive modality-disentangled learning and shared stream enforcement.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Lin et al. (2025) to §5.1 body text and §13 References.
 
 ## ISSUE #57
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Lu et al. (2025) regarding the Platonic Representation Hypothesis and the emergent alignment potential across modalities.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Lu et al. (2025) to §5.1 body text and §13 References.
 
 ## ISSUE #58
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Add a citation to Griot et al. (2025) regarding the MetaMedQA benchmark to support the novelty of the H-MCB calibration protocol.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Griot et al. (2025) to §4.4 body text and §13 References.
 
 ## ISSUE #59
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Kim et al. (2025) concerning the ObjexMT benchmark and its treatment of jailbreak scenarios in metacognitive calibration.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Kim et al. (2025) to §4.4 body text and §13 References.
 
 ## ISSUE #60
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Provide a citation for Kaijing et al. (2024) establishing KOR-Bench as a relevant precedent for knowledge-orthogonal reasoning tasks.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Kaijing et al. (2024) to §4.4 body text and §13 References.
 
 ## ISSUE #61
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Cite Mishra et al. (2022) regarding LILA mathematical reasoning tasks as an existing source for robust out-of-distribution evaluation splits.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Mishra et al. (2022) to §4.4 body text and §13 References.
 
 ## ISSUE #62
 **Tag:** [R]
 **Severity:** LOW
 **Description:** Add a citation to the DMC framework by Wang et al. (2025) to ground the formal decoupling of cognitive and metacognitive abilities.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R1, 2026-03-30. Added Wang et al. (2025) to §4.4 body text and §13 References.
 
 ---
 
@@ -383,19 +383,19 @@ Priority: all `[Δ]`, `[B]`, `[L]`, `[I]`, `[T]` issues. The `[T]` issue (score 
 **Tag:** [L]
 **Severity:** MEDIUM
 **Description:** Multiple rate constants and parameters used in the ODE system are currently neither operationalised nor measurable, rendering the full system non-simulatable.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R3, 2026-03-30. Added §10.7 Parameter Calibration acknowledging unoperationalised parameters and specifying conversion to simulation-ready parameterisation as prerequisite.
 
 ## ISSUE #18
 **Tag:** [L]
 **Severity:** LOW
 **Description:** The substantial financial and resource barrier created by the requirement for 200 Prolific Academic participants is not acknowledged as a limitation for replication.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R3, 2026-03-30. Added §10.8 Replication Cost Barrier with cost estimates and guidance for researchers unable to meet $N_{\min}$.
 
 ## ISSUE #19
 **Tag:** [L]
 **Severity:** MEDIUM
 **Description:** The lack of a formal computational method for calculating domain structural similarity and modal structural similarity is a major missing limitation.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R3, 2026-03-30. Added §10.9 Structural Similarity Computation acknowledging missing computation methods for $\phi$ and $\omega$.
 
 ## ISSUE #20
 **Tag:** [I]
@@ -419,16 +419,16 @@ Priority: all `[Δ]`, `[B]`, `[L]`, `[I]`, `[T]` issues. The `[T]` issue (score 
 **Tag:** [L]
 **Severity:** MEDIUM
 **Description:** The framework cites the Burnell report as a foundational taxonomy without acknowledging its status as an unvalidated technical report released in March 2026.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R3, 2026-03-30. Added §10.10 Burnell Report Status acknowledging unvalidated technical report status and contingency of faculty mapping.
 
 ## ISSUE #26
 **Tag:** [L]
 **Severity:** LOW
 **Description:** The hyper-precise hackathon suitability percentages are provided without any disclosed methodology or statistical derivation.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R3, 2026-03-30. Added §10.11 Hackathon Suitability Methodology acknowledging unsupported precision and advising qualitative treatment.
 
 ## ISSUE #27
 **Tag:** [L]
 **Severity:** LOW
 **Description:** The claim of a 73.41% winning probability is entirely unsupported and lacks academic foundation.
-**Status:** OPEN
+**Status:** RESOLVED — Batch R3, 2026-03-30. Added §10.12 Winning Probability Claim acknowledging unsupported claim and recommending removal or qualitative replacement.

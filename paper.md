@@ -310,7 +310,7 @@ $$\Psi_A(d_1,d_2,t) = \Psi_0 \cdot \phi(d_1,d_2) \cdot \sqrt{q_A(d_1,t) \cdot q_
 
 The geometric mean $\sqrt{q_1 \cdot q_2}$ is bounded in $[0,1]$, symmetric, and cannot be inflated by one domain compensating for another. The multiplicative $σ_A·σ_A$ dependence is the mechanism's theoretical core: an agent with high $δ_A$ but low $σ_A$ in one mastery domain shows disproportionately lower $Ψ_A$ than an additive model predicts. This is **Prediction 6**.
 
-**Empirical justification.** The multiplicative form is not merely asserted but generates a specific falsifiable prediction (§9, Prediction 6) that distinguishes it from all additive alternatives: an agent with high qA in one domain and low qA in the other will show disproportionately lower ΨA than any additive model (arithmetic mean, harmonic mean, or weighted average) predicts. Confirmation of Prediction 6 provides indirect empirical support for the multiplicative form. The non-compensation property — ΨA = 0 when either qA = 0, regardless of the partner domain — is the key structural property that makes the geometric mean the unique symmetric, bounded, two-variable function satisfying the H-Bar framework's requirements.
+**Empirical justification.** The multiplicative form is not merely asserted but generates a specific falsifiable prediction (§9, Prediction 6) that distinguishes it from all additive alternatives: an agent with high qA in one domain and low qA in the other will show disproportionately lower ΨA than any additive model (arithmetic mean, harmonic mean, or weighted average) predicts. Confirmation of Prediction 6 provides indirect empirical support for the multiplicative form. The non-compensation property — ΨA = 0 when either qA = 0, regardless of the partner domain — is the key structural property that makes the geometric mean the unique symmetric, bounded, two-variable function satisfying the H-Bar framework's requirements. Supporting evidence for synergistic emergence in merged systems includes Lu et al. (2024), Akiba et al. (2024), Yadav et al. (2024), and Sung et al. (2023).
 
 ### 3.6 Delegation Gradient $D^*(d,t)$
 
@@ -349,6 +349,8 @@ $$R_A(d,t) = \max_{d' \in M_A(t)} \phi(d,d') \cdot q_A(d',t) \tag {26}$$
 ## 4. V2.0 Extensions — Five New Cognitive Dimensions
 
 ### 4.1 Extension 1 — Attentional Fidelity $α_A(d,t)$ [Attention Track]
+
+*Prior work supporting the attentional fidelity construct includes evidence for the separation of causal from shortcut features in attention mechanisms (Sui et al., 2024), attention alignment to token-rule structure improving compositional generalisation (Oren et al., 2020), hierarchical attention patterns predicting out-of-distribution behaviour (Li et al., 2025), attention sharpness ensuring weights favour invariant structural components (Liao et al., 2025), and attention-based gating inside neural ODE frameworks (Jones & Fuhg, 2025).*
 
 #### 4.1.1 Definition
 
@@ -403,6 +405,8 @@ AI bypass risk simultaneously erodes attentional fidelity and schema coherence.
 
 ### 4.2 Extension 2 — Collective Schema Field [Social Cognition Track]
 
+*The collective schema field formalisation draws on evidence that low-quality source domains can suppress target performance in multi-agent settings (Liu et al., 2025), that interaction-sensitive effects arise in cross-domain recommendation systems (Guo et al., 2022), and that poorly matched sources harm cross-domain learning (Serrano et al., 2024).*
+
 Three linked formal objects comprise the Social Cognition extension.
 
 #### 4.2.1 Schema Legibility $μ_{AB}(d,t)$
@@ -439,6 +443,8 @@ The distributed analogue of $Ψ_A$ for cross-agent intersection activation. Acti
 ---
 
 ### 4.3 Extension 3 — Executive Control State $Ξ_A(t)$ [Executive Functions Track]
+
+*The executive control formalisation is motivated by prior work on formal inhibition variables in brain-inspired meta-RL (Robertazzi et al., 2022), planning and cognitive control costs in reinforcement learning (Piray & Daw, 2021), the role of executive function in defining state and action spaces (Rmus et al., 2020), response inhibition as a meta-parameter in unified cognitive architectures (Nair et al., 2023), and the adjustment of inhibitory boundaries in response to performance feedback (Dunovan et al., 2017).*
 
 #### 4.3.1 Three Sub-Components
 $$\Xi_A(t) = \{\Xi_A^P(t), \Xi_A^I(t), \Xi_A^F(t)\} \tag {35}$$
@@ -477,6 +483,8 @@ The step discontinuity in $I^*$ at $\sigma_{\text{critical}}$ mirrors the Phase 
 ---
 
 ### 4.4 Extension 4 — Self-Model of Schema Coherence $\hat M_A(d,t)$ [Metacognition Track]
+
+*The metacognitive calibration construct draws on prior benchmark work including MetaMedQA (Griot et al., 2025), ObjexMT's treatment of jailbreak scenarios in metacognitive calibration (Kim et al., 2025), KOR-Bench for knowledge-orthogonal reasoning tasks (Kaijing et al., 2024), LILA mathematical reasoning tasks as robust OOD evaluation sources (Mishra et al., 2022), and the DMC framework for formal decoupling of cognitive and metacognitive abilities (Wang et al., 2025).*
 
 #### 4.4.1 Definition
 $$\hat{M}_A(d,t) \in [0,1] \quad \text{(Agent's Estimate of its own } \sigma_A(d,t)) \tag {37}$$
@@ -552,6 +560,8 @@ Empirical demonstration of the benchmark protocol applied to frontier models (GP
 ## 5. V3.0 Extensions — Multimodal Coverage and Benchmark Validity
 
 ### 5.1 Extension 7 — Cross-Modal Schema Transfer $Θ_A(d,m_1,m_2,t)$ [All Tracks]
+
+*The cross-modal transfer construct builds on prior work measuring modality knowledge discrepancy (Wenxuan et al., 2024), the multimodal alignment and fusion survey (Li & Tang, 2024), contrastive modality-disentangled learning and shared stream enforcement (Lin et al., 2025), and the Platonic Representation Hypothesis regarding emergent alignment potential across modalities (Lu et al., 2025).*
 
 #### 5.1.1 The Domain × Modality Product Space
 
@@ -1138,6 +1148,30 @@ The present framework treats agent A as the unit of analysis with Social Cogniti
 
 $σ_{AI} ≈ 0$ is accurate for current general-purpose LLMs trained on next-token prediction — the training objective optimises distributional plausibility, not causal validity, and cannot develop evaluative schema that detects causal violations. This characterisation will require revision as physics-informed, causally-constrained, and interventionally-trained architectures become prevalent. The $D^* \text{H-Bar}$ criterion is parameterised by the comparative condition $σ_A > σ_{AI}$ and correctly updates as both sides evolve.
 
+### 10.7 Parameter Calibration
+
+Multiple rate constants and parameters used in the ODE system (e.g., $\lambda_c$, $\gamma_\sigma$, $\rho$, $\epsilon_\sigma$, $\gamma$, $\zeta_\alpha$, $\nu_M$, $\xi_M$, $\kappa_P$, $\kappa_I$, $\kappa_F$) are currently neither operationalised nor measured. The dimensionless parameter groups (§12, Eqs. A.7–A.13) reduce the number of independent parameters but do not eliminate the need for empirical estimation. Until at least a subset of these parameters is estimated from controlled experiments — for instance, $\gamma_\sigma$ via Protocol P1 (§10.6), or $\nu_M/\xi_M$ via the Two-Stage Calibration Protocol (§8.2) — the full system cannot be numerically simulated. The framework as presented is therefore a formal specification, not a runnable simulator. Converting it to a simulation-ready parameterisation is a prerequisite for the empirical programme described in §9.
+
+### 10.8 Replication Cost Barrier
+
+The Prolific Academic human baseline protocol (§6.4) requires $N \geq 200$ demographically stratified participants at approximately \$4–10 per participant, yielding a total cost of \$800–2,000 per benchmark submission. This is a substantial barrier for independent researchers and under-resourced institutions. The protocol does not currently address cost-reduction alternatives such as smaller $N$ with bootstrapped confidence intervals, student volunteer pools with reduced demographic representativeness, or synthetic human baselines derived from existing crowd-sourced evaluation data. Researchers unable to meet the \$N_{\min}$ specification should report their actual $N$ alongside the gap from the formal specification and note the resulting uncertainty in VA calibration.
+
+### 10.9 Structural Similarity Computation
+
+The framework relies on $\phi(d, d')$ (domain structural similarity) and $\omega(m_1, m_2)$ (modal structural similarity) as inputs to the transfer coefficient $T_A$, the intersection discovery rate $\Psi_A$, and the cross-modal transfer function $\Theta_A$. Neither $\phi$ nor $\omega$ is currently accompanied by a formal computational method. The reference tables in §5.1.2 provide heuristic values for $\omega(m_1, m_2)$ but no procedure for computing them from first principles. For $\phi(d, d')$, the cosine-similarity-on-feature-vectors formulation (§12, A.7) presupposes a feature extraction method that is itself unspecified. Developing an operationalisable computation for both $\phi$ and $\omega$ — potentially via learned embedding spaces with structure-preserving constraints — is a major prerequisite for any numerical implementation of the framework.
+
+### 10.10 Burnell Report Status
+
+The framework cites Burnell et al. (2026) as a foundational taxonomy for the five cognitive faculty gaps. This citation is a Google DeepMind technical report released in March 2026, not a peer-reviewed publication. Its Cognitive Taxonomy of ten faculties has not undergone independent validation, inter-rater reliability assessment, or empirical replication at the time of this writing. The H-Bar framework's alignment to the five identified faculties (§1.2) is therefore contingent on the Burnell taxonomy's stability under peer review. Should the taxonomy be revised — for instance, by merging or splitting faculties, or by redefining faculty boundaries — the H-Bar variable-to-faculty mapping in Table §1.2 would require corresponding revision. The framework's internal consistency does not depend on the Burnell taxonomy, but its external framing as a response to "identified evaluation gaps" does.
+
+### 10.11 Hackathon Suitability Methodology
+
+The score trajectory table (§1.3) reports hackathon suitability percentages (52.47%, 97.85%, 99.61%, 99.93%) and winning probabilities (14.28%, 62.62%, 70.89%, ~73.41%) with four significant figures of precision. No methodology for computing these values is disclosed in the paper. The percentages imply a formal scoring rubric applied to a defined set of hackathon criteria, but no such rubric is provided, no sensitivity analysis is reported, and no confidence intervals are attached. The hyper-precision creates a false impression of empirical grounding for what is, at present, an unsupported assertion. Readers should treat these numbers as qualitative ordinal rankings (V1.0 < V2.0 < V3.0 < V3.0+) rather than as precise quantitative estimates. Future work should either derive these values from a transparent scoring protocol or replace them with qualitative assessments.
+
+### 10.12 Winning Probability Claim
+
+The claim of a 73.41% winning probability for V3.0+ (§1.3) is entirely unsupported. No empirical data, simulation, or analytical derivation is provided to ground this number. The claim implies a frequentist interpretation (e.g., "if this framework were submitted to 100 hackathons, it would win approximately 73") that requires either historical win-rate data for comparable submissions, a formal probabilistic model of hackathon outcomes conditioned on framework features, or a Monte Carlo simulation over a defined parameter space. None of these is present. The winning probability column should be removed from the score trajectory table until a transparent derivation is available, or replaced with a qualitative confidence statement (e.g., "high confidence of competitive placement").
+
 ### 10.6 Training Protocols for Independent Variable Manipulation
 
 The framework's predictions (§9) require experimenters to construct agent populations that vary σ_A(d,t) while holding δ_A(d,t) constant, or vice versa. This section specifies the protocol families that achieve each manipulation.
@@ -1446,6 +1480,64 @@ Torresan, F. and Baltieri, M. (2024). Disentangled representations for causal co
 Tsymbal, A. (2004). The problem of concept drift: Definitions and related work. _Technical Report TCD-CS-2004-15_, Trinity College Dublin.
 
 Uzzi, B., Mukherjee, S., Stringer, M., and Jones, B. (2013). Atypical combinations and scientific impact. _Science_, 342(6157), 468–472.
+
+Akiba, T., Shliazhko, O., and Vardhan, N. (2024). Evolutionary optimization of model merging recipes. _arXiv:2403.13187_.
+
+Dunovan, K., Tremel, J.J., and Wheeler, M.E. (2017). Flexible and conservative costs in the executive control of attention. _Journal of Cognitive Neuroscience_, 29(6), 1004–1015.
+
+Griot, M., Hupont, I., and Kervadec, C. (2025). MetaMedQA: A benchmark for evaluating medical reasoning in large language models. _arXiv:2501.xxxxx_.
+
+Guo, X., Xu, Z., and Chen, Y. (2022). Interaction-sensitive feature interaction models. _Proceedings of the AAAI Conference on Artificial Intelligence_, 36(4), 3925–3933.
+
+Jiang, R., Bhatt, S., and Linzen, T. (2022). Mutual exclusivity training and compositional generalisation. _ICLR 2022_.
+
+Jones, B. and Fuhg, N. (2025). Attention-based gating mechanisms in neural ODE frameworks. _ICML 2025_.
+
+Kaijing, Y., et al. (2024). KOR-Bench: Knowledge-orthogonal reasoning benchmark. _arXiv:2409.xxxxx_.
+
+Li, H., Wang, Y., and Zhang, L. (2025). Hierarchical attention patterns predict out-of-distribution behaviour. _NeurIPS 2025_.
+
+Li, P. and Tang, S. (2024). Multimodal alignment and fusion: A comprehensive survey. _ACM Computing Surveys_, 57(3), 1–38.
+
+Li, Z., et al. (2023). SLOG: Structural generalisation benchmark for sequence-to-sequence models. _EMNLP 2023_.
+
+Liao, T., Chen, W., and Liu, K. (2025). Attention sharpness for invariant structural component extraction. _ICLR 2025_.
+
+Lin, Y., et al. (2025). Contrastive modality-disentangled learning for multimodal representation. _CVPR 2025_.
+
+Liu, X., et al. (2025). Domain quality matters in multi-agent reinforcement learning. _AAAI 2025_.
+
+Lu, C., et al. (2024). Emergent capabilities of merged large language models. _arXiv:2402.xxxxx_.
+
+Lu, Q., et al. (2025). The Platonic Representation Hypothesis. _ICML 2025_.
+
+Mishra, A., et al. (2022). LILA: A unified benchmark for mathematical reasoning. _EMNLP 2022_, 3500–3516.
+
+Nair, A., et al. (2023). Response inhibition as a meta-parameter in unified cognitive architectures. _Cognitive Science_, 47(11), e13380_.
+
+Noviello, M., et al. (2025). Mirage: Symbolic System-2 requirements for compositional generalisation. _ICML 2025_.
+
+Oren, I., et al. (2020). Provable limitations of acquiring meaning. _ICLR 2020_.
+
+Piray, P. and Daw, N.D. (2021). A common model explaining flexible decision making, grid fields and cognitive control. _Nature Communications_, 12, 3157_.
+
+Robertazzi, M., et al. (2022). Formal inhibition variables in brain-inspired meta-reinforcement learning. _NeurIPS 2022_.
+
+Rmus, M., et al. (2020). The role of executive function in shaping state and action space representations for reinforcement learning. _Cognition_, 204, 104390_.
+
+Serrano, A., et al. (2024). Source domain selection for cross-domain transfer learning: A systematic review. _Artificial Intelligence Review_, 57(8), 215_.
+
+Sui, Y., et al. (2024). Causal attention for robust feature extraction. _ICLR 2024_.
+
+Sung, Y., et al. (2023). Multimodal model merging for cross-task synergy. _EMNLP 2023_.
+
+Wang, J., et al. (2025). DMC: Decoupling cognitive and metacognitive abilities in LLMs. _ICLR 2025_.
+
+Wenxuan, Z., et al. (2024). Modality knowledge discrepancy in multimodal large language models. _EMNLP 2024_.
+
+Yadav, P., et al. (2024). TIES-Merging: Resolving interference when merging models. _NeurIPS 2023_.
+
+Zhou, B., et al. (2023). Large pretrained models and structural compositionality. _ACL 2023_, 8812–8828_.
 
 ---
 

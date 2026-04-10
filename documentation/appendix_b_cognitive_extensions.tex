@@ -1,0 +1,312 @@
+\documentclass[11pt,a4paper]{article}
+
+% Core packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{longtable,booktabs,array}
+\usepackage{geometry}
+\geometry{margin=1in}
+\usepackage{graphicx}
+\usepackage[round,sort&compress]{natbib}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+% TikZ and PGFPlots for figures
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns, positioning, arrows.meta, shapes.geometric, backgrounds, fit}
+
+% Misc
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{caption}
+
+% Custom commands
+\newcommand{\R}{\mathbb{R}}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\argmax}{arg\,max}
+
+\title{\textbf{Appendix B: Cognitive Extensions}\\[6pt]
+\large Attentional Fidelity, Executive Control, Metacognition, Social Cognition, and Multimodal Transfer}
+\author{Supplementary Material for ``The H-Bar Model''}
+\date{Version 3.0+ \quad$\cdot$\quad March 2026}
+
+\begin{document}
+
+\maketitle
+
+% ============================================================
+\section*{Overview}\label{app:overview}
+% ============================================================
+
+This appendix contains the cognitive extensions to the core H-Bar
+framework presented in the main paper. These extensions build upon
+the three core state variables ($\delta_A$, $\beta_A$, $\sigma_A$)
+and are not required for understanding the basic H-Bar system.
+Readers seeking the minimal H-Bar framework need only study the
+main paper through Section~3.
+
+The extensions are organised as follows:
+\begin{itemize}[nosep]
+\item \textbf{Extension 1:} Attentional Fidelity $\alpha_A(d,t)$ (Section~\ref{app:attention})
+\item \textbf{Extension 2:} Collective Schema Field (Social Cognition) (Section~\ref{app:social})
+\item \textbf{Extension 3:} Executive Control State $\Xi_A(t)$ (Section~\ref{app:executive})
+\item \textbf{Extension 4:} Self-Model of Schema Coherence $\hat{M}_A(d,t)$ (Section~\ref{app:metacognition})
+\item \textbf{Extension 5:} Cross-Modal Schema Transfer (Section~\ref{app:multimodal})
+\item \textbf{Extension 6:} Benchmark Validity and Reliability (Section~\ref{app:validity})
+\end{itemize}
+
+% ============================================================
+\section{Extension 1: Attentional Fidelity $\alpha_A(d,t)$}\label{app:attention}
+% ============================================================
+
+\subsection{Definition}
+
+Attentional fidelity $\alpha_A(d,t) \in [0,1]$ quantifies the degree
+to which an agent's attention is directed toward the deep governing
+structure of domain $d$ rather than surface-statistical regularities.
+
+\subsection{Coupling to Schema Coherence}
+
+The schema coherence ODE is updated to include attentional gating:
+\begin{equation}\label{app:eq:sigma-ode}
+\dot{\sigma}_A(d,t) = \rho \cdot P_A(d,t) \cdot \alpha_A(d,t) \cdot (1 - \sigma_A(d,t)) - \epsilon_{\sigma} \cdot \sigma_A(d,t) \cdot \Omega_{AI}(d,t)
+\end{equation}
+
+The multiplicative gating $\alpha_A \cdot P_A$ ensures that schema
+coherence can only grow when attention is directed at principled
+structure. This formalises the intuition that ``you can't learn what
+you don't attend to.''
+
+\subsection{Attentional Fidelity ODE}
+
+\begin{equation}\label{app:eq:alpha-ode}
+\dot{\alpha}_A(d,t) = \gamma \cdot C_A(d,t) \cdot (1 - \alpha_A(d,t)) - \zeta_{\alpha} \cdot \alpha_A(d,t) \cdot R_A^{\text{surface}}(d,t)
+\end{equation}
+
+where:
+\begin{itemize}[nosep]
+\item $C_A(d,t)$: Structural complexity of the training curriculum
+\item $R_A^{\text{surface}}(d,t)$: Surface-reward pressure (e.g., from AI bypass)
+\item $\gamma$: Attention growth rate constant
+\item $\zeta_{\alpha}$: Surface-reward attention suppression coefficient
+\end{itemize}
+
+\subsection{Interpretation}
+
+High $\alpha_A$ indicates that the agent's attention is consistently
+directed at the compositional structure underlying the domain. Low
+$\alpha_A$ indicates attention captured by surface features, statistical
+regularities, or AI-provided shortcuts.
+
+% ============================================================
+\section{Extension 2: Collective Schema Field (Social Cognition)}\label{app:social}
+% ============================================================
+
+\subsection{Schema Legibility}
+
+For agents $A$ and $B$, schema legibility quantifies how well $A$'s
+schema coherence in domain $d$ can be understood by $B$:
+\begin{equation}\label{app:eq:schema-legibility}
+\mu_{AB}(d,t) = \sigma_A(d,t) \cdot \phi(d_A, d_B) \cdot \sigma_B(d_{\text{adj}},t) \in [0,1]
+\end{equation}
+
+where $\phi(d_A, d_B)$ is the domain similarity between $A$'s and $B$'s
+representations.
+
+\subsection{Collective Schema Field}
+
+The collective schema field captures the bidirectional legibility
+between two agents across two domains:
+\begin{equation}\label{app:eq:collective-field}
+\Sigma_{A,B}(d_1,d_2,t) = \mu_{AB}(d_1,t) \cdot \mu_{BA}(d_2,t) \cdot \phi(d_1,d_2)
+\end{equation}
+
+\subsection{Interpretation}
+
+High $\Sigma_{A,B}$ indicates that agents $A$ and $B$ can effectively
+communicate and align their schemas across domains $d_1$ and $d_2$.
+This formalises the notion of ``shared understanding'' or ``common ground''
+in social cognition.
+
+% ============================================================
+\section{Extension 3: Executive Control State $\Xi_A(t)$}\label{app:executive}
+% ============================================================
+
+\subsection{Definition}
+
+The executive control state comprises three components:
+\begin{equation}\label{app:eq:executive-state}
+\Xi_A(t) = \{\Xi_A^P(t), \Xi_A^I(t), \Xi_A^F(t)\}
+\end{equation}
+
+\textbf{$\Xi_A^P$ --- Planning:} Degree to which the training trajectory
+is consistent with the H-Bar optimal multi-step arc.
+
+\textbf{$\Xi_A^I$ --- Inhibition:} Probability of choosing the structural
+route over AI bypass when both are available.
+
+\textbf{$\Xi_A^F$ --- Cognitive Flexibility:} Degree to which the agent
+detects and adapts to phase transition thresholds from internal evidence.
+
+\subsection{Executive Control ODE}
+
+\begin{equation}\label{app:eq:executive-ode}
+\dot{\Xi}_A(t) = \kappa_P \cdot [P^*(t) - \Xi_A^P(t)] + \kappa_I \cdot [I^*(t) - \Xi_A^I(t)] + \kappa_F \cdot [F^*(t) - \Xi_A^F(t)]
+\end{equation}
+
+where $P^*(t)$, $I^*(t)$, $F^*(t)$ are target values for planning,
+inhibition, and flexibility respectively.
+
+\subsection{Interpretation}
+
+Executive control modulates the agent's ability to: (a) plan multi-step
+training trajectories, (b) inhibit the impulse to take AI shortcuts,
+and (c) flexibly adapt when phase transitions are detected. Low
+executive control predicts susceptibility to AI bypass and failure
+to navigate phase transitions.
+
+% ============================================================
+\section{Extension 4: Self-Model of Schema Coherence $\hat{M}_A(d,t)$}\label{app:metacognition}
+% ============================================================
+
+\subsection{Definition}
+
+The self-model $\hat{M}_A(d,t) \in [0,1]$ represents the agent's
+estimate of its own schema coherence $\sigma_A(d,t)$.
+
+\textbf{Calibration error:}
+\begin{equation}\label{app:eq:calibration-error}
+\zeta_A(d,t) = \hat{M}_A(d,t) - \sigma_A(d,t) \quad \text{(Calibration Error)}
+\end{equation}
+
+\subsection{Self-Model ODE}
+
+\begin{equation}\label{app:eq:self-model-ode}
+\dot{\hat{M}}_A(d,t) = \nu_M \cdot [\sigma_A(d,t) - \hat{M}_A(d,t)] - \xi_M \cdot \Omega_{AI}(d,t) \cdot \hat{M}_A(d,t)
+\end{equation}
+
+\subsection{Key Insight: AI Bypass Inflates Metacognitive Confidence}
+
+The AI bypass risk $\Omega_{AI}$ appears in the self-model ODE with
+a negative sign on $\hat{M}_A$, which means that when AI bypass is
+active, the self-model is driven \emph{away} from true $\sigma_A$.
+Agents using AI-provided outputs receive systematically inflated
+performance feedback, producing overconfidence ($\zeta_A > 0$).
+
+\subsection{Interpretation}
+
+High calibration error $\zeta_A$ indicates metacognitive dysfunction:
+the agent believes it has high schema coherence when it actually has
+low schema coherence. This formalises the Dunning-Kruger effect in
+the context of compositional generalisation.
+
+% ============================================================
+\section{Extension 5: Cross-Modal Schema Transfer}\label{app:multimodal}
+% ============================================================
+
+\subsection{The Domain $\times$ Modality Product Space}
+
+All core state variables extend to the product space $D \times M$:
+\begin{equation}\label{app:eq:modalities}
+M = \{\text{text, visual, auditory, sensorimotor, symbolic}\}
+\end{equation}
+
+\subsection{Cross-Modal Schema Transfer Function}
+
+\begin{equation}\label{app:eq:cross-modal-transfer}
+\Theta_A(d, m_1, m_2, t) = \sigma_A(d, m_1, t) \cdot \omega(m_1, m_2)
+\end{equation}
+
+where $\omega(m_1, m_2)$ is the modality similarity weight.
+
+\subsection{Extended Schema Coherence ODE}
+
+\begin{equation}\label{app:eq:sigma-ode-v3}
+\begin{aligned}
+\dot{\sigma}_A(d,m,t) = {} & \rho \cdot P_A(d,m,t) \cdot \alpha_A(d,m,t) \cdot (1 - \sigma_A(d,m,t)) \\
+& - \epsilon_{\sigma} \cdot \sigma_A(d,m,t) \cdot \Omega_{AI}(d,m,t) \\
+& + \rho_{\theta} \cdot \sum_{m' \neq m} \Theta_A(d,m',m,t) \cdot \sigma_A(d,m',t)
+\end{aligned}
+\end{equation}
+
+The cross-modal transfer term $\rho_{\theta} \cdot \sum \Theta_A \cdot \sigma_A$
+enables schema coherence gained in one modality to facilitate schema
+acquisition in another modality.
+
+\subsection{Interpretation}
+
+High $\sigma_A$ in one modality (e.g., text) facilitates transfer to
+another modality (e.g., visual) proportional to the modality similarity
+$\omega(m_1, m_2)$. This predicts that agents with high schema coherence
+will show above-chance cross-modal transfer, while low-$\sigma_A$ agents
+will not.
+
+% ============================================================
+\section{Extension 6: Benchmark Validity and Reliability}\label{app:validity}
+% ============================================================
+
+\subsection{Benchmark Validity Function}
+
+\begin{equation}\label{app:eq:validity-function}
+V_A(B,f,t) = CI(B,f) \cdot FD(B) \cdot DG(B) \cdot R_A(B,f,t)
+\end{equation}
+
+where:
+\begin{itemize}[nosep]
+\item $CI(B,f)$: Construct isolation --- degree to which benchmark $B$ isolates faculty $f$
+\item $FD(B)$: Format diversity --- diversity of task formats in $B$
+\item $DG(B)$: Difficulty gradient --- coverage of difficulty levels
+\item $R_A(B,f,t)$: Reliability --- measurement stability across repeated assessments
+\end{itemize}
+
+\subsection{Benchmark Reliability Function}
+
+\begin{equation}\label{app:eq:reliability}
+R_A(B,f,t) = \begin{cases}
+\displaystyle\frac{1}{1 + \frac{\text{Var}_k(\text{score}_A^k(B))}{E[\text{score}_A(B)]^2}} & \text{if } E[\text{score}_A(B)] > 0 \\[8pt]
+0 & \text{if } E[\text{score}_A(B)] = 0
+\end{cases}
+\end{equation}
+
+\subsection{Interpretation}
+
+High $V_A$ indicates that benchmark $B$ is a valid and reliable measure
+of faculty $f$ for agent $A$ at time $t$. Low $V_A$ indicates that the
+benchmark may be confounded, narrow, or unreliable.
+
+% ============================================================
+\section{Summary of Extension Variables}\label{app:summary}
+% ============================================================
+
+\begin{center}
+\begin{tabular}{c l l l}
+\toprule
+\textbf{Extension} & \textbf{Variable} & \textbf{Range} & \textbf{Role} \\
+\midrule
+Attention & $\alpha_A(d,t)$ & $[0,1]$ & Gates schema growth \\
+Social Cognition & $\mu_{AB}(d,t)$ & $[0,1]$ & Schema legibility \\
+Social Cognition & $\Sigma_{A,B}(d_1,d_2,t)$ & $[0,1]$ & Collective field \\
+Executive Control & $\Xi_A^P(t)$ & $[0,1]$ & Planning quality \\
+Executive Control & $\Xi_A^I(t)$ & $[0,1]$ & Inhibition quality \\
+Executive Control & $\Xi_A^F(t)$ & $[0,1]$ & Cognitive flexibility \\
+Metacognition & $\hat{M}_A(d,t)$ & $[0,1]$ & Self-model of $\sigma_A$ \\
+Metacognition & $\zeta_A(d,t)$ & $[-1,1]$ & Calibration error \\
+Multimodal & $\Theta_A(d,m_1,m_2,t)$ & $[0,1]$ & Cross-modal transfer \\
+Validity & $V_A(B,f,t)$ & $[0,1]$ & Benchmark validity \\
+Reliability & $R_A(B,f,t)$ & $[0,1]$ & Benchmark reliability \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ============================================================
+% Bibliography
+% ============================================================
+\bibliographystyle{plainnat}
+\bibliography{../references}
+
+\end{document}

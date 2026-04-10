@@ -41,3 +41,26 @@ hackathon/am-i-compositional/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+
+# arXiv submission directory (not to be tracked)
+arxiv-submission/
+
+# Intermediate markdown files (not to be tracked)
+*.md
+!README.md
+!documentation/kaggle_submission_*.md
+!documentation/ARXIV_SUBMISSION_GUIDE.md
+!documentation/verification_report.md
+!documentation/register.md
+
+# Allow tracking of specific .tex files in documentation
+!documentation/appendix_b_cognitive_extensions.tex

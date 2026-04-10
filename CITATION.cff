@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Basri
+    given-names: Basyirin Amsyar bin
+title: "The H-Bar Model V3.0+: Schema Coherence, Cognitive Faculty Evaluation, and Phase-Structured Curriculum Design for AI Agents"
+version: 3.0+
+date-released: 2026-03
+type: preprint
+doi: "10.48550/arXiv.XXXXX.XXXXX"
+archive-prefix: arXiv
+primary-class: cs.AI
+abstract: "Current training pipelines optimise parametric depth δ_A(d,t) without formally targeting schema coherence σ_A(d,t) — the degree to which an agent's representations are restructured around deep governing principles rather than surface-statistical regularities. We introduce the H-Bar Model V3.0+, a coupled dynamical-systems framework that formalises σ_A(d,t) as an independently necessary training variable with its own differential equation, introduces attentional fidelity α_A(d,t) as a fourth per-domain state variable gating schema growth, and derives a five-phase training arc indexed by (δ_A^relative, σ_A, |M_A(t)|) with measurable transition conditions."
+keywords:
+  - artificial intelligence
+  - machine learning
+  - schema coherence
+  - compositional generalisation
+  - cognitive evaluation
+  - dynamical systems
+  - curriculum learning
+repository-code: "https://github.com/basyirin-dev/hbar-v3"
+url: "https://github.com/basyirin-dev/hbar-v3"
+license: MIT
+preferred-citation:
+  type: article
+  authors:
+    - family-names: Basri
+      given-names: Basyirin Amsyar bin
+  title: "The H-Bar Model V3.0+: Schema Coherence, Cognitive Faculty Evaluation, and Phase-Structured Curriculum Design for AI Agents"
+  year: 2026
+  journal: "arXiv preprint"
+  eprint: "arXiv:XXXX.XXXXX"
+  archive-prefix: arXiv
+  primary-class: cs.AI

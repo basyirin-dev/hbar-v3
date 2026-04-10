@@ -61,6 +61,7 @@ arxiv-submission/
 !documentation/ARXIV_SUBMISSION_GUIDE.md
 !documentation/verification_report.md
 !documentation/register.md
+!paper/paper.md
 
 # Allow tracking of specific .tex files in documentation
 !documentation/appendix_b_cognitive_extensions.tex

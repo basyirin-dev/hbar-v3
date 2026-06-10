@@ -1,9 +1,9 @@
-# H-Bar Metacognitive Calibration Benchmark (H-MCB): Metacognition Track Writeup
+# Σ-Model Metacognitive Calibration Benchmark (H-MCB): Metacognition Track Writeup
 
-**Benchmark:** H-MCB — H-Bar Metacognitive Calibration Benchmark
+**Benchmark:** H-MCB — Σ-Model Metacognitive Calibration Benchmark
 **Track:** Metacognition
 **Variables:** M̂_A(d,t) [target], ζ_A(d,t) [target], σ_A(d,t) [known via proxy]
-**Framework:** H-Bar Model V3.0+
+**Framework:** Σ-Model Model V3.0+
 
 ---
 
@@ -19,7 +19,7 @@ What we see for the first time: **the overconfidence gap is specific to the high
 
 ## Theoretical Grounding
 
-The H-Bar Model formalises metacognition through M̂_A(d,t) ∈ [0,1] — the agent's estimate of its own σ_A(d,t). Calibration error: ζ_A = M̂_A − σ_A [Eq. 38]. The self-model ODE (Eq. 39):
+The Σ-Model Model formalises metacognition through M̂_A(d,t) ∈ [0,1] — the agent's estimate of its own σ_A(d,t). Calibration error: ζ_A = M̂_A − σ_A [Eq. 38]. The self-model ODE (Eq. 39):
 
 M̂̇_A = ν_M · [σ_A − M̂_A] − ξ_M · Ω_AI · M̂_A
 
@@ -45,7 +45,7 @@ Present the actual COGS OOD items. Record actual accuracy Actual_i per type. 20 
 
 ### Three Conditions
 
-| Condition | Description | H-Bar Prediction |
+| Condition | Description | Σ-Model Prediction |
 |-----------|-------------|------------------|
 | **Ω_AI-high** | Frontier models (GPT-4, Claude, Gemini) in standard deployment. High in-distribution accuracy, low OOD proxy. | ζ_A > 0 across all types; largest overconfidence at hardest structural items |
 | **P_A-high** | Models fine-tuned on structured-failure curricula (H-PTB Condition C/D). Matched Acc_ID (±0.05). | ζ_A significantly lower than Ω_AI-high; near-calibrated |
@@ -72,11 +72,11 @@ All OOD items are procedurally generated from COGS grammar primitives via novel 
 | Format | Same two-stage protocol (predict → perform) as AI evaluation |
 | Time limit | 60s Stage 1, 90s Stage 2 per item |
 
-**H-Bar sub-group prediction:** Novices (no compositional task exposure) show ζ_A > 0 (overconfident, low σ_A proxy). Domain experts (linguists, logicians) show ζ_A ≈ 0 (well-calibrated, high σ_A proxy). This independent dissociation tests the σ_A/ζ_A coupling in a non-AI system.
+**Σ-Model sub-group prediction:** Novices (no compositional task exposure) show ζ_A > 0 (overconfident, low σ_A proxy). Domain experts (linguists, logicians) show ζ_A ≈ 0 (well-calibrated, high σ_A proxy). This independent dissociation tests the σ_A/ζ_A coupling in a non-AI system.
 
 ### Stage 3: Cognitive Profiling
 
-Each model receives a **per-type calibration profile** — ζ_A(i) for i = 1…5, spanning easy lexical to hard structural items. This vector characterises *how* the illusion of mastery scales with task difficulty. H-Bar predicts monotonic growth: harder structural recombination → larger overconfidence. No existing benchmark produces this difficulty-stratified calibration profile.
+Each model receives a **per-type calibration profile** — ζ_A(i) for i = 1…5, spanning easy lexical to hard structural items. This vector characterises *how* the illusion of mastery scales with task difficulty. Σ-Model predicts monotonic growth: harder structural recombination → larger overconfidence. No existing benchmark produces this difficulty-stratified calibration profile.
 
 ---
 
@@ -155,4 +155,4 @@ If confirmed: calibration evaluation must shift from in-distribution to OOD comp
 
 ---
 
-*H-MCB · H-Bar AlphaEvolve · March 2026*
+*H-MCB · Σ-Model AlphaEvolve · March 2026*

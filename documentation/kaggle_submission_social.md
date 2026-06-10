@@ -1,9 +1,9 @@
-# H-Bar Schema Transmission Benchmark (H-STB): Social Cognition Track Writeup
+# Σ-Model Schema Transmission Benchmark (H-STB): Social Cognition Track Writeup
 
-**Benchmark:** H-STB — H-Bar Schema Transmission Benchmark
+**Benchmark:** H-STB — Σ-Model Schema Transmission Benchmark
 **Track:** Social Cognition
 **Variables:** μ_AB(d,t) [target], τ_A(B,d,t) [target], Σ_{A,B}(d₁,d₂,t) [secondary]
-**Framework:** H-Bar Model V3.0+
+**Framework:** Σ-Model Model V3.0+
 
 ---
 
@@ -41,7 +41,7 @@ Schema legibility μ_AB (Eq. 31): μ_AB = σ_A · φ · σ_B. Communicability of
 
 ### Agent Conditions
 
-| Condition | Agent A σ̂_A | Classification | H-Bar Prediction |
+| Condition | Agent A σ̂_A | Classification | Σ-Model Prediction |
 |-----------|-------------|---------------|------------------|
 | **High-σ̂_A transmitter** | OOD ratio > 0.55 | Structured-failure curriculum or high-performing frontier | ROI_Schema ≫ ROI_Fact |
 | **Low-σ̂_A transmitter** | OOD ratio < 0.40 at matched Acc_ID | Standard frontier models | ROI_Schema ≈ ROI_Fact (distinction collapses) |
@@ -81,7 +81,7 @@ All OOD test items are procedurally generated from COGS grammar — novel primit
 | Format | Same dyadic protocol: Transmitter → Receiver; same 3 conditions; same OOD test |
 | Time limit | 90 seconds per turn |
 
-**H-Bar sub-group prediction:** Expert transmitters (linguists, logicians) produce higher ROI_Schema than novice transmitters — because expert σ_A is higher, producing higher μ_AB. ROI_Schema > ROI_Fact for experts but not novices. Human |ζ̂_AB| is lower than frontier models — humans have calibrated social models of teaching effectiveness.
+**Σ-Model sub-group prediction:** Expert transmitters (linguists, logicians) produce higher ROI_Schema than novice transmitters — because expert σ_A is higher, producing higher μ_AB. ROI_Schema > ROI_Fact for experts but not novices. Human |ζ̂_AB| is lower than frontier models — humans have calibrated social models of teaching effectiveness.
 
 ### Stage 3: Cognitive Profiling
 
@@ -172,4 +172,4 @@ If confirmed: social evaluation must distinguish schema from fact transmission a
 
 ---
 
-*H-STB · H-Bar AlphaEvolve · March 2026*
+*H-STB · Σ-Model AlphaEvolve · March 2026*

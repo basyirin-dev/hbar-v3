@@ -1,6 +1,6 @@
-# arXiv Submission Guide for H-Bar Model Paper
+# arXiv Submission Guide for Σ-Model Model Paper
 
-This document provides step-by-step instructions for submitting the H-Bar Model paper to arXiv.
+This document provides step-by-step instructions for submitting the Σ-Model Model paper to arXiv.
 
 ## Prerequisites
 
@@ -17,12 +17,12 @@ arxiv-submission/
 ├── paper.tex                    # Main LaTeX file
 ├── references.bib               # Bibliography file
 ├── figures/
-│   ├── fig1_hbar.tex           # TikZ figures
+│   ├── fig1_sigma.tex           # TikZ figures
 │   ├── fig2_phases.tex
 │   ├── fig3_coupled.tex
 │   ├── fig4_diagnostic.tex
 │   ├── fig4_protocol.tex
-│   ├── hbar_main_results.png   # PNG images
+│   ├── sigma_main_results.png   # PNG images
 │   ├── prediction_6_comparison.png
 │   └── prediction_9_inflection.png
 └── README.txt                   # Optional: submission notes
@@ -100,7 +100,7 @@ Create a tar.gz archive of your submission:
 
 ```bash
 # From the directory containing paper.tex and figures/
-tar -czf hbar-arxiv-submission.tar.gz \
+tar -czf sigma-arxiv-submission.tar.gz \
     paper.tex \
     references.bib \
     figures/
@@ -113,7 +113,7 @@ tar -czf hbar-arxiv-submission.tar.gz \
 3. Select your category (e.g., Computer Science > Learning and Generalization)
 4. Upload your tar.gz file
 5. Fill in the submission form:
-   - **Title**: The H-Bar Model: Schema-Coherence Suppression as the Origin of Compositional Generalization Failure
+   - **Title**: The Σ-Model Model: Schema-Coherence Suppression as the Origin of Compositional Generalization Failure
    - **Authors**: Basyirin Amsyar bin Basri
    - **Abstract**: Copy from paper.tex
    - **Categories**: Select primary and secondary categories

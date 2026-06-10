@@ -31,13 +31,15 @@ Thumbs.db
 kaggle_payloads/
 hackathon/kaggle_payloads/
 
-# Hackathon data archives
+# Hackathon data archives (cancelled tracks)
 hackathon/COGS.zip
 hackathon/COGS/
 hackathon/SCAN.zip
 hackathon/SCAN/
 hackathon/am-i-compositional.zip
 hackathon/am-i-compositional/
+hackathon/hbar_env_stable/
+hackathon/SHA256SUMS
 
 # Jupyter
 .ipynb_checkpoints/
@@ -57,11 +59,73 @@ arxiv-submission/
 # Intermediate markdown files (not to be tracked)
 *.md
 !README.md
+!AGENTS.md
 !documentation/kaggle_submission_*.md
 !documentation/ARXIV_SUBMISSION_GUIDE.md
 !documentation/verification_report.md
 !documentation/register.md
-!paper/paper.md
+!docs/adrs/*.md
+!docs/lab-notebooks/*.md
+!docs/errata/*.md
+!docs/claims-registry.md
+!docs/alert-log.md
+!artifacts/model-cards/*.md
+!artifacts/datasheets/*.md
+!artifacts/demo-links.md
+
+# ==========================================
+# Build Artifacts & Raw Outputs
+# ==========================================
+paper/manuscript.pdf
+paper/figures/*.png
+results_b64/
+new_results_b64/
+h-bar-experiment-results/
+experiments/output/
+
+# ==========================================
+# Canonical Results (tracked explicitly)
+# ==========================================
+!results/canonical/
+
+# ==========================================
+# Local Dev & Personal
+# ==========================================
+.opencode/
+opencode.json.bak*
+
+# ==========================================
+# Internal / Personal Docs (caught by *.md)
+# ==========================================
+gap_conflict_map.md
+program.md
+integration_map.md
+checkpoint_a_review.md
+checkpoint_b_review.md
+CHANGELOG.md
+maintenance_workflow.md
+kaggle-runbook.md
+STUDY_PLAN.md
+STUDY_LOG.md
+STUDY_LESSONS.md
+docs/monitoring/
+
+# ==========================================
+# Audit Log Tracking (negations)
+# ==========================================
+!docs/drift-log.md
+!docs/issue-compilation.md
+!docs/figure-alt-text.md
+!docs/link-audit.md
 
 # Allow tracking of specific .tex files in documentation
 !documentation/appendix_b_cognitive_extensions.tex
+
+# Python package build artifacts
+code/*.egg-info/
+
+# OpenCode config
+!opencode.json
+
+# Scripts (track all)
+!scripts/*.py

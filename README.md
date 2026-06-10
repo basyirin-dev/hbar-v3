@@ -1,6 +1,6 @@
-# H-Bar Model V3.0+: Schema Coherence Framework for AI Agents
+# Σ-Model Model V3.0+: Schema Coherence Framework for AI Agents
 
-**Paper:** [The H-Bar Model V3.0+: Schema Coherence, Cognitive Faculty Evaluation, and Phase-Structured Curriculum Design for AI Agents](paper/paper.md)
+**Paper:** [The Σ-Model Model V3.0+: Schema Coherence, Cognitive Faculty Evaluation, and Phase-Structured Curriculum Design for AI Agents](paper/paper.md)
 
 **Status:** Preprint Draft | **Version:** 3.0+ (Full Reconstruction) | **Date:** March 2026
 
@@ -8,11 +8,11 @@
 
 ## Abstract/Overview
 
-The H-Bar Model V3.0+ formalises AI agent knowledge development as a coupled dynamical system centered on **schema coherence** $σ_A(d,t)$ — the degree to which an agent's representations are restructured around deep governing principles rather than surface-statistical regularities.
+The Σ-Model Model V3.0+ formalises AI agent knowledge development as a coupled dynamical system centered on **schema coherence** $σ_A(d,t)$ — the degree to which an agent's representations are restructured around deep governing principles rather than surface-statistical regularities.
 
 **Core Problem:** Current training pipelines optimise parametric depth $δ_A(d,t)$ without formally targeting schema coherence, producing agents that pass in-distribution evaluation while failing out-of-distribution recombination tasks.
 
-**Validation Goal:** This repository provides executable benchmarks and validation experiments that demonstrate the H-Bar framework's predictions, particularly the **High-$δ_A$/Low-$σ_A$ failure mode** where agents with high parametric depth but low schema coherence fail systematically on compositional generalisation tasks.
+**Validation Goal:** This repository provides executable benchmarks and validation experiments that demonstrate the Σ-Model framework's predictions, particularly the **High-$δ_A$/Low-$σ_A$ failure mode** where agents with high parametric depth but low schema coherence fail systematically on compositional generalisation tasks.
 
 **Key Contributions:**
 - Formal ODE system for schema coherence dynamics
@@ -27,11 +27,11 @@ The H-Bar Model V3.0+ formalises AI agent knowledge development as a coupled dyn
 ### Prerequisites
 
 **Software Versions:**
-- Python 3.9+ (recommended: 3.10)
+- Python 3.12+
 - Jupyter Notebook 6.0+
-- PyTorch 2.0+ or JAX 0.4+
-- NumPy 1.24+
-- Matplotlib 3.7+
+- PyTorch 2.10+
+- NumPy 2.0+
+- Matplotlib 3.8+
 
 **Hardware Requirements:**
 - Minimum: 16GB RAM, 4 CPU cores
@@ -40,7 +40,7 @@ The H-Bar Model V3.0+ formalises AI agent knowledge development as a coupled dyn
 
 **Dependencies:**
 ```bash
-pip install torch jax numpy matplotlib jupyter
+pip install -e ".[dev]"
 ```
 
 ### Data Overview
@@ -183,7 +183,7 @@ All eight predictions are tested in the benchmark suite:
 ```bibtex
 @misc{basri2026hbar,
   author = {Basyirin Amsyar bin Basri},
-  title = {The H-Bar Model V3.0+: Schema Coherence, Cognitive Faculty Evaluation, and Phase-Structured Curriculum Design for AI Agents},
+  title = {The Σ-Model Model V3.0+: Schema Coherence, Cognitive Faculty Evaluation, and Phase-Structured Curriculum Design for AI Agents},
   year = {2026},
   eprint = {arXiv:XXXX.XXXXX},
   archivePrefix = {arXiv},
@@ -209,38 +209,53 @@ This research was conducted as independent work without external funding.
 
 ---
 
-## Repository Structure
+## Repository Structure (Phase 0 Infra)
 
 ```
 hbar-v3/
-├── README.md                          # This file
-├── CITATION.cff                       # Citation metadata
-├── .gitignore                         # Git ignore rules
-├── paper/
-│   ├── paper.md                       # Main paper (Markdown)
-│   └── paper.pdf                      # Main paper (PDF)
-├── experiments/
-│   ├── h-bar-experiment.ipynb         # Main validation experiment
-│   └── h-bar-v3-cognitive-evaluation-benchmark-suite.ipynb  # Comprehensive benchmarks
-├── hackathon/
-│   ├── kaggle_submission_attention.md     # Attention track submission
-│   ├── kaggle_submission_executive.md     # Executive functions track submission
-│   ├── kaggle_submission_learning.md      # Learning track submission
-│   ├── kaggle_submission_metacognition.md # Metacognition track submission
-│   ├── kaggle_submission_social.md        # Social cognition track submission
-│   ├── track_attention.md                 # Attention track analysis
-│   ├── track_executive.md                 # Executive functions track analysis
-│   ├── track_learning.md                  # Learning track analysis
-│   ├── track_metacognition.md             # Metacognition track analysis
-│   ├── track_social.md                    # Social cognition track analysis
-│   ├── SCAN/                              # SCAN dataset
-│   ├── COGS/                              # COGS dataset
-│   └── am-i-compositional/                # Compositional dataset
-├── variants/                           # Variant analyses (existing structure)
-└── documentation/
-    ├── ARXIV_SUBMISSION_GUIDE.md       # arXiv submission instructions
-    ├── verification_report.md          # Verification report
-    └── appendix_b_cognitive_extensions.tex  # LaTeX appendix
+├── README.md                           # This file
+├── AGENTS.md                           # Agent system instructions
+├── CITATION.cff                        # Citation metadata
+├── .gitignore                          # Git ignore rules
+│
+├── paper/                              # ## Canonical paper source ##
+│   ├── paper.md                        # Single source of truth (Markdown)
+│   ├── Makefile                        # Build targets: tex, pdf, arxiv
+│   ├── templates/
+│   │   ├── latex-template.tex          # Pandoc LaTeX template
+│   │   └── lua-filters/               # Cross-ref, claim-extraction filters
+│   └── figures/                        # TikZ/PNG sources (from arxiv-submission)
+│
+├── code/sigma/                          # ## Modular Python package ##
+│   ├── ode/                            # ODE equations, sigma/delta/psi solvers
+│   ├── models/                         # SigmaTransformer, training loop
+│   ├── benchmarks/                     # Payload generation for all 5 tracks
+│   ├── config/                         # YAML config loader
+│   └── utils/                          # Metrics (reliability, CI), data, vocab
+│
+├── experiments/                        # ## Config-driven notebooks ##
+│   ├── configs/                        # YAML configs (base, h-ptb, h-afb, etc.)
+│   ├── h-bar-experiment.ipynb          # ODE validation (reads configs)
+│   └── h-bar-v3-cognitive-evaluation-benchmark-suite.ipynb  # Benchmark suite
+│
+├── docs/                               # ## Decision records, logs, errata ##
+│   ├── adrs/                           # Architecture Decision Records (4 so far)
+│   ├── lab-notebooks/                  # Research narrative log
+│   ├── errata/                         # Bug/error corrections
+│   ├── claims-registry.md              # Claim-to-evidence tracking
+│   └── alert-log.md                    # Publication monitoring (auto-generated)
+│
+├── artifacts/                          # ## Model cards, datasheets, demos ##
+│   ├── model-cards/                    # SigmaTransformer, frontier models
+│   ├── datasheets/                     # SCAN, COGS, PCFG-SET
+│   └── demo-links.md                   # Interactive demos (TBD)
+│
+├── scripts/                            # ## Automation ##
+│   └── monitor-pub.py                  # Keyword alert polling
+│
+├── hackathon/                          # Kaggle tracks, datasets (unchanged)
+├── variants/                           # Issue resolution variants (unchanged)
+└── documentation/                      # Kaggle submissions, register, reports
 ```
 
 ---
@@ -255,9 +270,7 @@ hbar-v3/
 
 2. **Install dependencies:**
    ```bash
-   pip install -r requirements.txt  # (if provided)
-   # Or manually:
-   pip install torch jax numpy matplotlib jupyter
+   pip install -e ".[dev]"
    ```
 
 3. **Run main validation:**

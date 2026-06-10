@@ -1,9 +1,9 @@
-# H-Bar Delegation Control Benchmark (H-DCB): Executive Functions Track Writeup
+# Σ-Model Delegation Control Benchmark (H-DCB): Executive Functions Track Writeup
 
-**Benchmark:** H-DCB — H-Bar Delegation Control Benchmark
+**Benchmark:** H-DCB — Σ-Model Delegation Control Benchmark
 **Track:** Executive Functions
 **Variables:** Ξ_A^I(t) [target], Ξ_A^P(t) [secondary], σ_A(d,t) [gate], δ_A(d,t) [controlled confound]
-**Framework:** H-Bar Model V3.0+
+**Framework:** Σ-Model Model V3.0+
 
 ---
 
@@ -21,7 +21,7 @@ What we see for the first time: **two agents with identical in-distribution accu
 
 The σ-gated delegation criterion (Eq. 23) formalises non-monotonicity: ∂Acc/∂ρ < 0 for σ_A < σ_critical; ∂Acc/∂ρ > 0 for σ_A ≥ σ_critical. The effective profile (Eq. 24): δ_eff = δ_A + Φ_A · f(δ_AI, σ_A), where f is σ_A-gated — at σ_A ≈ 0, f → 0 regardless of δ_AI magnitude.
 
-Ξ_A^I (inhibitory control) determines the probability of choosing the structural route over AI bypass. Ξ_A^P (planning) governs alignment with H-Bar phase prescriptions.
+Ξ_A^I (inhibitory control) determines the probability of choosing the structural route over AI bypass. Ξ_A^P (planning) governs alignment with Σ-Model phase prescriptions.
 
 **Distinguisher.** Any account treating δ_AI as additively beneficial predicts ∂Acc/∂ρ > 0 for all conditions. H-DCB produces a sign reversal — structurally impossible under monotone models.
 
@@ -42,7 +42,7 @@ The σ-gated delegation criterion (Eq. 23) formalises non-monotonicity: ∂Acc/�
 
 ### Agent Conditions
 
-| Condition | Classification | H-Bar Prediction |
+| Condition | Classification | Σ-Model Prediction |
 |-----------|---------------|------------------|
 | **Low-σ̂_A** | Frontier models; H-PTB OOD ratio < 0.40 at Acc_ID > 0.85 | β̂₁ < 0 across full ρ range |
 | **High-σ̂_A** | Models fine-tuned on H-PTB Condition C/D; OOD ratio > 0.55 at matched Acc_ID | β̂₁ > 0 at high ρ levels |
@@ -53,7 +53,7 @@ Each item paired with a plausible but structurally incorrect "hint." Agent must 
 
 ### Planning Task (Ξ_A^P)
 
-Agent designs training plan for a model at 90% ID / 15% OOD with 10,000 steps. **PQ** = alignment with H-Bar phase prescriptions ∈ [0,1].
+Agent designs training plan for a model at 90% ID / 15% OOD with 10,000 steps. **PQ** = alignment with Σ-Model phase prescriptions ∈ [0,1].
 
 ---
 
@@ -74,7 +74,7 @@ All evaluation items are drawn from COGS OOD compositional splits — procedural
 | Format | Same retrieval-density manipulation and inhibitory conflict task |
 | Time limit | 60 seconds per item |
 
-**H-Bar sub-group prediction:** Novices show high BCR and β̂₁ < 0 (retrieval hurts those who cannot evaluate hint quality). Domain experts show low BCR and β̂₁ > 0 (retrieval helps those who can filter structurally valid hints). This independent dissociation tests the σ_A-gated delegation mechanism in a non-AI system.
+**Σ-Model sub-group prediction:** Novices show high BCR and β̂₁ < 0 (retrieval hurts those who cannot evaluate hint quality). Domain experts show low BCR and β̂₁ > 0 (retrieval helps those who can filter structurally valid hints). This independent dissociation tests the σ_A-gated delegation mechanism in a non-AI system.
 
 ### Stage 3: Cognitive Profiling
 
@@ -82,7 +82,7 @@ Each model receives a **three-vector executive profile:**
 
 1. **Delegation response curve** — β̂₁ slope across ρ ∈ {0, 0.2, …, 1.0}
 2. **Inhibitory control** — BCR at ρ = 1.0 (ceiling measure of bypass failure)
-3. **Planning quality** — PQ against H-Bar phase prescriptions
+3. **Planning quality** — PQ against Σ-Model phase prescriptions
 
 This combined profile characterises *how* the agent manages the delegation-structural engagement tradeoff. No existing benchmark produces this multi-faceted executive profile.
 
@@ -161,7 +161,7 @@ All validity components verified. Temperature = 0 across all scoring runs.
 
 ## Differentiation
 
-H-DCB is the first to demonstrate non-monotonic delegation benefit. RAG benchmarks assume monotone benefit. Self-RAG modulates *whether* to retrieve; H-DCB tests *how much*. FLARE optimises timing; H-DCB tests whether σ_A gates retrieval benefit. GoT/ToT score correctness; H-DCB scores against H-Bar phase prescriptions.
+H-DCB is the first to demonstrate non-monotonic delegation benefit. RAG benchmarks assume monotone benefit. Self-RAG modulates *whether* to retrieve; H-DCB tests *how much*. FLARE optimises timing; H-DCB tests whether σ_A gates retrieval benefit. GoT/ToT score correctness; H-DCB scores against Σ-Model phase prescriptions.
 
 ---
 
@@ -173,4 +173,4 @@ If confirmed: RAG evaluation must incorporate σ_A. Optimal delegation density i
 
 ---
 
-*H-DCB · H-Bar AlphaEvolve · March 2026*
+*H-DCB · Σ-Model AlphaEvolve · March 2026*

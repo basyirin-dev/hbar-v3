@@ -1,9 +1,9 @@
-# H-Bar Phase Transition Benchmark (H-PTB): Learning Track Writeup
+# Σ-Model Phase Transition Benchmark (H-PTB): Learning Track Writeup
 
-**Benchmark:** H-PTB — H-Bar Phase Transition Benchmark
+**Benchmark:** H-PTB — Σ-Model Phase Transition Benchmark
 **Track:** Learning
 **Variables:** σ_A(d,t) [target], δ_A(d,t) [controlled confound], α_A(d,t) [gate]
-**Framework:** H-Bar Model V3.0+
+**Framework:** Σ-Model Model V3.0+
 
 ---
 
@@ -21,7 +21,7 @@ What we see for the first time: **models that pass standard evaluation can be fo
 
 ## Theoretical Grounding
 
-The H-Bar Model formalises agent knowledge as a coupled dynamical system with three core variables per domain: parametric depth δ_A, breadth β_A, and schema coherence σ_A. Schema coherence has its own ODE (Eq. 28 in H-Bar V3.0+):
+The Σ-Model Model formalises agent knowledge as a coupled dynamical system with three core variables per domain: parametric depth δ_A, breadth β_A, and schema coherence σ_A. Schema coherence has its own ODE (Eq. 28 in Σ-Model V3.0+):
 
 σ̇_A = ρ · P_A · α_A · (1 − σ_A) − ε_σ · σ_A · Ω_AI
 
@@ -29,7 +29,7 @@ The critical gating term is **α_A** — attentional fidelity — the degree to 
 
 The σ_critical threshold defines the Phase 2 transition: below it, schema coherence cannot sustain itself; above it, compositional generalisation accelerates non-linearly. H-PTB detects this transition via the OOD ratio trajectory.
 
-**Distinguisher.** A δ_A-only model predicts monotonic OOD improvement with no breakpoint. H-Bar predicts a distinct inflection whose timing varies across conditions — a falsifiable prediction.
+**Distinguisher.** A δ_A-only model predicts monotonic OOD improvement with no breakpoint. Σ-Model predicts a distinct inflection whose timing varies across conditions — a falsifiable prediction.
 
 ---
 
@@ -41,7 +41,7 @@ The σ_critical threshold defines the Phase 2 transition: below it, schema coher
 
 ### Four Conditions
 
-| Condition | Description | H-Bar Prediction |
+| Condition | Description | Σ-Model Prediction |
 |-----------|-------------|------------------|
 | **A — Baseline** | Random training order, no curriculum | Latest or no breakpoint; OOD ratio near-zero |
 | **B — Difficulty-Ordered** | Easy-to-hard curriculum (Bengio et al., 2009) | Earlier breakpoint than A, but via δ_A acceleration only |
@@ -110,7 +110,7 @@ Each frontier model receives a **4-condition OOD ratio profile** — a vector of
 |-----------|--------|----------------|-----------|
 | Baseline | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] |
 | MAML | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] |
-| H-Bar P1 | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] |
+| Σ-Model P1 | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] | [INSERT KAGGLE RESULT HERE] |
 
 ### Human Baseline
 
@@ -152,8 +152,8 @@ All validity components verified prior to deployment. Temperature = 0 (greedy de
 
 The H-PTB demonstrates that a training-time structural breakpoint exists, is detectable via OOD ratio tracking, and is manipulable through α_A-targeted interventions. This shifts evaluation from *Did the model memorise the distribution?* to *Did the model cross σ_critical?*
 
-If confirmed: current pipelines that optimise δ_A without targeting σ_A produce brittle agents, and the fix is contrastive interventions that elevate α_A through the gate the H-Bar ODE formalises.
+If confirmed: current pipelines that optimise δ_A without targeting σ_A produce brittle agents, and the fix is contrastive interventions that elevate α_A through the gate the Σ-Model ODE formalises.
 
 ---
 
-*H-PTB · H-Bar AlphaEvolve · March 2026*
+*H-PTB · Σ-Model AlphaEvolve · March 2026*

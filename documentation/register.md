@@ -101,7 +101,7 @@ Priority: all `[N]`-tagged issues, then `[P]`, then `[Ψ]`, then `[R]`.
 ## ISSUE #9
 **Tag:** [N]
 **Severity:** MEDIUM
-**Description:** The failure to distinguish H-Bar's structural gap from reported meta-learning and training optimizations allows the reviewer to argue σ is merely a proxy for well-optimised δ.
+**Description:** The failure to distinguish Σ-Model's structural gap from reported meta-learning and training optimizations allows the reviewer to argue σ is merely a proxy for well-optimised δ.
 **Status:** RESOLVED — Variant E, 2026-03-30
 
 ## ISSUE #10
@@ -432,3 +432,49 @@ Priority: all `[Δ]`, `[B]`, `[L]`, `[I]`, `[T]` issues. The `[T]` issue (score 
 **Severity:** LOW
 **Description:** The claim of a 73.41% winning probability is entirely unsupported and lacks academic foundation.
 **Status:** RESOLVED — Batch R3, 2026-03-30. Added §10.12 Winning Probability Claim acknowledging unsupported claim and recommending removal or qualitative replacement.
+
+---
+
+## POST-REVIEW INFRASTRUCTURE ISSUES (Resolved 2026-06-06)
+
+Issues identified during daily workflow execution (see `docs/issue-compilation.md`), all resolved across Phases 1a, 1b, and 2.
+
+### I-01 — Notebook hardcodes `/kaggle/working` path
+**Tag:** [I] **Severity:** HIGH
+**Status:** RESOLVED — 2026-06-06. Added Kaggle detection guard (`os.path.isdir('/kaggle')`) to both notebook Cells 0/1.
+
+### I-02 — SCANDataset defined inline in notebook
+**Tag:** [I] **Severity:** MEDIUM
+**Status:** RESOLVED — 2026-06-06. Moved SCANDataset class from notebook Cell 3 to `code/sigma/utils/data.py`; notebook imports via `from sigma.utils.data import SCANDataset`.
+
+### I-03 — DataLoader `num_workers` hardcoded to 2
+**Tag:** [I] **Severity:** LOW
+**Status:** RESOLVED — 2026-06-06. Dynamic `NUM_WORKERS = 0 if not torch.cuda.is_available() else min(2, os.cpu_count() or 1)`.
+
+### I-04 / C-02 — Missing seaborn dependency
+**Tag:** [I] **Severity:** LOW
+**Status:** RESOLVED — 2026-06-06. Added `"seaborn>=0.13"` to `pyproject.toml` dependencies.
+
+### T-01 — Publication monitor lacks HTTP retry
+**Tag:** [T] **Severity:** MEDIUM
+**Status:** RESOLVED — 2026-06-06. Added `_retry_urlopen()` with exponential backoff (3 attempts, 2s/4s/8s) in `scripts/monitor-pub.py`.
+
+### T-02 — Keyword clusters too narrow
+**Tag:** [T] **Severity:** LOW
+**Status:** RESOLVED — 2026-06-06. Added 5 new keyword clusters (grokking_phase_transition, metacognition_AI, executive_function_AI, theory_of_mind_LM, agentic_evaluation) to `monitor-pub.py`.
+
+### T-03 — No formal test suite
+**Tag:** [T] **Severity:** MEDIUM
+**Status:** RESOLVED — 2026-06-06. Created `tests/test_ode.py` (18 tests) and `tests/test_config.py` (13 tests). 31/31 pass.
+
+### T-04 — No local smoke test
+**Tag:** [T] **Severity:** MEDIUM
+**Status:** RESOLVED — 2026-06-06. Created `scripts/smoke_test.py` — 0.5s execution, ALL CHECKS PASSED.
+
+### P-01 — 5 new papers need CITE or ADDRESS
+**Tag:** [R] **Severity:** MEDIUM
+**Status:** RESOLVED — 2026-06-06. Redhardt (ADDRESS §2.2.1), TailLoR (CITE §3.3.4), Montanari & Wang (CITE §7), Grokking-as-Phase-Transition (CITE §7), E2H Reasoner (CITE §7). Reference entries added to §14.
+
+### P-02 — gap_conflict_map.md needs refresh
+**Tag:** [I] **Severity:** MEDIUM
+**Status:** RESOLVED — 2026-06-06. Added Redhardt to Q1, TailLoR to Q4, new Q12 with 3 papers.

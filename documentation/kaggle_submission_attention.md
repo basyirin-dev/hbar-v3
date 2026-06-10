@@ -1,9 +1,9 @@
-# H-Bar Attentional Fidelity Benchmark (H-AFB): Attention Track Writeup
+# Σ-Model Attentional Fidelity Benchmark (H-AFB): Attention Track Writeup
 
-**Benchmark:** H-AFB — H-Bar Attentional Fidelity Benchmark
+**Benchmark:** H-AFB — Σ-Model Attentional Fidelity Benchmark
 **Track:** Attention
 **Variables:** α_A(d,t) [target], C_A(d,t) [mechanism], δ_A(d,t) [controlled confound]
-**Framework:** H-Bar Model V3.0+
+**Framework:** Σ-Model Model V3.0+
 
 ---
 
@@ -47,7 +47,7 @@ The first term grows α_A through contrastive training C_A. The second term erod
 
 **SRI (Surface Reliance Index):** SRI = Δ_surf − (1 − α̂_A). Positive SRI indicates active misleading exceeds passive absence.
 
-**H-Bar prediction:** Δ_surf > (Acc_ID − Acc_OOD-struct) for low-α_A agents.
+**Σ-Model prediction:** Δ_surf > (Acc_ID − Acc_OOD-struct) for low-α_A agents.
 
 ---
 
@@ -68,7 +68,7 @@ All items are procedurally generated from SCAN grammar rules with the surface co
 | Format | Same three-condition battery as AI evaluation |
 | Time limit | 30 seconds per item |
 
-**H-Bar sub-group prediction:** Humans show a smaller surface-conflict drop than frontier models — human training includes explicit instruction in rule-based reasoning. Novices show Δ_surf comparable to frontier models; experts (linguists, logicians) show near-zero Δ_surf.
+**Σ-Model sub-group prediction:** Humans show a smaller surface-conflict drop than frontier models — human training includes explicit instruction in rule-based reasoning. Novices show Δ_surf comparable to frontier models; experts (linguists, logicians) show near-zero Δ_surf.
 
 ### Stage 3: Cognitive Profiling
 
@@ -156,4 +156,4 @@ If confirmed: training must include contrastive tasks that build α_A. The α_A 
 
 ---
 
-*H-AFB · H-Bar AlphaEvolve · March 2026*
+*H-AFB · Σ-Model AlphaEvolve · March 2026*

@@ -1,0 +1,53 @@
+# Σ-Model — Base Experiment Configuration
+# Shared parameters across all experiment conditions
+# See also: sigma/ode/equations.py, sigma/models/training.py
+
+reproducibility:
+  global_seed: 2024
+
+model:
+  d_model: 128
+  nhead: 4
+  num_layers: 2
+  dim_ff: 512
+  dropout: 0.1
+  pad_idx: 0
+
+training:
+  n_timesteps: 2000
+  eval_every: 50
+  lr: 0.001
+  batch_size: 64
+  max_seq_len: 50
+  gradient_clip_norm: 1.0
+  use_amp: true
+  num_workers: 2
+
+ode:
+  sigma_critical: 0.15     # confirmed: training threshold (Cell 4)
+  delta_star: 0.55
+  noise_std: 0.012
+  gompertz_a: -4.0
+  gompertz_b: -3e-3
+  sigma_amplitude: 0.85
+
+conditions:
+  baseline:
+    use_curriculum: false
+    coupling_mode: null
+    coupling_str: 0.0
+    sigma_init: 0.10
+  additive:
+    use_curriculum: true
+    coupling_mode: additive
+    coupling_str: 0.20
+    sigma_init: 0.05
+  multiplicative:
+    use_curriculum: true
+    coupling_mode: multiplicative
+    coupling_str: 0.20
+    sigma_init: 0.05
+
+experiment:
+  n_runs_per_condition: 15
+  save_checkpoints: false

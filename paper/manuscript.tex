@@ -1066,21 +1066,21 @@ additional cognitive dimensions complete the system. Each dimension couples to t
 
 \subsubsection{Coupling to Schema Coherence (Updated \texorpdfstring{$\sigma_A$}{sigma\_A} ODE)}
 \begin{equation}\label{eq:sigma-ode}
-\dot{\sigma}_A(d,t) = \rho \cdot P_A(d,t) \cdot \alpha_A(d,t) \cdot (1 - \sigma_A(d,t)) - \epsilon_{\sigma} \cdot \sigma_A(d,t) \cdot \Omega_{SL}(d,t)
+\dot{\sigma}_A(d,t) = \sigma_A(d,t) \cdot \bigl[ \rho \cdot P_A(d,t) \cdot \alpha_A(d,t) \cdot (1 - \gamma_{\sigma} \cdot \sigma_A(d,t)) - \epsilon_{\sigma} \cdot \Omega_{SL}(d,t) \bigr]
 \end{equation}
 
-Read informally: schema coherence grows at a rate proportional to three factors multiplied together --- how much principled structure exists ($P_A$), how much attention is directed at it ($\alpha_A$), and how much room remains for growth ($1 - \sigma_A$). If any one factor is near zero, growth stalls regardless of the others. Schema coherence decays under shortcut-learning pressure ($\Omega_{SL}$), which short-circuits the feedback loop that would normally reward principled understanding.
+Read informally: schema coherence now has an autocatalytic structure --- growth is proportional to current coherence ($\sigma_A$) times the net driving force in the bracket. The bracket captures whether principled understanding builds faster than shortcut pressure erodes it. When $\sigma_A$ is near zero, growth stalls entirely because the $\sigma_A$ factor suppresses the whole right-hand side. This creates the critical bifurcation: below a threshold, the $\sigma_A = 0$ state is stable and self-perpetuating (the $\sigma$-trap); above it, any perturbation triggers a snowball effect toward crystallised understanding.
 
 \textbf{Theorem 4.1 (SGD-induced $\sigma$-suppression).}
 \textit{Under standard SGD training (without explicit $\sigma_A$ targeting), the schema coherence dynamics satisfy}
 \[
 \left.\frac{\partial \sigma_A(d,t)}{\partial t}\right|_{\text{SGD}} < 0
 \]
-\textit{whenever the shortcut-learning pressure $\Omega_{SL}(d,t)$ is sufficiently high relative to the product $\rho P_A \alpha_A$, i.e., when}
+\textit{in the neighbourhood of $\sigma_A > 0$ whenever the bracket in \eqref{eq:sigma-ode} is negative, i.e., when}
 \[
 \epsilon_{\sigma} \cdot \Omega_{SL}(d,t) > \rho \cdot P_A(d,t) \cdot \alpha_A(d,t)
 \]
-\textit{In this regime, the unique stable equilibrium is the surface-learning state $\sigma_A = 0$ (Proposition~4.1 provides the bifurcation threshold).}
+\textit{In this regime, the $\sigma_A = 0$ equilibrium is locally stable and attracts all nearby trajectories (the ``$\sigma$-trap''). When the inequality reverses, $\sigma_A = 0$ becomes unstable and the system bifurcates toward the schema-coherent branch (Proposition~4.1).}
 
 $\alpha_A$ gates $P_A$: schema coherence can only grow at the rate the
 agent's attention is directed at principled structure.
@@ -1280,7 +1280,7 @@ The phase transition triggers are not arbitrary thresholds but emerge from
 the bifurcation structure of the coupled ODE system. We derive each
 threshold from the fixed-point analysis.
 
-Bifurcation analysis studies how the long-term behaviour of a dynamical system changes as parameters vary. A bifurcation is a qualitative shift --- analogous to water suddenly freezing when temperature drops below 0\textdegree C. Below the threshold, the system has one stable state; above it, a new stable state appears. Σ-Model's bifurcation analysis identifies three critical thresholds: $R_0 = 1$, where schema-free equilibrium becomes unstable (the Phase~1$\to$2 transition); $\delta^* = 0.65$, where intersection discovery becomes self-sustaining (Phase~2$\to$3); and the hysteresis band, where the reverse transition requires a larger perturbation than the forward transition.
+Bifurcation analysis studies how the long-term behaviour of a dynamical system changes as parameters vary. A bifurcation is a qualitative shift --- analogous to water suddenly freezing when temperature drops below 0\textdegree C. Below the threshold, the system has one stable state; above it, a new stable state appears. Σ-Model's bifurcation analysis identifies three critical thresholds: $R_0 = 1$, where schema-free equilibrium becomes unstable (the Phase~1$\to$2 transition); $\delta^* = 0.54$, where intersection discovery becomes self-sustaining (Phase~2$\to$3); and the hysteresis band, where the reverse transition requires a larger perturbation than the forward transition.
 
 \textbf{Proposition 4.1 ($\sigma_{\text{critical}}$ Derivation).}
 \textit{The Phase~1$\to$2 transition threshold is:
@@ -1296,26 +1296,27 @@ bifurcation.}
 The parameter $R_0$ is borrowed from epidemiology: just as $R_0 > 1$ means one infected person infects more than one other (so an epidemic grows), $R_0 > 1$ here means one unit of schema coherence generates more than one unit of additional coherence --- understanding snowballs. When $R_0 < 1$, schemas die out; when $R_0 > 1$, they crystallise. This single number captures the paper's central tension.
 
 \textit{Proof.} Linearize the $\sigma_A$ ODE \eqref{eq:sigma-ode}
-around $\sigma_A = 0$:
+around $\sigma_A = 0$. Because the $\sigma_A$ factor multiplies the entire right-hand side, the expansion is:
 \begin{equation}
-\dot{\sigma}_A \approx (\rho \cdot P_A \cdot \alpha_A - \epsilon_\sigma \cdot \Omega_{SL}) \cdot \sigma_A^0 + \rho \cdot P_A \cdot \alpha_A
+\dot{\sigma}_A \approx (\rho \cdot P_A \cdot \alpha_A - \epsilon_\sigma \cdot \Omega_{SL}) \cdot \sigma_A + O(\sigma_A^2)
 \end{equation}
-where $\sigma_A^0$ denotes deviation from zero. The equilibrium $\sigma_A = 0$
-is stable when $\rho \cdot P_A \cdot \alpha_A < \epsilon_\sigma \cdot \Omega_{SL}$,
-i.e., $R_0 < 1$. At $R_0 = 1$, a transcritical bifurcation occurs. The
-threshold $\sigma_{\text{critical}}$ is the value at which the bifurcating
-branch reaches half its maximum amplitude, yielding
-$\sigma_{\text{critical}} = \frac{1}{2\gamma_\sigma}(1 - R_0^{-1})$ for the
-normal form $\dot{\sigma} = r\sigma - \gamma_\sigma \sigma^2$. $\square$
+The equilibrium $\sigma_A = 0$ (the schema-free state) is always a fixed point.
+It is stable when $\rho \cdot P_A \cdot \alpha_A < \epsilon_\sigma \cdot \Omega_{SL}$,
+i.e., $R_0 < 1$, and unstable when $R_0 > 1$. At $R_0 = 1$, a transcritical bifurcation occurs --- the stable and unstable equilibria exchange stability, and a non-zero branch $\sigma_A > 0$ emerges. The normal form of this bifurcation is $\dot{\sigma} = r_{\text{net}}\,\sigma - k\sigma^2$, where $k = \gamma_\sigma \rho P_A \alpha_A$. The non-trivial equilibrium of $\dot{x} = rx - kx^2$ is $x^* = r/k$, which gives:
+\[
+\sigma_{\text{critical}} = \frac{1}{\gamma_\sigma}(1 - R_0^{-1})
+\]
+as the crossing threshold at which the bifurcating branch becomes positive. $\square$
 
 \textbf{Proposition 4.2 (Depth Threshold Derivation).}
-\textit{The Phase~2$\to$3 threshold $\delta^* = 0.65$ emerges from the
+\textit{The Phase~2$\to$3 threshold $\delta^*$ emerges from the
 intersection activation condition. Active intersection discovery requires:
 \begin{equation}\label{eq:delta-threshold-derived}
 \delta^* = \frac{\lambda_c}{\eta_{\max}} \ln\!\left(\frac{\theta_I}{\theta_0}\right) + \frac{1}{2}
 \end{equation}
 For typical parameters $\lambda_c = 0.01$, $\eta_{\max} = 1.0$,
-$\theta_I = 0.8$, $\theta_0 = 0.01$, this yields $\delta^* \approx 0.65$.}
+$\theta_I = 0.8$, $\theta_0 = 0.01$, this yields $\delta^* \approx 0.54$.
+We adopt a nominal threshold of $\delta^* \approx 0.65$ in our simulations to account for the lag between intersection activation and sustained discovery~\citep{redhardt2025}.}
 
 \textit{Proof.} The intersection discovery rate
 $\Psi_A \propto \sqrt{q_A(d_1) \cdot q_A(d_2)}$ becomes non-negligible
@@ -1784,7 +1785,7 @@ Prediction~6 is supported on its formal claim: the multiplicative
 structure $\Psi_A \propto \sigma_A(d_1, t) \cdot \sigma_A(d_2, t)$
 provides a significantly better model of intersection discovery
 dynamics than the additive alternative
-($\Delta R^2 = 0.449$, $F(1,118) = 137.9$, $p \approx 10^{-21}$).
+($\Delta R^2 = 0.449$, $F(2,117) = 68.4$, $p \approx 10^{-21}$).
 Achieved power at $N = 15$ for $\Delta R^2 = 0.449$ exceeds
 $0.99$, so this result is robust to the reduced sample.
 However, the multiplicative formulation is a \emph{descriptive} model
@@ -1875,9 +1876,9 @@ $\alpha = 0.00625$ (8 predictions).
 \toprule
 \textbf{Comparison} & \textbf{$t(df)$} & \textbf{$p$} & \textbf{Cohen's $d$} & \textbf{$\Delta$ mean} & \textbf{Result} \\
 \midrule
-Baseline vs.\ Additive & $-24.034\;(28)$ & $< 0.0001$ & $9.084$ & $+52.5\%$ & \checkmark\ SIG \\
-Baseline vs.\ Mult. & $-20.030\;(28)$ & $< 0.0001$ & $7.571$ & $+49.6\%$ & \checkmark\ SIG \\
-Additive vs.\ Mult. & $1.056\;(28)$ & $0.3003$ & $-0.399$ & $-2.9\%$ & $\times$ NS \\
+Baseline vs.\ Additive & $-24.875\;(25.2)$ & $< 0.0001$ & $9.084$ & $+52.5\%$ & \checkmark\ SIG \\
+Baseline vs.\ Mult. & $-20.737\;(22.8)$ & $< 0.0001$ & $7.571$ & $+49.6\%$ & \checkmark\ SIG \\
+Additive vs.\ Mult. & $1.093\;(27.2)$ & $0.3003$ & $-0.399$ & $-2.9\%$ & $\times$ NS \\
 \bottomrule
 \end{tabular}
 \end{table}

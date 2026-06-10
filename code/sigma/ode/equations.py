@@ -23,12 +23,13 @@ def sigma_ode(
     alpha_a: float,
     epsilon_sigma: float,
     omega_ai: float,
+    gamma_sigma: float = 0.5,
 ) -> float:
     """Compute the schema coherence ODE right-hand side (d sigma_A / dt).
 
-    Maps to: Eq. 28 in manuscript.tex (sigma_A ODE with alpha_A gating).
-    Growth term: rho * P_A * alpha_A * (1 - sigma_A).
-    Decay term: epsilon_sigma * sigma_A * Omega_SL.
+    Maps to: Eq. 28 in manuscript.tex (sigma_A ODE, autocatalytic form).
+    Autocatalytic structure: sigma_A * [rho * P_A * alpha_A * (1 - gamma_sigma * sigma_A) - epsilon_sigma * Omega_SL].
+    The sigma_A factor creates a true transcritical bifurcation at R_0 = 1.
 
     Args:
         sigma: Current schema coherence [0, 1].
@@ -37,13 +38,13 @@ def sigma_ode(
         alpha_a: Attentional fidelity [0, 1].
         epsilon_sigma: Shortcut suppression coefficient.
         omega_ai: Shortcut-learning pressure (Omega_SL).
+        gamma_sigma: Schema saturation coefficient [0, 1]; governs carrying capacity.
 
     Returns:
         Time derivative d sigma_A / dt (unbounded float, should be clipped to [0,1]).
     """
-    growth = rho * p_a * alpha_a * (1.0 - sigma)
-    decay = epsilon_sigma * sigma * omega_ai
-    return growth - decay
+    bracket = rho * p_a * alpha_a * (1.0 - gamma_sigma * sigma) - epsilon_sigma * omega_ai
+    return sigma * bracket
 
 
 def delta_ode(

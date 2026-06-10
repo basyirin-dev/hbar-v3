@@ -267,9 +267,9 @@ regimes that reliably induce schema crystallisation.
 \paragraph{Recent Work Differentiation}
 
 \textbf{\cite{noviello2025neuroscienceinspiredualprocess} --- MIRAGE dual-process model.}
-Noviello et al.\ argue that compositional generalisation requires a
-separate symbolic System-2 module. The Σ-Model framework demonstrates that
-this structural requirement is unnecessary by formalising compositional
+Noviello et al.\ propose a dual-process model in which compositional
+generalisation is supported by a separate symbolic System-2 module. The Σ-Model framework demonstrates that
+this structural postulate is unnecessary by formalising compositional
 capacity as a developmental trajectory within a single ODE system.
 Specifically, schema coherence $\sigma_A(d,t)$ grows continuously
 through the $\sigma_A$ ODE \eqref{eq:sigma-ode}, where the
@@ -291,8 +291,8 @@ $R_A^{\text{surface}}$ is high.
 Thus Σ-Model predicts that recursion failures are a
 $\sigma_A$-diagnostic, not a capacity limit.
 
-\textbf{\cite{bruns2025exploringcompositionalgeneralizationin} --- RASP structural representability proof.}
-Bruns proves via RASP that transformers possess the structural capacity
+\textbf{\cite{bruns2025exploringcompositionalgeneralizationin} --- RASP structural representability.}
+Bruns demonstrates via RASP that transformers possess the structural capacity
 to represent compositional operations. Σ-Model's framework is
 complementary: the RASP proof establishes that
 $\sigma_{\text{critical}}$-crossing is theoretically possible, while
@@ -377,7 +377,7 @@ or collective schema communication.
 ten faculties and identify Learning, Metacognition, Attention, Executive
 Functions, and Social Cognition as having large evaluation coverage gaps.
 \cite{chollet2019measureintelligence} proposes ARC as a generalisation
-benchmark. \cite{morris2023levelsagi} establish a Levels of AGI framework.
+benchmark. \cite{morris2024levelsagi} establish a Levels of AGI framework.
 
 \textbf{Gap statement.} Existing cognitive evaluation frameworks specify
 what should be measured but provide no formal theoretical grounding for
@@ -1176,7 +1176,8 @@ does schema coherence acquired through one modality transfer to another?
 \begin{equation}\label{eq:modalities}
 M = \{\text{text, visual, auditory, sensorimotor, symbolic}\}
 \end{equation}
-
+This five-modality taxonomy follows the standard multimodal machine learning survey~\citep{baltrušaitis2018multimodal}.
+ 
 \subsubsection{Product Space Construction}
 
 V3.0 extends all Σ-Model state variables from domain-indexed
@@ -1227,7 +1228,7 @@ V_A(B,f,t) = CI(B,f) \cdot FD(B) \cdot DG(B) \cdot R_A(B,f,t)
 \section{Reliability and Pre-Audit Protocol}\label{sec:reliability}
 % ============================================================
 
-A benchmark's validity is only meaningful if its scores are consistent --- a benchmark that produces wildly different scores across repeated administrations cannot support valid claims about any cognitive faculty. The reliability function formalises this consistency requirement.
+A benchmark's validity is only meaningful if its scores are consistent --- a benchmark that produces wildly different scores across repeated administrations cannot support valid claims about any cognitive faculty. The reliability function formalises this consistency requirement, drawing on classical test theory~\citep{crocker1986introduction}.
 
 \subsection{Extension~9 --- Benchmark Reliability Function \texorpdfstring{$R_A(B,f,t)$}{R\_A(B,f,t)}}\label{sec:reliability-fn}
 
@@ -1440,14 +1441,14 @@ across the $\sigma_{\text{critical}}$ bifurcation threshold.}
 
 \noindent\rule{\linewidth}{0.4pt}
 
-Since the first version of this work, six independent groups have produced results consistent with Σ-Model's phase structure. We summarise each and note where Σ-Model extends beyond their findings.
+Converging evidence from six independent groups supports Σ-Model's predicted phase structure. We summarise each contribution and note where Σ-Model extends beyond their findings. While some recent work frames grokking primarily as an optimisation efficiency phenomenon~\citep{liu2022grokking}, the Σ-Model's bifurcation analysis provides a complementary macroscopic dynamical-systems description: $\sigma_{\text{critical}}$-crossing explains \emph{when} and \emph{why} grokking occurs, independent of the specific optimisation path.
 
 \begin{itemize}[nosep]
 \item \textbf{Montanari \& Wang~\cite{montanari2026}.} Derive phase transitions for feature learning in neural networks from first principles. \emph{Σ-Model complement:} provides independent mathematical foundations for $\sigma_{\text{critical}}$-crossing as a generic learning dynamic, not a framework-specific artefact.
 
 \item \textbf{Cullen et al.~\cite{cullen2026basinselectiongrokking}.} Analyse grokking---sudden generalisation long after overfitting---through Singular Learning Theory, identifying it as a basin-selection transition between memorising and generalising equilibria. \emph{Σ-Model complement:} $\sigma_{\text{critical}}$ \eqref{eq:sigma-critical} supplies the formal trigger condition that extends this explanation beyond algorithmic grokking to domain-general $\sigma_A$ dynamics.
 
-\item \textbf{Wang~\cite{wang2026grokkingdimensionalphase}.} Characterises grokking as a dimensional phase transition with self-organised criticality. \emph{Σ-Model complement:} additional evidence that $\sigma_{\text{critical}}$-crossing is a generic property of neural training dynamics rather than an algorithm-specific phenomenon.
+\item \textbf{Wang~\cite{wang2026grokkingdimensionalphase}.} Characterises grokking as a dimensional phase transition. \emph{Σ-Model complement:} additional evidence that $\sigma_{\text{critical}}$-crossing is a generic property of neural training dynamics rather than an algorithm-specific phenomenon.
 
 \item \textbf{Xu~\cite{xu2026earlywarning}.} Identifies commutator defects in the loss landscape as universal early-warning signals for grokking across SCAN and modular arithmetic. \emph{Σ-Model complement:} provides an independent geometric diagnostic for the approach to $\sigma_{\text{critical}}$.
 
@@ -1514,7 +1515,7 @@ Low $\delta_A$, Low $\sigma_A$ & Low & Low & Low \\
 magnitude estimate, effect, condition comparison, alternative.
 
 \textbf{Step~5 --- Specify the Falsification Condition.} Written in
-pre-registration format before data collection.
+pre-registration format before data collection, following established preregistration standards~\citep{pineau2021reproducibility}.
 
 \noindent\rule{\linewidth}{0.4pt}
 
@@ -1680,7 +1681,7 @@ per run) with parameters from the base configuration.
 \textbf{Baseline (high-$\delta_A$/low-$\sigma_A$).}
 In-distribution accuracy reached $90.2 \pm 2.3\%$ while out-of-distribution
 compositional accuracy remained at $44.5 \pm 4.7\%$, producing a
-compositional gap of 45.6~percentage points. The model remained in
+compositional gap of 45.6~percentage points, consistent with prior SCAN and COGS baseline results~\citep{lake2018generalizationwithoutsystematicity,kim2020cogscompositionalgeneralizationchallenge}. The model remained in
 Phase~0 throughout training, confirming that naive SGD does not
 spontaneously induce schema coherence.
 

@@ -52,6 +52,10 @@ hackathon/SHA256SUMS
 *.fls
 *.log
 *.out
+*.synctex.gz
+*.toc
+*.lof
+*.lot
 
 # arXiv submission directory (not to be tracked)
 arxiv-submission/
@@ -87,6 +91,12 @@ experiments/output/
 # Canonical Results (tracked explicitly)
 # ==========================================
 !results/canonical/
+
+# ==========================================
+# Archive (manifest tracked; tarballs ignored)
+# ==========================================
+archive/*.tar.gz
+!archive/FAILURE_MANIFEST.md
 
 # ==========================================
 # Local Dev & Personal

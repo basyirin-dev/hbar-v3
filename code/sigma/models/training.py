@@ -69,6 +69,33 @@ def train_sigma_model(
     result_dir: str | None = None,
     vocab_size: int | None = None,
 ):
+    """Run one complete Σ-Model training experiment for a given condition.
+
+    Maps to: Algorithm 3.2 and Section 10.1 in manuscript.tex.
+    Orchestrates model creation, ODE step, curriculum loss modulation,
+    evaluation, checkpointing, and result serialisation.
+
+    Args:
+        condition: One of "baseline" (standard SGD), "additive", or
+            "multiplicative" (sigma-targeting curriculum).
+        run_id: Unique run index for seeding and file naming.
+        n_timesteps: Total training steps.
+        eval_every: Evaluate every N steps.
+        lr: Base learning rate.
+        train_loader: Training data DataLoader.
+        test_loader: In-distribution test DataLoader.
+        ood_loader: Out-of-distribution test DataLoader.
+        comp_loader: Compositional probe DataLoader (used in Phase 2+).
+        device: Torch device string ("cpu" or "cuda").
+        use_amp: Enable automatic mixed precision.
+        checkpoint_dir: If set, save model checkpoints every 500 steps.
+        result_dir: If set, save final metrics pickle.
+
+    Returns:
+        dict: Training metrics including step-wise loss, acc_id, acc_ood,
+            sigma_tilde, phase, lr_eff, and a "final" key with final
+            evaluation results.
+    """
     torch.manual_seed(run_id * 42 + 7)
     np.random.seed(run_id * 42 + 7)
     if torch.cuda.is_available():

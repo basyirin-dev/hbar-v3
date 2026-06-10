@@ -18,6 +18,7 @@ from pathlib import Path
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+from PIL import Image, PngImagePlugin
 
 # ── Okabe-Ito colour-blind-safe palette ──────────────────────────────────────
 OKABE_ITO = {
@@ -40,6 +41,47 @@ C_PHASE    = [OKABE_ITO["skyblue"], OKABE_ITO["yellow"],
 
 SIGMA_CRIT = 0.15
 DELTA_STAR = 0.55
+
+
+ALT_TEXTS = {
+    "figure6-main-results.png": (
+        "A 2×2 panel figure. Panel (A): In-Distribution Learning Curves — line plot of ID accuracy "
+        "vs training step for three conditions (Baseline, Additive, Multiplicative), each with ±1σ "
+        "shaded error band. All conditions converge to 90–98% ID accuracy by step 2000. "
+        "Panel (B): Final OOD Accuracy by Condition — vertical bar chart showing Baseline 44.5%, "
+        "Additive 97.0%, Multiplicative 94.1%. "
+        "Panel (C): Schema Coherence Trajectories — σ̃_A vs training step. Baseline rises to ~0.55, "
+        "Additive plateaus near 0.35, Multiplicative rises steeply to ~0.85. "
+        "Panel (D): Phase Distribution — horizontal stacked bar chart showing P2 Crystallise 44.1%, "
+        "P3 Intersection 42.5%, P0 Pre-Init 13.4%."
+    ),
+    "figure7-prediction6.png": (
+        "Two-panel figure. Panel (A): Model Comparison — scatter plot of cross-domain discovery Ψ_A "
+        "vs schema coherence σ̂_A with two fitted curves: multiplicative (green, R²=0.616) and "
+        "additive (orange, R²=0.167). "
+        "Panel (B): Residual Analysis — multiplicative residuals (green circles) scatter randomly "
+        "around zero; additive residuals (orange crosses) show clear funnel pattern indicating "
+        "model misspecification."
+    ),
+    "figure8-prediction9.png": (
+        "A single-panel scatter plot of mean OOD accuracy vs training timesteps (0–500). "
+        "Light blue scatter points show raw OOD accuracy. A thick dark red segmented regression "
+        "line fits two linear regimes: pre-inflection slope β₀=0.0124 and post-inflection slope "
+        "β₁=0.0462. The inflection point τ̂=300 is marked by a vertical dotted black line. "
+        "Light red shaded bands show 95% CI on the breakpoint and regression line."
+    ),
+}
+
+
+def _embed_alt_text(filepath: Path) -> None:
+    """Embed Description metadata in PNG file."""
+    fname = filepath.name
+    if fname not in ALT_TEXTS:
+        return
+    png_info = PngImagePlugin.PngInfo()
+    png_info.add_text("Description", ALT_TEXTS[fname])
+    with Image.open(filepath) as img:
+        img.save(filepath, pnginfo=png_info)
 
 
 def _apply_style() -> None:
@@ -116,7 +158,7 @@ def fig6_main(all_results: dict, outdir: Path) -> None:
                label=r"$\sigma_{\mathrm{critical}}$ (0.15)")
     ax.axhline(DELTA_STAR, color=OKABE_ITO["reddpurple"], ls=":", lw=1,
                label=r"$\delta^*$ (0.55)")
-    ax.set(xlabel="Training Step", ylabel=r"Schema Coherence $\tilde{\sigma}_A$",
+    ax.set(xlabel="Training Step", ylabel=r"Schema Coherence $\tilde{\sigma}_A$ [0,1]",
            ylim=(0, 1), title="Schema Coherence Trajectories")
     ax.legend(fontsize=8, loc="upper left")
 
@@ -152,9 +194,11 @@ def fig6_main(all_results: dict, outdir: Path) -> None:
     ax.set_xlim(0, 100)
 
     fig.tight_layout()
-    fig.savefig(outdir / "figure6-main-results.png")
+    path = outdir / "figure6-main-results.png"
+    fig.savefig(path)
+    _embed_alt_text(path)
     plt.close(fig)
-    print(f"  Saved: {outdir / 'figure6-main-results.png'}")
+    print(f"  Saved: {path}")
 
 
 # ── Figure 7: Prediction 6 — Multiplicative vs Additive ─────────────────────
@@ -228,7 +272,7 @@ def fig7_prediction6(all_results: dict, outdir: Path) -> None:
                         poly_m(x_fit) + t_crit * se_fit,
                         alpha=0.15, color=C_MULT, label="95% CI (mult.)")
 
-    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$",
+    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$ [0,1]",
            ylabel=r"Cross-Domain Discovery ($\Psi_A$)",
            title="A. Model Comparison")
     ax.legend(loc="upper left", fontsize=8)
@@ -243,14 +287,16 @@ def fig7_prediction6(all_results: dict, outdir: Path) -> None:
     ax.scatter(sigma_arr, res_a, c=C_ADDITIVE, marker="x", s=28,
                alpha=0.5, label="Add. Residuals", zorder=3)
     ax.axhline(0, color="black", lw=0.8)
-    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$",
+    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$ [0,1]",
            ylabel="Residual Error", title="B. Residual Analysis")
     ax.legend(fontsize=8)
 
     fig.tight_layout()
-    fig.savefig(outdir / "figure7-prediction6.png")
+    path = outdir / "figure7-prediction6.png"
+    fig.savefig(path)
+    _embed_alt_text(path)
     plt.close(fig)
-    print(f"  Saved: {outdir / 'figure7-prediction6.png'}")
+    print(f"  Saved: {path}")
 
 
 # ── Figure 8: Prediction 9 — Phase 2 entry inflection ───────────────────────
@@ -343,9 +389,11 @@ def fig8_prediction9(all_results: dict, outdir: Path) -> None:
            title="Prediction 9: Phase 2 Entry Inflection Point")
     ax.legend(fontsize=9, loc="lower right")
     fig.tight_layout()
-    fig.savefig(outdir / "figure8-prediction9.png")
+    path = outdir / "figure8-prediction9.png"
+    fig.savefig(path)
+    _embed_alt_text(path)
     plt.close(fig)
-    print(f"  Saved: {outdir / 'figure8-prediction9.png'}")
+    print(f"  Saved: {path}")
 
 
 def main() -> None:

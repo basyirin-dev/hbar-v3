@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
 """
+⚠️ DEPRECATED / FAILED EXPERIMENT
+
+Failure Mode: Hardware incompatibility + superseded.
+The Kaggle P100 (sm_60) is incompatible with PyTorch >= 2.10, which
+dropped SM 6.x support. Additionally, the hardcoded comparison table
+at the end of this file is a manual recording, not a computed result.
+
+Canonical Source: experiments/h-bar-experiment.ipynb
+Date Discovered: 2026-06-10
+
+---- original header below ----
 Σ-Model Pilot Benchmark — Paste this as a SINGLE CELL into any notebook.
 Auto-detects CPU / GPU / TPU, runs 100 training steps, reports projected timings.
 """

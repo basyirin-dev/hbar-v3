@@ -36,7 +36,7 @@
     \addlegendentry{$\delta_A^{\text{relative}}$}
 
     % Alpha (Attention) - Rises early, then stabilizes
-    \addplot[domain=0:10, samples=100, very thick, dotted, green!60!black] {0.85 * (1 - exp(-0.8*(x-0.5))) * (x>0.5)};
+    \addplot[domain=0:10, samples=100, very thick, densely dashed, green!60!black] {0.85 * (1 - exp(-0.8*(x-0.5))) * (x>0.5)};
     \addlegendentry{$\alpha_A$}
 
     % Sigma (Schema) - Starts rising in Phase 1, crosses sigma_critical at Phase 2 boundary

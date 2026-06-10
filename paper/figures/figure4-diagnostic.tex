@@ -9,11 +9,12 @@
     % Base Grid & Quadrants
     \filldraw[fill=white, draw=gray] (0, \h) rectangle (\w, 2*\h); % Top-Left
     \filldraw[fill=green!8, draw=gray, thick] (\w, \h) rectangle (2*\w, 2*\h); % Top-Right (Target)
+    \fill[pattern=north east lines, pattern color=black] (\w, \h) rectangle (2*\w, 2*\h);
     \filldraw[fill=gray!8, draw=gray] (0, 0) rectangle (\w, \h); % Bottom-Left
 
     % The Diagnostic Cell (Bottom-Right) with grid pattern for grayscale
     \filldraw[fill=red!10, draw=red, thick] (\w, 0) rectangle (2*\w, \h);
-    \fill[pattern=grid, pattern color=red!25] (\w, 0) rectangle (2*\w, \h);
+    \fill[pattern=grid, pattern color=black] (\w, 0) rectangle (2*\w, \h);
 
     % Axes
     \draw[->, ultra thick, black] (-0.3, 0) -- (2*\w + 0.5, 0) node[right, align=center] {\textbf{Parametric Depth}\\ $\delta_A$};

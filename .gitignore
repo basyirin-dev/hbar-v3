@@ -69,6 +69,7 @@ arxiv-submission/
 !artifacts/model-cards/*.md
 !artifacts/datasheets/*.md
 !artifacts/demo-links.md
+!HARDWARE.md
 
 # ==========================================
 # Build Artifacts & Raw Outputs

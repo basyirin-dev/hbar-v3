@@ -105,10 +105,10 @@ PYTHONPATH=code:$PYTHONPATH python scripts/smoke_test.py
 ## Citation
 
 ```bibtex
-@misc{basri2026sigma,
+@misc{basyirin-amsyar2026sigma,
   title={The {$\Sigma$}-Model: Schema-Coherence Suppression as the Origin of
          Compositional Generalisation Failure},
-  author={Basyirin Amsyar Basri},
+  author={{Basyirin Amsyar Basri}},
   howpublished={Preprint},
   doi={10.5281/zenodo.20714248},
   year={2026}

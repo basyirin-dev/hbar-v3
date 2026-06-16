@@ -94,7 +94,7 @@ def _format_datasets_section(data: dict[str, Any] | None) -> str:
         if ds_data.get("pinned_commit"):
             lines.append(f"  - Pinned: `{ds_data['pinned_commit'][:12]}`")
         if errata > 0:
-            lines.append(f"  - **Potential errata issues:**")
+            lines.append("  - **Potential errata issues:**")
             for issue in ds_data.get("errata_issues", []):
                 lines.append(f"    - #{issue['number']}: {issue['title']} ({issue['state']})")
     lines.append("")

@@ -63,16 +63,9 @@ arxiv-submission/
 # Intermediate markdown files (not to be tracked)
 *.md
 !README.md
-!AGENTS.md
-!documentation/kaggle_submission_*.md
-!documentation/ARXIV_SUBMISSION_GUIDE.md
-!documentation/verification_report.md
-!documentation/register.md
-!docs/adrs/*.md
-!docs/lab-notebooks/*.md
-!docs/errata/*.md
 !docs/claims-registry.md
-!docs/alert-log.md
+!docs/figure-alt-text.md
+!docs/notation-registry.md
 !artifacts/model-cards/*.md
 !artifacts/datasheets/*.md
 !artifacts/demo-links.md
@@ -139,3 +132,16 @@ code/*.egg-info/
 
 # Scripts (track all)
 !scripts/*.py
+
+# ==========================================
+# Personal / Internal (not for public repo)
+# ==========================================
+AGENTS.md
+submission/
+.coverage
+docs/monitoring/*.json
+docs/monitoring/.state.json
+docs/proof-reconstruction/audit-matrix.tex
+docs/proof-reconstruction/erratum.tex
+docs/proof-reconstruction/preamble.tex
+docs/proof-reconstruction/main.bbl

@@ -4,7 +4,8 @@ import pickle
 import numpy as np
 import torch
 import torch.nn as nn
-from torch.amp import GradScaler, autocast
+from torch.amp.autocast_mode import autocast
+from torch.amp.grad_scaler import GradScaler
 from tqdm.auto import tqdm
 
 from sigma.models.transformer import SigmaTransformer
@@ -14,6 +15,22 @@ logger = logging.getLogger(__name__)
 
 
 def fast_evaluate(model, loader, device, use_amp: bool = False, max_batches: int = 8) -> float:
+    """Fast approximate evaluation over a subset of batches.
+
+    Maps to: Section 3.5 and Algorithm 3.2 in manuscript.tex.
+    Uses at most max_batches to reduce evaluation overhead during training.
+    Reports token-level accuracy ignoring padding (index 0).
+
+    Args:
+        model: PyTorch model (SigmaTransformer).
+        loader: DataLoader yielding (src, tgt) tuples.
+        device: Torch device string.
+        use_amp: Enable automatic mixed precision.
+        max_batches: Maximum number of batches to evaluate.
+
+    Returns:
+        Token-level accuracy in percent (0-100).
+    """
     model.eval()
     correct = total = 0
     with torch.inference_mode():
@@ -32,6 +49,22 @@ def fast_evaluate(model, loader, device, use_amp: bool = False, max_batches: int
 
 
 def evaluate_model(model, id_loader, ood_loader, device, use_amp: bool = False) -> dict:
+    """Full evaluation on ID and OOD test loaders.
+
+    Maps to: Section 10.1 and Table 3 in manuscript.tex.
+    Reports token-level accuracy on both in-distribution and
+    out-of-distribution splits, used for compositional gap analysis.
+
+    Args:
+        model: PyTorch model (SigmaTransformer).
+        id_loader: In-distribution test DataLoader.
+        ood_loader: Out-of-distribution test DataLoader.
+        device: Torch device string.
+        use_amp: Enable automatic mixed precision.
+
+    Returns:
+        dict with keys "acc_id" and "acc_ood" (percent, 0-100).
+    """
     model.eval()
     results = {}
     for tag, loader in [("acc_id", id_loader), ("acc_ood", ood_loader)]:
@@ -59,6 +92,7 @@ def train_sigma_model(
     n_timesteps: int = 2000,
     eval_every: int = 50,
     lr: float = 0.001,
+    lambda_sigma: float = 0.3,
     train_loader=None,
     test_loader=None,
     ood_loader=None,
@@ -71,9 +105,16 @@ def train_sigma_model(
 ):
     """Run one complete Σ-Model training experiment for a given condition.
 
-    Maps to: Algorithm 3.2 and Section 10.1 in manuscript.tex.
+    Maps to: Algorithm 3.2 and Section 10.1 in manuscript.tex;
+    lambda_sigma maps to Eq 25 (schema-targeting loss weight).
     Orchestrates model creation, ODE step, curriculum loss modulation,
     evaluation, checkpointing, and result serialisation.
+
+    VRAM complexity: The simplified ODE solver is pure NumPy (naturally
+    detached from autograd), uses a single backward pass per step with
+    no retain_graph or create_graph. No RDM storage or dual-gradient
+    computation is performed. Total VRAM is O(batch_size * d_model *
+    num_layers), identical to standard transformer training.
 
     Args:
         condition: One of "baseline" (standard SGD), "additive", or
@@ -82,6 +123,8 @@ def train_sigma_model(
         n_timesteps: Total training steps.
         eval_every: Evaluate every N steps.
         lr: Base learning rate.
+        lambda_sigma: Weight for schema-targeting compositional loss
+            (lambda_sigma in Eq 25). Default 0.3.
         train_loader: Training data DataLoader.
         test_loader: In-distribution test DataLoader.
         ood_loader: Out-of-distribution test DataLoader.
@@ -189,7 +232,7 @@ def train_sigma_model(
                 with autocast("cuda", enabled=use_amp):
                     c_out = model(c_src, c_tgt[:, :-1])
                     c_loss = criterion(c_out.reshape(-1, c_out.size(-1)), c_tgt[:, 1:].reshape(-1))
-                total_loss = total_loss + 0.3 * (1.0 - ode_state["sigma"]) * c_loss
+                total_loss = total_loss + lambda_sigma * (1.0 - ode_state["sigma"]) * c_loss
 
         scaler.scale(total_loss).backward()
         scaler.unscale_(optimizer)

@@ -14,7 +14,6 @@ from datetime import datetime
 from typing import Any
 
 from . import (
-    ensure_monitoring_dir,
     last_run,
     update_last_run,
     write_json_output,
@@ -271,7 +270,7 @@ def main() -> None:
     if args.format == "json":
         print(json.dumps(result, indent=2))
     else:
-        print(f"\n=== Σ-Model arXiv Monitor ===")
+        print("\n=== Σ-Model arXiv Monitor ===")
         print(f"Since: {result['since']}")
         print(f"Clusters: {result['total_clusters']}")
         print(f"New papers: {result['total_new_papers']}")

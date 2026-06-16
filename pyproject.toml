@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [
-    { name = "Basyirin Amsyar bin Basri" },
+    { name = "[Anonymous]" },
 ]
 
 dependencies = [
@@ -36,8 +36,13 @@ dev = [
     "jupyterlab>=4.0",
     "ipykernel>=6.0",
 ]
+viz = [
+    "plotly>=5.18,<6.0",
+    "kaleido>=0.2.1,<1.0",
+]
 
 [project.scripts]
+sigma-gen-supplement = "sigma.visualization.interactive:main_cli"
 sigma-monitor-pub = "sigma.monitoring.pub:main"
 sigma-monitor-frameworks = "sigma.monitoring.frameworks:main"
 sigma-monitor-datasets = "sigma.monitoring.datasets:main"

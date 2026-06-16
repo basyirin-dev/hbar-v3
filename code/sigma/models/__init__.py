@@ -1,3 +1,3 @@
-from sigma.models.transformer import SigmaTransformer, PositionalEncoding  # noqa: F401
+from sigma.models.transformer import PositionalEncoding, SigmaTransformer  # noqa: F401
 
 __all__ = ["SigmaTransformer", "PositionalEncoding"]

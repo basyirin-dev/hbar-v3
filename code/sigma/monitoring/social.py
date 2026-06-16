@@ -163,7 +163,7 @@ def main() -> None:
     if args.format == "json":
         print(json.dumps(result, indent=2))
     else:
-        print(f"\n=== Σ-Model Social Monitor ===")
+        print("\n=== Σ-Model Social Monitor ===")
         for sub, posts in result["reddit"]["results"].items():
             if posts:
                 print(f"\nr/{sub}: {len(posts)} posts")

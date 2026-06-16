@@ -1,0 +1,58 @@
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, fit, backgrounds}
+
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    stagebox/.style={rectangle, draw=gray, thick, rounded corners=4pt, fill=gray!2, minimum width=12cm, minimum height=2.6cm},
+    signalbox/.style={rectangle, draw=black, thick, rounded corners=3pt, minimum width=2.8cm, minimum height=0.9cm, align=center, font=\small\sffamily},
+    resultbox/.style={rectangle, draw=black, ultra thick, rounded corners=3pt, minimum width=2.8cm, minimum height=0.9cm, align=center, font=\small\sffamily},
+    decbox/.style={diamond, draw=black, thick, aspect=2.0, align=center, font=\small, fill=signalcolor!4, minimum width=2.0cm},
+    arrow/.style={->, thick, black},
+    label/.style={font=\footnotesize, text=gray!70},
+]
+
+    % ===== STAGE 1 (Training-time) =====
+    \node[stagebox] (stage1) at (5, 3.0) {};
+    \node[anchor=north west, font=\small\bfseries\sffamily] at ([xshift=4mm, yshift=-3mm]stage1.north west) {Stage 1 --- Training-time proxy ($\tilde{\sigma}_A$)};
+
+    % Three signals
+    \node[signalbox, fill=probefill] (gca) at (0.5, 3.0) {\scriptsize GCA\\$g_A = \Corr(\nabla\mathcal{L}_{\text{comp}},\ \nabla\mathcal{L}_{\text{train}})$};
+    \node[signalbox, fill=probefill] (rga) at (5.0, 3.0) {\scriptsize RGA\\$r_A = \Corr(\text{RDM}_{\text{rep}},\ \text{RDM}_{\text{struct}})$};
+    \node[signalbox, fill=probefill] (ac) at (9.5, 3.0) {\scriptsize AC\\$c_A = \mathbb{E}[\CosSim(R(x),\ R(a(x)))]$};
+
+    % Fusion
+    \node[resultbox, fill=targetcolor!8] (fusion) at (5.0, 1.0) {Fusion: $\tilde{\sigma}_A = w_g g_A + w_r r_A + w_c c_A$};
+
+    \draw[arrow] (gca.south) -- (fusion.north west);
+    \draw[arrow] (rga.south) -- (fusion.north);
+    \draw[arrow] (ac.south) -- (fusion.north east);
+
+    % ===== STAGE 2 (Evaluation-time) =====
+    \node[stagebox] (stage2) at (5, -1.5) {};
+    \node[anchor=north west, font=\small\bfseries\sffamily] at ([xshift=4mm, yshift=-3mm]stage2.north west) {Stage 2 --- Evaluation-time calibration ($\hat{\sigma}_A$)};
+
+    \node[signalbox, fill=signalcolor!6] (ood) at (3.0, -1.5) {OOD evaluation\\$\text{Acc}_{\text{OOD}}(d,t)$};
+    \node[signalbox, fill=signalcolor!6] (id) at (7.0, -1.5) {ID evaluation\\$\text{Acc}_{\text{ID}}(d,t)$};
+
+    \node[resultbox, fill=evalcolor!8] (sigma_hat) at (5.0, -3.2) {$\hat{\sigma}_A(d,t) = \text{Acc}_{\text{OOD}} / \text{Acc}_{\text{ID}}$};
+
+    \draw[arrow] (ood.south) -- (sigma_hat.north west);
+    \draw[arrow] (id.south) -- (sigma_hat.north east);
+
+    % ===== Recalibration feedback =====
+    \draw[arrow, dotted, evalcolor!60!black, thick, rounded corners=5pt]
+        (sigma_hat.west) -- ++(-2.0, 0) node[left, label, text=evalcolor!60!black, align=right] {Recalibrate\\weights} |- (fusion.west);
+
+    % ===== Comparison =====
+    \node[decbox, fill=sigmacolor!2] at (10.5, -1.3) (compare) {$|\tilde{\sigma}_A - \hat{\sigma}_A| > 0.15$?};
+
+    \draw[arrow] (sigma_hat.east) -| (compare.south);
+    \draw[arrow] (fusion.east) -| (compare.north);
+
+    % ===== Legend =====
+    \node[anchor=south, font=\footnotesize\sffamily] at (5.0, -4.5) {
+        \textbf{Key:} $\tilde{\sigma}_A$ operates during training; $\hat{\sigma}_A$ calibrates at evaluation checkpoints.
+        Discrepancy $> 0.15$ triggers ridge regression weight update.
+    };
+
+\end{tikzpicture}

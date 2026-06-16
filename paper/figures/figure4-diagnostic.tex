@@ -1,20 +1,20 @@
-\usetikzlibrary{positioning, arrows.meta, patterns}
+\usetikzlibrary{positioning, arrows.meta, patterns, fit}
 
 \begin{tikzpicture}[font=\sffamily]
 
     % Dimensions
-    \def\w{4.5} % Width of quadrant
-    \def\h{3.5} % Height of quadrant
+    \def\w{4.5}
+    \def\h{3.5}
 
     % Base Grid & Quadrants
-    \filldraw[fill=white, draw=gray] (0, \h) rectangle (\w, 2*\h); % Top-Left
-    \filldraw[fill=green!8, draw=gray, thick] (\w, \h) rectangle (2*\w, 2*\h); % Top-Right (Target)
-    \fill[pattern=north east lines, pattern color=black] (\w, \h) rectangle (2*\w, 2*\h);
-    \filldraw[fill=gray!8, draw=gray] (0, 0) rectangle (\w, \h); % Bottom-Left
+    \filldraw[fill=white, draw=gray] (0, \h) rectangle (\w, 2*\h);
+    \filldraw[fill=targetcolor!8, draw=gray, thick] (\w, \h) rectangle (2*\w, 2*\h);
+    \fill[pattern=north east lines, pattern color=black!20] (\w, \h) rectangle (2*\w, 2*\h);
+    \filldraw[fill=gray!8, draw=gray] (0, 0) rectangle (\w, \h);
 
-    % The Diagnostic Cell (Bottom-Right) with grid pattern for grayscale
-    \filldraw[fill=red!10, draw=red, thick] (\w, 0) rectangle (2*\w, \h);
-    \fill[pattern=grid, pattern color=black] (\w, 0) rectangle (2*\w, \h);
+    % The Diagnostic Cell
+    \filldraw[fill=sigmacolor!10, draw=sigmacolor, thick] (\w, 0) rectangle (2*\w, \h);
+    \fill[pattern=north west lines, pattern color=black!20] (\w, 0) rectangle (2*\w, \h);
 
     % Axes
     \draw[->, ultra thick, black] (-0.3, 0) -- (2*\w + 0.5, 0) node[right, align=center] {\textbf{Parametric Depth}\\ $\delta_A$};
@@ -28,28 +28,48 @@
 
     % Quadrant Text
     \node[align=center, text=gray!80!black, font=\small] at (\w/2, \h*1.5) {Moderate ID \\ Moderate OOD};
-    \node[align=center, text=green!60!black, font=\small] at (\w*1.5, \h*1.5) {\textbf{Target State} \\ High ID \\ High OOD};
+    \node[align=center, text=targetcolor!60!black, font=\small, fill=white, fill opacity=0.85, text opacity=1, inner sep=2mm, rounded corners=2pt] at (\w*1.5, \h*1.5) {\textbf{Target State} \\ High ID \\ High OOD};
     \node[align=center, text=gray!60, font=\small] at (\w/2, \h/2) {Low ID \\ Low OOD};
 
     % Diagnostic Cell Text
-    \node[align=center, text=red!80!black, font=\small] at (\w*1.5, \h/2) {
-        \Large \textbf{Illusion of Mastery}\\[2mm]
-        \normalsize High In-Distribution Acc.\\
-        \normalsize \textbf{Fails} OOD Recombination\\[3mm]
-        \small \textit{(Invisible to standard benchmarks)}
+    \node[align=center, text=sigmacolor!80!black, font=\small, fill=white, fill opacity=0.85, text opacity=1, inner sep=2mm, rounded corners=2pt] at (\w*1.5, \h/2) {
+        \small \textbf{Illusion of Mastery}\\[1mm]
+        \footnotesize High ID Acc.\\
+        \footnotesize \textbf{Fails} OOD
     };
 
-    % Target symbol (checkmark in green quadrant)
-    \node[font=\Large, text=green!70!black] at (\w*1.5, \h*1.5) [yshift=8mm, xshift=8mm] {$\bigstar$};
+    % Target symbol — REMOVED (redundant with legend)
 
-    % Danger symbol (warning in red quadrant)
-    \node[font=\Large, text=red!70!black] at (\w*1.5, \h/2) [yshift=-6mm, xshift=-10mm] {$\blacksquare$};
+    % Danger symbol — REMOVED (redundant with legend)
 
-    % Standard SGD trajectory arrow (black!70 for grayscale visibility)
-    \draw[->, ultra thick, black!70, dashed, >=Stealth]
+    % ===== EMPIRICAL TRAJECTORY OVERLAYS =====
+
+    % Baseline SGD trajectory (falls into Illusion of Mastery)
+    \draw[->, ultra thick, black!60, dashed, >=Stealth]
         (0.3, \h*1.7)
         .. controls (1.5, \h*1.4) and (2.5, \h*0.8) ..
-        (\w*1.5, \h*0.3)
-        node[midway, above, sloped, font=\footnotesize, text=black!70] {Standard SGD};
+        (\w*1.5, \h*0.3);
+
+    % Additive coupling trajectory (reaches Target State)
+    \draw[->, ultra thick, okabe-ito-orange!80!black, >=Stealth]
+        (0.3, \h*1.7)
+        .. controls (1.2, \h*1.5) and (2.0, \h*1.2) ..
+        (\w*1.5, \h*1.6);
+
+    % Multiplicative coupling trajectory (direct path to Target)
+    \draw[->, ultra thick, targetcolor!60!black, >=Stealth]
+        (0.3, \h*1.7)
+        .. controls (1.5, \h*1.6) and (2.5, \h*1.5) ..
+        (\w*1.5, \h*1.7);
+
+    % Phase markers along trajectories — REMOVED (redundant with legend)
+
+    % Legend for trajectories (outside figure, to the right)
+    \node[anchor=west, font=\footnotesize, draw, fill=white, rounded corners=2pt, align=left] at (2*\w+0.8, 3.0) {
+        \textbf{Trajectories:}\\[2pt]
+        \tikz\draw[black!60, dashed, ultra thick] (0,0.1) -- (0.5,0.1); \quad Baseline (SGD)\\
+        \tikz\draw[okabe-ito-orange!80!black, ultra thick] (0,0.1) -- (0.5,0.1); \quad Additive $\sigma_A$\\
+        \tikz\draw[targetcolor!60!black, ultra thick] (0,0.1) -- (0.5,0.1); \quad Multiplicative $\sigma_A$
+    };
 
 \end{tikzpicture}

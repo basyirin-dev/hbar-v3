@@ -53,9 +53,9 @@ def write_json_output(data: Any, filename: str) -> Path:
 
 def run_all(since: str | None = None, verbose: bool = False) -> dict[str, Any]:
     results: dict[str, Any] = {}
-    from .pub import run as run_pub
-    from .frameworks import run as run_frameworks
     from .datasets import run as run_datasets
+    from .frameworks import run as run_frameworks
+    from .pub import run as run_pub
     from .social import run as run_social
 
     results["pub"] = run_pub(since=since, verbose=verbose)

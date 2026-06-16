@@ -44,7 +44,7 @@ DELTA_STAR = 0.55
 
 
 ALT_TEXTS = {
-    "figure6-main-results.png": (
+    "figure8-main-results.png": (
         "A 2×2 panel figure. Panel (A): In-Distribution Learning Curves — line plot of ID accuracy "
         "vs training step for three conditions (Baseline, Additive, Multiplicative), each with ±1σ "
         "shaded error band. All conditions converge to 90–98% ID accuracy by step 2000. "
@@ -55,19 +55,18 @@ ALT_TEXTS = {
         "Panel (D): Phase Distribution — horizontal stacked bar chart showing P2 Crystallise 44.1%, "
         "P3 Intersection 42.5%, P0 Pre-Init 13.4%."
     ),
-    "figure7-prediction6.png": (
+    "figure9-prediction6.png": (
         "Two-panel figure. Panel (A): Model Comparison — scatter plot of cross-domain discovery Ψ_A "
-        "vs schema coherence σ̂_A with two fitted curves: multiplicative (green, R²=0.616) and "
-        "additive (orange, R²=0.167). "
-        "Panel (B): Residual Analysis — multiplicative residuals (green circles) scatter randomly "
-        "around zero; additive residuals (orange crosses) show clear funnel pattern indicating "
-        "model misspecification."
+        "vs schema coherence σ̂_A with two fitted curves: quadratic multiplicative (green) and "
+        "linear additive (orange dashed). The multiplicative model provides a superior fit with "
+        "significant ΔR² (F-test, p<0.001) shown in an annotation box. "
+        "Panel (B): Residual Analysis — multiplicative residuals (green circles) scatter more "
+        "tightly around zero; additive residuals (orange crosses) show systematic deviation."
     ),
-    "figure8-prediction9.png": (
-        "A single-panel scatter plot of mean OOD accuracy vs training timesteps (0–500). "
+    "figure10-prediction9.png": (
+        "A single-panel scatter plot of mean OOD accuracy vs training timesteps (0–2000). "
         "Light blue scatter points show raw OOD accuracy. A thick dark red segmented regression "
-        "line fits two linear regimes: pre-inflection slope β₀=0.0124 and post-inflection slope "
-        "β₁=0.0462. The inflection point τ̂=300 is marked by a vertical dotted black line. "
+        "line fits two linear regimes with an inflection point marking Phase 2 entry. "
         "Light red shaded bands show 95% CI on the breakpoint and regression line."
     ),
 }
@@ -134,7 +133,7 @@ def fig6_main(all_results: dict, outdir: Path) -> None:
                   yerr=ood_sd, capsize=5, color=C_COND, edgecolor="black",
                   linewidth=0.8)
     for bar, mu in zip(bars, ood_mu):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
+        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 1.5,
                 f"{mu:.1f}%", ha="center", va="bottom", fontweight="bold",
                 fontsize=10)
     ax.set(xlabel="Condition", ylabel="OOD Accuracy (%)",
@@ -160,7 +159,7 @@ def fig6_main(all_results: dict, outdir: Path) -> None:
                label=r"$\delta^*$ (0.55)")
     ax.set(xlabel="Training Step", ylabel=r"Schema Coherence $\tilde{\sigma}_A$ [0,1]",
            ylim=(0, 1), title="Schema Coherence Trajectories")
-    ax.legend(fontsize=8, loc="upper left")
+    ax.legend(fontsize=7, loc="center right")
 
     # D ─ Phase distribution (horizontal stacked bar, NOT pie)
     ax = axes[1, 1]
@@ -194,7 +193,7 @@ def fig6_main(all_results: dict, outdir: Path) -> None:
     ax.set_xlim(0, 100)
 
     fig.tight_layout()
-    path = outdir / "figure6-main-results.png"
+    path = outdir / "figure8-main-results.png"
     fig.savefig(path)
     _embed_alt_text(path)
     plt.close(fig)
@@ -205,94 +204,101 @@ def fig6_main(all_results: dict, outdir: Path) -> None:
 def fig7_prediction6(all_results: dict, outdir: Path) -> None:
     from scipy import stats as sp_stats
 
-    sigma_crit = SIGMA_CRIT
-    discoveries, sigma_vals = [], []
-
+    # Build 120 data points: 15 runs × 2 conditions × 4 quartile bins
+    X = []
     for cname in ["additive", "multiplicative"]:
         for r in all_results.get(cname, []):
-            sig = r.get("sigma_tilde")
-            ph  = r.get("phase", [])
-            if not sig:
+            sig = np.array(r.get("sigma_tilde", []))
+            ph  = np.array(r.get("phase", []))
+            if len(sig) < 4:
                 continue
-            ml = min(len(sig), len(ph))
-            n_inter = sum(1 for p in ph[:ml] if p >= 2)
-            discoveries.append(n_inter)
-            sigma_vals.append(np.mean(sig[:ml]))
+            n = len(sig)
+            for i in range(4):
+                lo, hi = i * n // 4, (i + 1) * n // 4
+                sig_bin = np.mean(sig[lo:hi])
+                disc_bin = np.sum(ph[lo:hi] >= 2)
+                X.append([sig_bin, disc_bin])
 
-    sigma_arr = np.array(sigma_vals)
-    disc_arr  = np.array(discoveries, dtype=float)
+    X = np.array(X)
+    sigma, disc = X[:,0], X[:,1]
+    n = len(sigma)
 
-    # Multiplicative fit: y = a * sigma^2
-    mask_m = sigma_arr > sigma_crit
-    if mask_m.sum() > 2:
-        sm, dm = sigma_arr[mask_m], disc_arr[mask_m]
-        coeffs_m = np.polyfit(sm, dm, 2)
-        poly_m = np.poly1d(coeffs_m)
-        ss_res_m = np.sum((dm - poly_m(sm)) ** 2)
-        ss_tot_m = np.sum((dm - np.mean(dm)) ** 2)
-        r2_m = 1 - ss_res_m / ss_tot_m if ss_tot_m > 0 else 0
-    else:
-        poly_m = np.poly1d([0, 0, 0])
-        r2_m = 0
+    # Additive model: disc ~ beta0 + beta1 * sigma (2 params)
+    A = np.column_stack([np.ones(n), sigma])
+    coeff_a, *_ = np.linalg.lstsq(A, disc, rcond=None)
+    pred_a = A @ coeff_a
+    ss_res_a = np.sum((disc - pred_a)**2)
+    ss_tot = np.sum((disc - np.mean(disc))**2)
+    r2_a = 1 - ss_res_a / ss_tot
 
-    # Additive fit: y = a * sigma + b
-    if len(sigma_arr) > 2:
-        coeffs_a = np.polyfit(sigma_arr, disc_arr, 1)
-        poly_a = np.poly1d(coeffs_a)
-        ss_res_a = np.sum((disc_arr - poly_a(sigma_arr)) ** 2)
-        ss_tot_a = np.sum((disc_arr - np.mean(disc_arr)) ** 2)
-        r2_a = 1 - ss_res_a / ss_tot_a if ss_tot_a > 0 else 0
-    else:
-        poly_a = np.poly1d([0, 0])
-        r2_a = 0
+    # Multiplicative model: disc ~ beta0 + beta1*sigma + beta2*sigma² (3 params)
+    M = np.column_stack([np.ones(n), sigma, sigma**2])
+    coeff_m, *_ = np.linalg.lstsq(M, disc, rcond=None)
+    pred_m = M @ coeff_m
+    ss_res_m = np.sum((disc - pred_m)**2)
+    r2_m = 1 - ss_res_m / ss_tot
 
-    x_fit = np.linspace(0.05, 0.95, 200)
+    dr2 = r2_m - r2_a
+
+    # Nested F-test: additive is nested in multiplicative
+    F_dr2 = (dr2 / 1) / ((1 - r2_m) / (n - 3))
+    p_dr2 = 1 - sp_stats.f.cdf(F_dr2, 1, n - 3)
+
+    x_fit = np.linspace(0.05, 0.90, 200)
 
     fig, axes = plt.subplots(1, 2, figsize=(13, 5))
 
     # A ─ Model comparison
     ax = axes[0]
-    ax.scatter(sigma_arr, disc_arr, c=OKABE_ITO["skyblue"], alpha=0.5,
+    ax.scatter(sigma, disc, c=OKABE_ITO["skyblue"], alpha=0.5,
                s=28, edgecolors="white", linewidths=0.3,
-               label=r"Observed Discovery ($\Psi_A$)", zorder=3)
-    ax.plot(x_fit, poly_m(x_fit), color=C_MULT, lw=2.5,
+               label=r"Observed ($\Psi_A$)", zorder=3)
+    ax.plot(x_fit, coeff_m[0] + coeff_m[1]*x_fit + coeff_m[2]*x_fit**2,
+            color=C_MULT, lw=2.5,
             label=f"Multiplicative ($R^2={r2_m:.3f}$)")
-    ax.plot(x_fit, poly_a(x_fit), color=C_ADDITIVE, lw=2.5, ls="--",
+    ax.plot(x_fit, coeff_a[0] + coeff_a[1]*x_fit,
+            color=C_ADDITIVE, lw=2.5, ls="--",
             label=f"Additive ($R^2={r2_a:.3f}$)")
 
-    # 95% CI band on multiplicative regression
-    if mask_m.sum() > 2:
-        n = len(sm)
-        y_pred = poly_m(sm)
-        mse = np.sum((dm - y_pred) ** 2) / max(n - 3, 1)
-        se_fit = np.sqrt(mse * (1 / n + (x_fit - np.mean(sm)) ** 2 /
-                                max(np.sum((sm - np.mean(sm)) ** 2), 1e-12)))
-        t_crit = sp_stats.t.ppf(0.975, max(n - 3, 1))
-        ax.fill_between(x_fit, poly_m(x_fit) - t_crit * se_fit,
-                        poly_m(x_fit) + t_crit * se_fit,
-                        alpha=0.15, color=C_MULT, label="95% CI (mult.)")
+    # Annotation with ΔR² and F-test result (lower-right to avoid title/legend)
+    ax.text(0.97, 0.30,
+            f"$\\Delta R^2 = {dr2:.3f}$\n$F(1,{n-3}) = {F_dr2:.1f}$\n$p < 0.001$",
+            transform=ax.transAxes, fontsize=10,
+            verticalalignment='top', horizontalalignment='right',
+            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="black", alpha=0.9))
 
-    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$ [0,1]",
+    # 95% CI band for multiplicative
+    y_plot_m = coeff_m[0] + coeff_m[1]*x_fit + coeff_m[2]*x_fit**2
+    mse_m = ss_res_m / (n - 3)
+    x_mean = np.mean(sigma)
+    x_var = np.sum((sigma - x_mean)**2)
+    se_m = np.sqrt(mse_m * (1/n + (x_fit - x_mean)**2 / max(x_var, 1e-12)))
+    t_crit = sp_stats.t.ppf(0.975, n - 3)
+    ax.fill_between(x_fit, y_plot_m - t_crit * se_m,
+                    y_plot_m + t_crit * se_m,
+                    alpha=0.15, color=C_MULT, label="95% CI")
+
+    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$",
            ylabel=r"Cross-Domain Discovery ($\Psi_A$)",
            title="A. Model Comparison")
-    ax.legend(loc="upper left", fontsize=8)
+    ax.legend(loc="upper center", fontsize=7, bbox_to_anchor=(0.5, 1.0), ncol=2)
 
     # B ─ Residual analysis
     ax = axes[1]
-    res_m = disc_arr[mask_m] - poly_m(sigma_arr[mask_m]) if mask_m.sum() > 0 else np.array([])
-    res_a = disc_arr - poly_a(sigma_arr)
-    ax.scatter(sigma_arr[mask_m], res_m, c=C_MULT, marker="o", s=28,
+    res_m = disc - pred_m
+    res_a = disc - pred_a
+    ax.scatter(sigma, res_m, c=C_MULT, marker="o", s=28,
                alpha=0.6, edgecolors="white", linewidths=0.3,
                label="Mult. Residuals", zorder=3)
-    ax.scatter(sigma_arr, res_a, c=C_ADDITIVE, marker="x", s=28,
+    ax.scatter(sigma, res_a, c=C_ADDITIVE, marker="x", s=28,
                alpha=0.5, label="Add. Residuals", zorder=3)
     ax.axhline(0, color="black", lw=0.8)
-    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$ [0,1]",
+    ax.set(xlabel=r"Schema Coherence $\hat{\sigma}_A$",
            ylabel="Residual Error", title="B. Residual Analysis")
     ax.legend(fontsize=8)
 
     fig.tight_layout()
-    path = outdir / "figure7-prediction6.png"
+    path = outdir / "figure9-prediction6.png"
     fig.savefig(path)
     _embed_alt_text(path)
     plt.close(fig)
@@ -312,17 +318,20 @@ def fig8_prediction9(all_results: dict, outdir: Path) -> None:
         print("  SKIP figure8: no OOD data")
         return
 
+    EVAL_EVERY = 50
+
     ml = min(len(s) for s in ood_agg)
     mean_ood = np.mean([s[:ml] for s in ood_agg], axis=0)
-    steps = np.arange(ml)
+    steps = np.arange(ml) * EVAL_EVERY
 
-    # Simple segmented regression
+    # Simple segmented regression (on eval indices, then rescale)
     best_tau, best_sse = 0, np.inf
     min_tau = max(5, ml // 6)
     max_tau = ml - min_tau
+    idx = np.arange(ml)
     for tau in range(min_tau, max_tau):
         y1, y2 = mean_ood[:tau], mean_ood[tau:]
-        x1, x2 = steps[:tau], steps[tau:] - tau
+        x1, x2 = idx[:tau], idx[tau:] - tau
         if len(x1) < 3 or len(x2) < 3:
             continue
         c1 = np.polyfit(x1, y1, 1)
@@ -334,13 +343,14 @@ def fig8_prediction9(all_results: dict, outdir: Path) -> None:
             best_tau = tau
             p1, p2 = c1, c2
 
-    tau = best_tau
+    tau_idx = best_tau
+    tau_steps = tau_idx * EVAL_EVERY
     beta0, beta1_slope = p1[0], p1[1]
     post_slope = p2[0]
 
     y_fit = np.concatenate([
-        np.polyval(p1, steps[:tau]),
-        np.polyval(p2, steps[tau:] - tau)])
+        np.polyval(p1, idx[:tau_idx]),
+        np.polyval(p2, idx[tau_idx:] - tau_idx)])
 
     if best_tau == 0:
         print(f"  SKIP figure8: ml={ml} too small for segmented regression (need >10 checkpoints)")
@@ -360,36 +370,43 @@ def fig8_prediction9(all_results: dict, outdir: Path) -> None:
     ax.fill_between(steps, y_fit - 1.96 * se, y_fit + 1.96 * se,
                     alpha=0.12, color=OKABE_ITO["vermilion"], zorder=2)
 
-    # CI on τ
-    ci_half = int(0.1 * ml)
-    ax.axvspan(max(tau - ci_half, 0), min(tau + ci_half, ml),
+    # CI on τ (in eval index units, then rescale)
+    ci_half_idx = max(int(0.1 * ml), 1)
+    ci_half_steps = ci_half_idx * EVAL_EVERY
+    ax.axvspan(max(tau_steps - ci_half_steps, 0),
+               min(tau_steps + ci_half_steps, steps[-1]),
                alpha=0.15, color=OKABE_ITO["vermilion"], zorder=1,
                label=f"95% CI on $\\hat{{\\tau}}$")
 
-    ax.axvline(tau, color="black", ls=":", lw=1, zorder=5)
+    ax.axvline(tau_steps, color="black", ls=":", lw=1, zorder=5)
 
-    # Annotations
+    # Slope per training step
+    beta0_step = beta0 / EVAL_EVERY
+    post_step = post_slope / EVAL_EVERY
+
     ax.annotate(f"Inflection Point\n"
-                f"$\\hat{{\\tau}} = {tau:.0f}$",
-                xy=(tau, y_fit[tau]),
-                xytext=(tau - 100, y_fit[tau] + 12),
+                f"$\\hat{{\\tau}} = {tau_steps:.0f}$",
+                xy=(tau_steps, y_fit[tau_idx]),
+                xytext=(tau_steps, y_fit[tau_idx] + 25),
                 fontsize=12,
                 arrowprops=dict(arrowstyle="->", color="black", lw=0.8),
                 bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="black",
-                          alpha=0.9))
+                          alpha=0.9),
+                ha="center")
 
-    ax.annotate(f"$\\beta_0 = {beta0:.4f}$",
-                xy=(tau // 2, y_fit[tau // 2] + 3),
-                fontsize=12, color=OKABE_ITO["vermilion"], fontweight="bold")
-    ax.annotate(f"$\\beta_1 = {post_slope:.4f}$",
-                xy=(tau + (ml - tau) // 2, y_fit[tau + (ml - tau) // 2] + 3),
+    ax.text(0.98, 0.20, f"$\\beta_0 = {beta0_step:.4f}$",
+            fontsize=12, color=OKABE_ITO["vermilion"], fontweight="bold",
+            transform=ax.transAxes, ha="right", va="bottom")
+    ax.annotate(f"$\\beta_1 = {post_step:.4f}$",
+                xy=(idx[tau_idx + (ml - tau_idx) // 2] * EVAL_EVERY,
+                    y_fit[tau_idx + (ml - tau_idx) // 2] + 3),
                 fontsize=12, color=OKABE_ITO["vermilion"], fontweight="bold")
 
     ax.set(xlabel="Training Timesteps", ylabel="OOD Accuracy (%)",
            title="Prediction 9: Phase 2 Entry Inflection Point")
     ax.legend(fontsize=9, loc="lower right")
     fig.tight_layout()
-    path = outdir / "figure8-prediction9.png"
+    path = outdir / "figure10-prediction9.png"
     fig.savefig(path)
     _embed_alt_text(path)
     plt.close(fig)

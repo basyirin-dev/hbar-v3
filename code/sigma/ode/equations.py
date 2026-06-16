@@ -83,10 +83,37 @@ def delta_ode(
 
 
 def psi_geometric(sigma_1: float, sigma_2: float, psi_0: float = 1.0, phi: float = 1.0) -> float:
+    """Compute the intersection activation rate between two domains.
+
+    Maps to: Eq. 18 in manuscript.tex (activation condition, psi_geometric).
+    Uses geometric mean of schema coherences modulated by structural overlap phi.
+
+    Args:
+        sigma_1: Schema coherence of domain 1 [0, 1].
+        sigma_2: Schema coherence of domain 2 [0, 1].
+        psi_0: Base activation rate (default 1.0).
+        phi: Domain structural similarity [0, 1] (default 1.0 = identical).
+
+    Returns:
+        Activation rate Psi_A(d_1, d_2) [0, 1].
+    """
     return psi_0 * phi * np.sqrt(sigma_1 * sigma_2)
 
 
 def gompertz(step: int, a: float = -4.0, b: float = -3e-3) -> float:
+    """Compute learning efficiency via Gompertz growth function.
+
+    Maps to: Eq. 17 in manuscript.tex (Gompertz learning efficiency eta).
+    Asymmetric double-exponential: rapid early growth, asymptotic plateau.
+
+    Args:
+        step: Current training step index.
+        a: Scale parameter (default -4.0; controls initial efficiency).
+        b: Rate parameter (default -3e-3; controls growth speed).
+
+    Returns:
+        Learning efficiency eta in [0, 1].
+    """
     return float(np.exp(a * np.exp(b * step)))
 
 
@@ -94,6 +121,22 @@ def phase_transition(
     sigma: float, delta_rel: float, phase: int,
     sigma_crit: float, delta_star: float,
 ) -> int:
+    """Advance the training phase based on ODE state thresholds.
+
+    Maps to: Algorithm 3.1 and Proposition 3.2 in manuscript.tex.
+    Phase 1→2 triggered when sigma exceeds sigma_critical (Eq. 28).
+    Phase 2→3 triggered when delta_rel exceeds delta_star.
+
+    Args:
+        sigma: Current schema coherence [0, 1].
+        delta_rel: Current relative parametric depth [0, 1].
+        phase: Current phase index {0, 1, 2}.
+        sigma_crit: Phase 1→2 sigma threshold [0, 1].
+        delta_star: Phase 2→3 delta_rel threshold [0, 1].
+
+    Returns:
+        Updated phase index {0, 2, 3} (monotonic, never decreases).
+    """
     new_phase = phase
     if sigma > sigma_crit and phase < 2:
         new_phase = 2
@@ -103,8 +146,36 @@ def phase_transition(
 
 
 def additive_coupling(task_loss: float, sigma: float, coupling_strength: float) -> float:
+    """Apply additive sigma-targeting curriculum to task loss.
+
+    Maps to: Eq. 50 in manuscript.tex (additive coupling form).
+    Scales loss by (1 + C * (1 - sigma)): penalises low sigma; decreases
+    penalty as sigma approaches 1.
+
+    Args:
+        task_loss: Base task loss (scalar).
+        sigma: Current schema coherence [0, 1].
+        coupling_strength: Coupling intensity C [0, 1].
+
+    Returns:
+        Modulated loss (upscaled when sigma is low).
+    """
     return task_loss * (1.0 + coupling_strength * (1.0 - sigma))
 
 
 def multiplicative_coupling(task_loss: float, sigma: float, coupling_strength: float) -> float:
+    """Apply multiplicative sigma-boosting curriculum to task loss.
+
+    Maps to: Eq. 51 in manuscript.tex (multiplicative coupling form).
+    Scales loss by (1 + C * sigma): amplifies training signal when sigma
+    is high, encouraging further coherence growth.
+
+    Args:
+        task_loss: Base task loss (scalar).
+        sigma: Current schema coherence [0, 1].
+        coupling_strength: Coupling intensity C [0, 1].
+
+    Returns:
+        Modulated loss (upscaled when sigma is high).
+    """
     return task_loss * (1.0 + coupling_strength * sigma)

@@ -174,7 +174,7 @@ def main() -> None:
     if args.format == "json":
         print(json.dumps(result, indent=2))
     else:
-        print(f"\n=== Σ-Model Framework Monitor ===")
+        print("\n=== Σ-Model Framework Monitor ===")
         print(f"Checked: {result['total_packages']} packages")
         print(f"Alerts: {result['alerts']}")
         for pkg, data in result["packages"].items():

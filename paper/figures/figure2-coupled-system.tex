@@ -1,0 +1,50 @@
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, patterns, fit}
+
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    node distance=1.6cm and 2.0cm,
+    varbox/.style={rectangle, draw=black, thick, fill=white, rounded corners=2pt, minimum width=2.0cm, minimum height=0.7cm, align=center, font=\small\sffamily},
+    latentbox/.style={rectangle, draw=black, thick, dashed, fill=white, rounded corners=2pt, minimum width=2.0cm, minimum height=0.7cm, align=center, font=\small\sffamily},
+    panel/.style={draw=gray, thick, rounded corners=4pt, fill=gray!3},
+    pos_edge/.style={->, thick, black},
+    neg_edge/.style={-{Bar[width=2.5mm]}, thick, black},
+]
+
+    % ===== PANEL A: Core Coupling Loop =====
+    \node[panel, minimum width=8.5cm, minimum height=5.0cm] (panelA) at (0,0) {};
+    \node[anchor=north west, font=\small\bfseries\sffamily] at ([xshift=4mm, yshift=-3mm]panelA.north west) {(a) Core Loop};
+
+    % Nodes for Panel A
+    \node[varbox, fill=signalcolor!8] (deltaA) at (-2.2,-1.0) {Depth\\$\delta_A$};
+    \node[latentbox, fill=targetcolor!8] (sigmaA) at (2.2,-1.0) {Schema\\$\sigma_A$};
+    \node[varbox, fill=probefill] (alphaA) at (0,1.0) {Attention\\$\alpha_A$};
+    \node[varbox, draw=gray, dashed] (CA) at (-4.0,1.0) {Signal\\$C_A$};
+
+    % Edges for Panel A
+    \draw[pos_edge] (CA) -- node[above, font=\footnotesize] {drives} (alphaA);
+    \draw[pos_edge] (alphaA) -- node[above, font=\footnotesize, xshift=2mm] {gates} (sigmaA);
+    \draw[neg_edge] (sigmaA) -- node[below, font=\footnotesize] {protects} (deltaA);
+    \draw[pos_edge] (deltaA) to[bend left=25] node[right, font=\footnotesize] {supports} (alphaA);
+
+    % ===== PANEL B: Metacognitive Extension =====
+    \node[panel, minimum width=6.5cm, minimum height=5.0cm] (panelB) at (7.5,0) {};
+    \node[anchor=north west, font=\small\bfseries\sffamily] at ([xshift=4mm, yshift=-3mm]panelB.north west) {(b) Metacognitive};
+
+    % Nodes for Panel B
+    \node[latentbox, fill=targetcolor!8] (sigmaB) at (5.5,-0.4) {Schema\\$\sigma_A$};
+    \node[latentbox, fill=odecolor!8] (MA) at (9.5,-0.4) {Self-Model\\$\hat{M}_A$};
+    \node[varbox, draw=sigmacolor!80, fill=sigmacolor!5] (Omega) at (7.5,1.2) {Shortcut\\$\Omega_{SL}$};
+
+    % Edges for Panel B
+    \draw[pos_edge] (sigmaB) -- node[above, font=\footnotesize] {calibrates} (MA);
+    \draw[neg_edge] (Omega) -- node[right, font=\footnotesize] {inflates} (MA);
+    \draw[neg_edge] (Omega) -- node[left, font=\footnotesize] {suppresses} (sigmaB);
+
+    % ===== LEGEND =====
+    \node[anchor=south, font=\footnotesize\sffamily, text width=8cm, align=center] at (3.25,-3.5) {
+        \textbf{Solid:} observable \quad \textbf{Dashed:} latent
+        \qquad $\rightarrow$ promotes/gates \quad ---| suppresses
+    };
+
+\end{tikzpicture}

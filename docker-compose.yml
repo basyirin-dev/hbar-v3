@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  sigma:
+    build: .
+    volumes:
+      - ./output:/app/output
+    environment:
+      - PYTHONPATH=/app/code:$PYTHONPATH
+    command: make test

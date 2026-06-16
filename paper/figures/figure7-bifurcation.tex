@@ -1,0 +1,82 @@
+\usetikzlibrary{positioning, arrows.meta, patterns, backgrounds, fit}
+
+\begin{tikzpicture}[font=\sffamily]
+
+    % ===== PANEL (a): Bifurcation Diagram =====
+    \begin{scope}[local bounding box=bifurcation]
+        \draw[->, thick] (-0.3, 0) -- (6.5, 0) node[right] {$R_0$};
+        \draw[->, thick] (0, -0.3) -- (0, 5.5) node[above] {$\sigma_A$};
+
+        % R_0 = 1 line
+        \draw[dashed, thick, sigmacolor!60!black] (3.5, -0.2) -- (3.5, 5.2);
+        \node[below, font=\small, text=sigmacolor!60!black] at (3.5, -0.2) {$R_0 = 1$};
+
+        % Stable equilibrium branch (sigma=0, stable for R_0 < 1)
+        \draw[ultra thick, black] (0, 0) -- (3.5, 0);
+        \draw[ultra thick, black, dashed] (3.5, 0) -- (6, 0);
+        \node[above, font=\small] at (2.0, 0.1) {$\sigma_A = 0$ (stable)};
+
+        % Bifurcating branch (sigma > 0, stable for R_0 > 1)
+        \draw[ultra thick, black] (3.5, 0.2) to[out=60, in=180] (6, 4.0);
+        \node[right, font=\small] at (6, 4.0) {$\sigma_A > 0$ (stable)};
+
+        % Label regions
+        \node[font=\footnotesize, text=gray!70, align=center] at (1.8, 3.5) {$\sigma$-trap\\$R_0 < 1$};
+        \node[font=\footnotesize, text=targetcolor!60!black, align=center] at (4.4, 3.9) {Schema\\crystallisation\\$R_0 > 1$};
+
+        % Bifurcation point marker
+        \fill[sigmacolor] (3.5, 0) circle (3pt);
+    \end{scope}
+
+    % ===== PANEL (b): Phase Portrait =====
+    \begin{scope}[local bounding box=portrait, shift={(8.5, 0)}]
+        \draw[->, thick] (-0.3, 0) -- (6.5, 0) node[right] {$\delta_A$};
+        \draw[->, thick] (0, -0.3) -- (0, 5.5) node[above] {$\sigma_A$};
+
+        % Nullclines
+        % delta nullcline (sigma = f(delta) from d(delta)/dt = 0)
+        \draw[thick, signalcolor!60!black, dashed] (0, 0) to[out=0, in=200] (5.5, 1.2);
+        \node[font=\footnotesize, text=signalcolor!60!black, rotate=15] at (5.5, 1.5) {$\dot{\delta}_A = 0$};
+
+        % sigma nullcline (sigma from d(sigma)/dt = 0)
+        \draw[thick, sigmacolor!60!black, dotted] (0, 3.5) -- (5.5, 3.5);
+        \node[font=\footnotesize, text=sigmacolor!60!black] at (5.8, 3.5) {$\dot{\sigma}_A = 0$};
+
+        % Equilibria
+        % E_0: (0, 0)
+        \fill[black] (0, 0) circle (3pt);
+        \node[above left, font=\footnotesize] at (0, 0) {$E_0$};
+
+        % E_S: surface learning (high delta, low sigma)
+        \fill[black] (4.0, 0.5) circle (3pt);
+        \node[below, font=\footnotesize, text=sigmacolor!80!black] at (4.0, 0.5) {$E_S$ (trap)};
+
+        % E_C: schema coherent (high delta, high sigma)
+        \fill[black] (4.5, 3.8) circle (3pt);
+        \node[above, font=\footnotesize, text=targetcolor!60!black] at (4.5, 3.8) {$E_C$ (target)};
+
+        % Trajectories
+        % Baseline SGD: falls into E_S
+        \draw[->, thick, black!60, dashed, rounded corners=5pt]
+            (0.5, 0.2) -- (1.5, 0.8) -- (3.0, 0.6) -- (3.8, 0.5);
+        \node[font=\footnotesize, text=black!60] at (2.3, 1.0) {Baseline SGD};
+
+        % Sigma-Model: reaches E_C
+        \draw[->, thick, targetcolor!60!black, rounded corners=5pt]
+            (0.5, 0.2) -- (1.5, 1.5) -- (3.0, 3.0) -- (4.3, 3.8);
+        \node[font=\footnotesize, text=targetcolor!60!black] at (1.0, 1.8) {$\sigma_A$-coupled};
+
+        % Phase labels
+        \node[font=\footnotesize, text=gray!70] at (1.5, -0.3) {Phase 1};
+        \node[font=\footnotesize, text=signalcolor!60!black] at (4.0, 1.8) {Phase 2};
+        \node[font=\footnotesize, text=targetcolor!60!black] at (4.5, 4.5) {Phase 3};
+    \end{scope}
+
+    % ===== Panel separator =====
+    \draw[gray, thick] (7.25, -0.8) -- (7.25, 5.8);
+
+    % ===== Panel labels =====
+    \node[above, font=\small\bfseries] at ([yshift=2mm]bifurcation.north) {(a) Bifurcation structure};
+    \node[above, font=\small\bfseries] at ([yshift=2mm]portrait.north) {(b) Phase portrait};
+
+\end{tikzpicture}

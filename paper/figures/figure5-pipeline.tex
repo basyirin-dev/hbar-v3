@@ -1,0 +1,86 @@
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, fit, backgrounds}
+
+\begin{tikzpicture}[
+    font=\sffamily,
+    >=Stealth,
+    box/.style={rectangle, draw=black, thick, rounded corners=3pt, minimum width=2.8cm, minimum height=0.8cm, align=center, font=\small},
+    databox/.style={rectangle, draw=black, dashed, thick, rounded corners=3pt, minimum width=2.8cm, minimum height=0.8cm, align=center, font=\small, fill=gray!3},
+    decbox/.style={diamond, draw=black, thick, aspect=1.8, align=center, font=\small, fill=signalcolor!4},
+    arrow/.style={->, thick, black},
+    label/.style={font=\footnotesize, text=gray!70},
+]
+
+    % ===== LAYER 1: Input / Forward Pass =====
+    \node[box, fill=signalcolor!6] (input) at (0, 5.5) {Input batch $x$};
+    \node[box, fill=signalcolor!6] (forward) at (3.5, 5.5) {Forward pass\\$\mathcal{L}_{\text{task}}$};
+    \node[box, fill=signalcolor!6] (hidden) at (7, 5.5) {Extract hidden\\states $h_i$};
+
+    \draw[arrow] (input) -- (forward);
+    \draw[arrow] (forward) -- (hidden);
+
+    % ===== LAYER 2: Signal Extraction =====
+    \node[box, fill=probefill] (gca) at (-1.5, 3.8) {\scriptsize GCA signal\\$g_A = \Corr(\nabla\mathcal{L}_{\text{comp}},\ \nabla\mathcal{L}_{\text{train}})$};
+    \node[box, fill=probefill] (rga) at (3.5, 3.8) {\scriptsize RGA signal\\$r_A = \Corr(\text{RDM}_{\text{rep}},\ \text{RDM}_{\text{struct}})$};
+    \node[box, fill=probefill] (ac) at (8.5, 3.8) {\scriptsize AC signal\\$c_A = \mathbb{E}[\CosSim(R(x),\ R(a(x)))]$};
+
+    \draw[arrow] (hidden) -- (rga);
+    \draw[arrow] (hidden.south) -- ++(0, -0.3) -| (gca.north);
+    \draw[arrow] (hidden.south) -- ++(0, -0.3) -| (ac.north);
+
+    % ===== LAYER 3: Proxy Fusion =====
+    \node[box, fill=targetcolor!6] (fusion) at (3.5, 2.2) {Proxy fusion\\$\tilde{\sigma}_A = w_g g_A + w_r r_A + w_c c_A$};
+
+    \draw[arrow] (gca.south) -- ++(0, -0.3) -| (fusion.west);
+    \draw[arrow] (rga) -- (fusion);
+    \draw[arrow] (ac.south) -- ++(0, -0.3) -| (fusion.east);
+
+    % ===== LAYER 4: ODE Integration =====
+    \node[box, fill=odecolor!6] (ode) at (3.5, 0.6) {ODE integration\\$(\delta_A, \sigma_A, \alpha_A, \hat{M}_A, \Xi_A)$};
+
+    \draw[arrow] (fusion) -- (ode);
+
+    % ===== LAYER 5: Modulated Loss =====
+    \node[box, fill=sigmacolor!6] (loss) at (3.5, -1.0) {Modulated loss\\$\mathcal{L}_{\text{total}} = \mathcal{L}_{\text{task}} + \lambda_\sigma(1-\tilde{\sigma}_A)\mathcal{L}_{\text{comp}}$};
+
+    \draw[arrow] (ode) -- (loss);
+    \draw[arrow, dotted] (ode.east) -- ++(2.0, 0) node[right, label, align=left] {Phase-aware\\curriculum} -- ++(0, -1.6) -| (loss.east);
+
+    % ===== LAYER 6: Backward + Optimizer =====
+    \node[box, fill=signalcolor!6] (backward) at (3.5, -2.5) {Backward pass\\$\nabla_\theta \mathcal{L}_{\text{total}}$};
+    \node[box, fill=signalcolor!6] (optimizer) at (3.5, -3.8) {Optimizer step\\$\theta \leftarrow \theta - \eta_{\text{eff}} \nabla_\theta \mathcal{L}$};
+
+    \draw[arrow] (loss) -- (backward);
+    \draw[arrow] (backward) -- (optimizer);
+
+    % ===== Eval Checkpoint (side branch) =====
+    \node[box, fill=evalcolor!6] (eval) at (8.5, -2.0) {Eval checkpoint\\$\hat{\sigma}_A = \frac{\text{Acc}_{\text{OOD}}}{\text{Acc}_{\text{ID}}}$};
+
+    \draw[arrow] (optimizer.east) -- ++(1.0, 0) |- (eval);
+    \draw[arrow, dashed, evalcolor!60!black] (eval.west) -- ++(-1.5, 0) node[above, label, text=evalcolor!60!black] {Recalibrate $w_g, w_r, w_c$} |- (fusion.east);
+
+    % ===== Feedback loop (left → up → right, enters input from left) =====
+    \draw[arrow, rounded corners=5pt] (optimizer.west) -- (-4.8, -3.8) -- (-4.8, 6.0) -- (input.west);
+    \node[font=\footnotesize, text=gray!70, anchor=east] at (-5.0, 1.5) {Next step};
+
+    % ===== Annotation boxes =====
+    \begin{scope}[on background layer]
+        \fill[signalcolor!6] (-0.8, 4.8) rectangle (8.2, 6.2);
+        \fill[probefill!6] (-0.8, 3.0) rectangle (8.2, 4.5);
+        \fill[targetcolor!6] (1.8, 1.5) rectangle (5.2, 2.8);
+        \fill[odecolor!6] (1.8, -0.1) rectangle (5.2, 1.2);
+        \fill[sigmacolor!6] (1.8, -1.7) rectangle (5.2, -0.4);
+        \fill[signalcolor!6] (1.8, -4.5) rectangle (5.2, -1.8);
+    \end{scope}
+
+    \node[anchor=east, label, font=\footnotesize\bfseries, text=signalcolor!60] at (-3.3, 5.5) {A};
+    \node[anchor=east, label, font=\footnotesize\bfseries, text=okabe-ito-orange] at (-3.3, 3.8) {B};
+    \node[anchor=east, label, font=\footnotesize\bfseries, text=targetcolor!60] at (1.7, 2.2) {C};
+    \node[anchor=east, label, font=\footnotesize\bfseries, text=odecolor!60] at (1.7, 0.6) {D};
+    \node[anchor=east, label, font=\footnotesize\bfseries, text=sigmacolor!60] at (1.2, -1.0) {E};
+
+    % Legend
+    \node[anchor=south, font=\footnotesize\sffamily] at (3.5, -5.0) {
+        A: Forward pass \quad B: Signal extraction \quad C: Proxy fusion \quad D: ODE update \quad E: Loss modulation
+    };
+
+\end{tikzpicture}

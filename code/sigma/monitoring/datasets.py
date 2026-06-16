@@ -154,7 +154,7 @@ def main() -> None:
     if args.format == "json":
         print(json.dumps(result, indent=2))
     else:
-        print(f"\n=== Σ-Model Dataset Monitor ===")
+        print("\n=== Σ-Model Dataset Monitor ===")
         print(f"Since: {result['since']}")
         print(f"Datasets: {result['total_datasets']}")
         print(f"Alerts: {result['alerts']}")

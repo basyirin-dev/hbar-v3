@@ -124,12 +124,12 @@ def main() -> None:
     if args.format == "json":
         print(json.dumps(result, indent=2))
     else:
-        print(f"\n=== Σ-Model Twitter/X Monitor ===")
+        print("\n=== Σ-Model Twitter/X Monitor ===")
         if result["status"] == "not_configured":
-            print(f"Status: NOT CONFIGURED")
+            print("Status: NOT CONFIGURED")
             print(f"Message: {result['message']}")
         else:
-            print(f"Status: ACTIVE")
+            print("Status: ACTIVE")
             print(f"Tweets found: {result['total_tweets']}")
             for t in result["results"]:
                 print(f"  [{t['created_at']}] {t['text'][:80]}...")
